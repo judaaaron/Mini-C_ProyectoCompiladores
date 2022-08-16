@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -26,7 +27,12 @@ public class FrmPrincipal extends javax.swing.JFrame {
      */
     public FrmPrincipal() {
         initComponents();
+        setResizable(false);
+        setTitle("MINI-C");
+        this.pack();
         this.setLocationRelativeTo(null);
+        
+
     }
 
     /**
@@ -38,76 +44,72 @@ public class FrmPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtinput = new javax.swing.JTextField();
         btn_analizar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txt_resultado = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(txtinput, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 270, 40));
 
-        btn_analizar.setText("Analizar");
+        btn_analizar.setText("Analizar archivo");
         btn_analizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_analizarActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_analizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 20, 170, 30));
+        getContentPane().add(btn_analizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 220, 420, 40));
 
         txt_resultado.setColumns(20);
         txt_resultado.setRows(5);
         jScrollPane1.setViewportView(txt_resultado);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 630, 180));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, 550, 130));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo3.gif"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 800, 550));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_analizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_analizarActionPerformed
         // TODO add your handling code here:
-        File archivo = new File("input.txt");
-        PrintWriter escribir;
+        JFileChooser chooser = new JFileChooser();
+        chooser.showOpenDialog(null);
+
         try {
-            escribir = new PrintWriter(archivo);
-            escribir.print(txtinput.getText());
-            escribir.close();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        try {
-            Reader lector = new BufferedReader(new FileReader("input.txt"));
+            Reader lector = new BufferedReader(new FileReader(chooser.getSelectedFile()));
             Lexer lexer = new Lexer(lector);
-            String resultado="";
+            String resultado = "";
             while (true) {
                 Tokens tokens = lexer.yylex();
                 if (tokens == null) {
-                    resultado+= "FIN";
+                    resultado += "FIN";
                     txt_resultado.setText(resultado);
                     return;
                 }
-                
+
                 switch (tokens) {
                     case ERROR:
-                        resultado+="Simbolo no definido\n";
+                        resultado += "Simbolo no definido\n";
                         break;
-                    case Identificador: case Numero: case Reservadas:
-                        resultado+=lexer.lexeme + ": Es un " + tokens + "\n";
+//                    case ID:
+                    case IF:
+                    case WHILE:
+                        resultado += lexer.lexeme + ": Es un " + tokens + "\n";
                         break;
-                    
+
                     default:
-                        resultado+= "Token: " + tokens + "\n";
+                        resultado += "Token: " + tokens + "\n";
                         break;
                 }
-                
+
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_btn_analizarActionPerformed
 
     /**
@@ -147,8 +149,8 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_analizar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea txt_resultado;
-    private javax.swing.JTextField txtinput;
     // End of variables declaration//GEN-END:variables
 }

@@ -10,16 +10,41 @@ package Compiladorcito;
  * @author Juda
  */
 public enum Tokens {
-    
-    Reservadas,
-    Igual,
-    Suma,
-    Resta,
-    Multiplicacion,
-    Division,
-    Identificador,
-    Numero,
+
+ DIGITOS,
+    LETRAS,
+    CHAR,
+    IF,
+    INT,
+    ELSE,
+    WHILE,
+    FOR,
+    RETURN,
+    BREAK,
+    PARENTESISIZ,
+    PARENTESISDE,
+    LLAVEIZ,
+    LLAVEDER,
+    OPREL,
+    ID,
+    PRINTF,
+    SCANF,
+    AND,
+    OR,
+    OPADICION,
+    OPMULTI,
+    PUNTOCOMA,
+    INCREMENT,
+    DECREMENT,
+    Comment,
+    LineTerminator,
+    InputCharacter,
+    BlankSpace,
+    Comments,
+    LineComment,
+    BlockComment,
+    TERNARIO,
+    DOSPUNTOS,
     ERROR
 
-    
 }

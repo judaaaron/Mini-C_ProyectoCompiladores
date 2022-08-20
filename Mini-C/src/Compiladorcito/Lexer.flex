@@ -3,12 +3,16 @@ import static Compiladorcito.Tokens.*;
 %%
 %class Lexer
 %type Tokens
+
+
 DIGITOS = [0-9]
 LETRAS = [a-zA-Z_]
 CHAR = "char"
 IF = "if"
 INT = "int"
 ELSE = "else"
+INTP = "int*"
+CHARP = "char*"
 WHILE = "while"
 FOR = "for"            
 RETURN = "return"        
@@ -34,7 +38,7 @@ InputCharacter = [^\r\n]
 BlankSpace = {LineTerminator} | [ \t\f]
 Comments = {LineComment} | {BlockComment}
 LineComment = "//" {InputCharacter}* {LineTerminator}?
-BlockComment = "/" [^] ~"/" | "/" "*"+ "/" 
+BlockComment = "/*"({LETRAS}|{DIGITOS})+"*/" 
 TERNARIO = "?"
 DOSPUNTOS = :
 
@@ -104,3 +108,4 @@ DOSPUNTOS = :
     . {return ERROR;}
  
 }
+

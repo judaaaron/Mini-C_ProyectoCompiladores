@@ -95,6 +95,8 @@ public class FrmPrincipal extends javax.swing.JFrame {
 //                    case ID:
                     case IF:
                     case WHILE:
+                    case FOR:
+                    case LineComment:
                         resultado += lexer.lexeme + ": Es un " + tokens + "\n";
                         break;
 

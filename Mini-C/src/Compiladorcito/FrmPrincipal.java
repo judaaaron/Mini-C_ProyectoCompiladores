@@ -48,32 +48,44 @@ public class FrmPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel3 = new javax.swing.JLabel();
         btn_archivo = new javax.swing.JButton();
         btn_compilar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
         txt_resultado = new javax.swing.JTextArea();
+        jLabel5 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btn_archivo.setText("Cargar codigo");
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Compilar");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 560, 150, 30));
+
+        btn_archivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/code.png"))); // NOI18N
+        btn_archivo.setContentAreaFilled(false);
+        btn_archivo.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/code (1).png"))); // NOI18N
         btn_archivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_archivoActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_archivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 120, 220, 40));
+        getContentPane().add(btn_archivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(-80, 90, 330, 60));
 
-        btn_compilar.setText("Compilar");
+        btn_compilar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/compilador (2).png"))); // NOI18N
+        btn_compilar.setContentAreaFilled(false);
+        btn_compilar.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/compilador (3).png"))); // NOI18N
         btn_compilar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_compilarActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_compilar, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 500, 200, 40));
+        getContentPane().add(btn_compilar, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 490, 200, 70));
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -87,11 +99,21 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 760, 240));
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Cargar codigo");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 150, 30));
+
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo3.gif"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 800, 550));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo3.gif"))); // NOI18N
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 550, 790, 450));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Cargar codigo");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 150, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -156,6 +178,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btn_compilar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;

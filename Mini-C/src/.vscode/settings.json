@@ -1,0 +1,8 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\Juda\\Desktop\\Periodo3-2022\\Compiladores I\\jflex-1.8.2\\java_cup.jar",
+        "c:\\Users\\Juda\\Desktop\\Periodo3-2022\\Compiladores I\\jflex-1.8.2\\java-cup-11a.jar",
+        "c:\\Users\\Juda\\Downloads\\JFlex Libreria - By Cisco GT\\JFlex.jar"
+    ]
+}

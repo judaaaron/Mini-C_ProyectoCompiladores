@@ -1,18 +1,22 @@
 package Compiladorcito;
-import static Compiladorcito.Tokens.*;
+import java_cup.runtime.Symbol;
+import java.util.ArrayList;
+
 %%
 %class Lexer
-%type Tokens
-
+%unicode
+%line
+%column
+%cup
+%type java_cup.runtime.Symbol
 
 DIGITOS = [0-9]
 LETRAS = [a-zA-Z_]
 CHAR = "char"
 IF = "if"
-INT = "int"
 ELSE = "else"
-INTP = "int*"
-CHARP = "char*"
+MAIN = "main"
+INT = "int"
 WHILE = "while"
 FOR = "for"            
 RETURN = "return"        
@@ -21,17 +25,18 @@ PARENTESISIZ = "("
 PARENTESISDE = ")"
 LLAVEIZ = "{"
 LLAVEDER = "}"
-OPREL = "<"|">"|"<="|">="|"="|"!="|"=="
+OPREL = "<"|">"|"<="|">="|"!="|"=="
 ID = {LETRAS}({LETRAS}|{DIGITOS})*|{LETRAS}({LETRAS}|{DIGITOS})*
 PRINTF = "printf"
 SCANF = "scanf"
 AND = "&&"
 OR = "||"
+IGUAL = "="
 OPADICION = "+"|"-"
 OPMULTI = "*"|"/"
 PUNTOCOMA = ;
 INCREMENT = "++"
-DECREMENT = "--"
+DECREMENT = --
 Comment = "/" [^] ~"/" | "/" "*"+ "/"
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
@@ -39,73 +44,78 @@ BlankSpace = {LineTerminator} | [ \t\f]
 Comments = {LineComment} | {BlockComment}
 LineComment = "//" {InputCharacter}* {LineTerminator}?
 BlockComment = "/*"({LETRAS}|{DIGITOS})+"*/" 
-TERNARIO = "?"
 DOSPUNTOS = :
+TERNARIO = "?"
 
 %{
     public String lexeme;
+    String comentario="";
+    String cadena="";
+    ArrayList erroresLexicos = new ArrayList();
 %}
 
 %%
 <YYINITIAL> {
 
    /* Palabras reservadas */
+    
+    {ELSE} {return new Symbol(sym.TKN_ELSE           ,yyline+1, yycolumn+1, yytext());}
+    {CHAR} {return new Symbol(sym.TKN_CHAR           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {INT}  {return new Symbol(sym.TKN_INT           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {MAIN} {return new Symbol(sym.TKN_MAIN           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {IF} {return new Symbol(sym.TKN_IF           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {WHILE} {return new Symbol(sym.TKN_WHILE           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {FOR} {return new Symbol(sym.TKN_FOR           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {RETURN} {return new Symbol(sym.TKN_RETURN           ,yyline+1 ,yycolumn+1 ,yytext());}
 
-    {CHAR} {lexeme=yytext(); return CHAR;}
-    {INT} {lexeme=yytext(); return INT;}
-    {IF} {lexeme=yytext(); return IF;}
-    {ELSE} {lexeme=yytext(); return ELSE;}
-    {WHILE} {lexeme=yytext(); return WHILE;}
-    {FOR} {lexeme=yytext(); return FOR;}
-    {RETURN} {lexeme=yytext(); return RETURN;}
-    {BREAK} {lexeme=yytext(); return BREAK; }
+    {IGUAL}         {return new Symbol(sym.TKN_IGUAL        ,yyline+1 ,yycolumn+1 ,yytext());}
 
     /* Unarios */
-
-    {INCREMENT} {lexeme=yytext(); return INCREMENT;}
-    {DECREMENT} {lexeme=yytext(); return DECREMENT;}
-
+    {INCREMENT} {return new Symbol(sym.TKN_INCREMENT           ,yyline+1, yycolumn+1, yytext());}
+    {DECREMENT} {return new Symbol(sym.TKN_DECREMENT           ,yyline+1, yycolumn+1, yytext());}
+    
     /* Operadores logicos */
 
-    {OPREL} { return OPREL;}
-    {TERNARIO}  {lexeme=yytext(); return TERNARIO;}
+    {OPREL} {return new Symbol(sym.TKN_OPREL           ,yyline+1 ,yycolumn+1 ,yytext());}
+     {TERNARIO}  {return new Symbol(sym.TKN_TERNARIO           ,yyline+1 ,yycolumn+1 ,yytext());}
 
      /* Arithmetic Operators */
 
-    {OPADICION} {lexeme=yytext(); return OPADICION;}
-    {OPMULTI} {lexeme=yytext(); return OPMULTI;}
+    {OPADICION} {return new Symbol(sym.TKN_OPADICION           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {OPMULTI} {return new Symbol(sym.TKN_OPMULTI           ,yyline+1 ,yycolumn+1 ,yytext());}
 
 
      /* Overloaded */
 
-    {AND} {lexeme=yytext(); return AND; }
-    {OR} {lexeme=yytext(); return OR; }
-
+    {AND} {return new Symbol(sym.TKN_AND           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {OR} {return new Symbol(sym.TKN_OR           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {DIGITOS} {return new Symbol(sym.TKN_DIGITOS       ,yyline+1 ,yycolumn+1 ,yytext());}
     
        /* Separators */
 
-    {PUNTOCOMA} {lexeme=yytext(); return PUNTOCOMA; }
-    {DOSPUNTOS} {lexeme=yytext(); return DOSPUNTOS; }
-    {LLAVEIZ} {lexeme=yytext(); return LLAVEIZ; }
-    {LLAVEDER} {lexeme=yytext(); return LLAVEDER; }
-    {PARENTESISIZ} {lexeme=yytext(); return PARENTESISIZ; }
-    {PARENTESISDE} {lexeme=yytext(); return PARENTESISDE; }
+    {PUNTOCOMA} {return new Symbol(sym.TKN_PUNTOCOMA           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {DOSPUNTOS} {return new Symbol(sym.TKN_DOSPUNTOS           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {LLAVEIZ} {return new Symbol(sym.TKN_LLAVEIZ           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {LLAVEDER} {return new Symbol(sym.TKN_LLAVEDER           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {PARENTESISIZ} {return new Symbol(sym.TKN_PARENTESISIZ           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {PARENTESISDE} {return new Symbol(sym.TKN_PARENTESISDE           ,yyline+1 ,yycolumn+1 ,yytext());}
 
      /* Funciones */
-       
-    {PRINTF} {lexeme=yytext(); return PRINTF; }
-    {SCANF} {lexeme=yytext(); return SCANF; }
+     {PRINTF} {return new Symbol(sym.TKN_PRINTF           ,yyline+1 ,yycolumn+1 ,yytext());}
+     {SCANF} {return new Symbol(sym.TKN_SCANF           ,yyline+1 ,yycolumn+1 ,yytext());}
+
+  
 
        /* Ids */
 
-    {ID} {lexeme=yytext(); return ID; }
+    {ID} {return new Symbol(sym.TKN_ID           ,yyline+1 ,yycolumn+1 ,yytext());}
 
       
 
     {BlankSpace}            { /* skip it */ }
     {Comments}              { /* skip it */ }
     
-    . {return ERROR;}
+    .  { erroresLexicos.add("Error lexico en linea: "+ (yyline+1) +" y columna " + (yycolumn+1) +" y en el texto: "+yytext()); }
  
 }
 

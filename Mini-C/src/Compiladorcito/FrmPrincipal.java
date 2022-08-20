@@ -12,9 +12,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.StringReader;
+import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import static Compiladorcito.Tokens.*;
 
 /**
  *
@@ -35,6 +38,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     }
 
+  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,75 +48,73 @@ public class FrmPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btn_analizar = new javax.swing.JButton();
+        btn_archivo = new javax.swing.JButton();
+        btn_compilar = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
         txt_resultado = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btn_analizar.setText("Analizar archivo");
-        btn_analizar.addActionListener(new java.awt.event.ActionListener() {
+        btn_archivo.setText("Cargar codigo");
+        btn_archivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_analizarActionPerformed(evt);
+                btn_archivoActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_analizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 220, 420, 40));
+        getContentPane().add(btn_archivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 120, 220, 40));
+
+        btn_compilar.setText("Compilar");
+        btn_compilar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_compilarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btn_compilar, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 500, 200, 40));
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane2.setViewportView(jTextArea1);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 610, 770, 270));
 
         txt_resultado.setColumns(20);
         txt_resultado.setRows(5);
         jScrollPane1.setViewportView(txt_resultado);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, 550, 130));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 760, 240));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo3.gif"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 800, 550));
 
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo3.gif"))); // NOI18N
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 550, 790, 450));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_analizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_analizarActionPerformed
+    private void btn_archivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_archivoActionPerformed
         // TODO add your handling code here:
         JFileChooser chooser = new JFileChooser();
         chooser.showOpenDialog(null);
-
+        File archivo = new File(chooser.getSelectedFile().getAbsolutePath());
         try {
-            Reader lector = new BufferedReader(new FileReader(chooser.getSelectedFile()));
-            Lexer lexer = new Lexer(lector);
-            String resultado = "";
-            while (true) {
-                Tokens tokens = lexer.yylex();
-                if (tokens == null) {
-                    resultado += "FIN";
-                    txt_resultado.setText(resultado);
-                    return;
-                }
-
-                switch (tokens) {
-                    case ERROR:
-                        resultado += "Simbolo no definido\n";
-                        break;
-//                    case ID:
-                    case IF:
-                    case WHILE:
-                    case FOR:
-                    case LineComment:
-                        resultado += lexer.lexeme + ": Es un " + tokens + "\n";
-                        break;
-
-                    default:
-                        resultado += "Token: " + tokens + "\n";
-                        break;
-                }
-
-            }
+            String ST = new String(Files.readAllBytes(archivo.toPath()));
+            txt_resultado.setText(ST);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }//GEN-LAST:event_btn_analizarActionPerformed
+    }//GEN-LAST:event_btn_archivoActionPerformed
+
+    private void btn_compilarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_compilarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_compilarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -150,9 +152,13 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_analizar;
+    private javax.swing.JButton btn_archivo;
+    private javax.swing.JButton btn_compilar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea txt_resultado;
     // End of variables declaration//GEN-END:variables
 }

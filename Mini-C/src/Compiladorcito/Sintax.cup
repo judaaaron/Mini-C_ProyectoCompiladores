@@ -1,0 +1,34 @@
+package Compiladorcito;
+
+import java_cup.runtime.Symbol;
+import java.util.ArrayList;
+import java.util.*;
+import java.io.*;
+
+parser code
+{:
+    private Symbol s;
+    
+    public void syntax_error(Symbol s){
+        this.s = s;
+    }
+
+    public Symbol getS(){
+        return this.s;
+    }
+:};
+
+terminal TKN_OPADICION,TKN_OPMULTI ;
+terminal TKN_OPREL ,TKN_MAIN, TKN_IGUAL;
+terminal TKN_DIGITOS,TKN_IF ,TKN_WHILE, TKN_ELSE,TKN_PARENTESISIZ ,TKN_PARENTESISDE ,TKN_LLAVEIZ ,TKN_LLAVEDER ; 
+terminal TKN_AND,TKN_OR,TKN_FOR,TKN_RETURN, TKN_PRINTF, TKN_SCANF, TKN_INCREMENT, TKN_DECREMENT;
+terminal TKN_DOSPUNTOS,TKN_INT ,TKN_CHAR, TKN_ID, TKN_PUNTOCOMA, TKN_TERNARIO ;
+
+non terminal INICIO, WHILE, IF, FOR, DECLARACION, SENTENCIA;
+
+start with INICIO;
+
+INICIO ::= TKN_INT TKN_MAIN TKN_PARENTESISIZ TKN_PARENTESISDE TKN_LLAVEIZ SENTENCIA TKN_LLAVEDER
+;
+SENTENCIA::= TKN_INT TKN_ID TKN_PUNTOCOMA | TKN_INT TKN_ID TKN_IGUAL TKN_DIGITOS TKN_PUNTOCOMA
+;

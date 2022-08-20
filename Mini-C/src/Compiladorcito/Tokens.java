@@ -10,12 +10,15 @@ package Compiladorcito;
  * @author Juda
  */
 public enum Tokens {
-
- DIGITOS,
+    Linea,
+    DIGITOS,
     LETRAS,
     CHAR,
     IF,
     INT,
+    INTP,
+    CHARP,
+    MAIN,
     ELSE,
     WHILE,
     FOR,
@@ -45,6 +48,7 @@ public enum Tokens {
     BlockComment,
     TERNARIO,
     DOSPUNTOS,
+    IGUAL,
     ERROR
 
 }

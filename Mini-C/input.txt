@@ -1,2 +1,1 @@
-if practica 8 while # for //comentarios
-/*brauny*/ if
+int main(){}

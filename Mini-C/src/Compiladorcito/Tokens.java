@@ -48,7 +48,7 @@ public enum Tokens {
     BlockComment,
     TERNARIO,
     DOSPUNTOS,
-    IGUAL,
+    ASIGNACION,
+    NUMEROS,
     ERROR
-
 }

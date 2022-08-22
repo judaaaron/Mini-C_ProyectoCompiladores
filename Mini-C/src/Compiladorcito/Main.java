@@ -15,15 +15,16 @@ import java.nio.file.Paths;
 public class Main {
     public static void main(String[] args) throws Exception {
         String ruta1 = "C:/Users/Juda/Desktop/Mini-C_ProyectoCompiladores/Mini-C/src/Compiladorcito/Lexer.flex";
-        String ruta2 = "C:/Users/Juda/Desktop/Mini-C_ProyectoCompiladores/Mini-C/src/Compiladorcito/Lexer.flex";
+        String ruta2 = "C:/Users/Juda/Desktop/Mini-C_ProyectoCompiladores/Mini-C/src/Compiladorcito/LexerCup.flex";
         String[] rutaS = { "-parser", "Sintax",
                 "C:/Users/Juda/Desktop/Mini-C_ProyectoCompiladores/Mini-C/src/Compiladorcito/Sintax.cup" };
-        generar(ruta2, rutaS);
-        System.out.println("hola yuda"); // esto es muy extrano esta es otra prueba sigo editando el texto
+        generar(ruta1, ruta2, rutaS);
     }
 
-    public static void generar(String ruta2, String[] rutaS) throws IOException, Exception {
+    public static void generar(String ruta1, String ruta2, String[] rutaS) throws IOException, Exception {
         File archivo;
+        archivo = new File(ruta1);
+        JFlex.Main.generate(archivo);
         archivo = new File(ruta2);
         JFlex.Main.generate(archivo);
         java_cup.Main.main(rutaS);

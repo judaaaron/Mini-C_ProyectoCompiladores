@@ -39,9 +39,8 @@ Comment = "/" [^] ~"/" | "/" "*"+ "/"
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
 BlankSpace = {LineTerminator} | [ \t\f]
-Comments = {LineComment} | {BlockComment}
 LineComment = "//" {InputCharacter}* {LineTerminator}?
-BlockComment = "/*"({LETRAS}|{DIGITOS})+"*/" 
+BlockComment = "/*"(.|{LineTerminator})*"*/" 
 TERNARIO = "?"
 DOSPUNTOS = :
 
@@ -71,6 +70,10 @@ DOSPUNTOS = :
 
     {INCREMENT} {lexeme=yytext(); return INCREMENT;}
     {DECREMENT} {lexeme=yytext(); return DECREMENT;}
+
+    /*Comentarios*/
+    {BlockComment}              { /* skip it */ }
+    {LineComment}              { /* skip it */ }
 
     /* Operadores logicos */
     
@@ -111,7 +114,7 @@ DOSPUNTOS = :
       
 
     {BlankSpace}            { /* skip it */ }
-    {Comments}              { /* skip it */ }
+    
     
     . {return ERROR;}
  

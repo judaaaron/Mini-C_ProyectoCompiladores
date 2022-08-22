@@ -47,9 +47,8 @@ LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
 BlankSpace = {LineTerminator} | [ \t\f]
 SALTO = "\n";
-Comments = {LineComment} | {BlockComment}
 LineComment = "//" {InputCharacter}* {LineTerminator}?
-BlockComment = "/*"({LETRAS}|{DIGITOS})+"*/" 
+BlockComment = "/*"(.|{LineTerminator})*"*/" 
 DOSPUNTOS = :
 TERNARIO = "?"
 
@@ -87,6 +86,8 @@ TERNARIO = "?"
 
     {OPREL} {return new Symbol(sym.TKN_OPREL           ,yyline+1 ,yycolumn+1 ,yytext());}
      {TERNARIO}  {return new Symbol(sym.TKN_TERNARIO           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {LineComment}              { /* skip it */ }
+    {BlockComment}              { /* skip it */ }
 
      /* Arithmetic Operators */
 
@@ -121,8 +122,8 @@ TERNARIO = "?"
 
       
 
-    {BlankSpace}            { /* skip it */ }
-    {Comments}              { /* skip it */ }
+        {BlankSpace}            { /* skip it */ }
+    
     
     .  { erroresLexicos.add("Error lexico en linea: "+ (yyline+1) +" y columna " + (yycolumn+1) +" y en el texto: "+yytext()); }
  

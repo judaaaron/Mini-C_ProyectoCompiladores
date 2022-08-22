@@ -3,7 +3,6 @@ package Compiladorcito;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,10 +13,10 @@ import java.nio.file.Paths;
  */
 public class Main {
     public static void main(String[] args) throws Exception {
-        String ruta1 = "C:/Users/Juda/Desktop/Mini-C_ProyectoCompiladores/Mini-C/src/Compiladorcito/Lexer.flex";
-        String ruta2 = "C:/Users/Juda/Desktop/Mini-C_ProyectoCompiladores/Mini-C/src/Compiladorcito/LexerCup.flex";
+        String ruta1 = "./src/Compiladorcito/Lexer.flex";//la ruta es absoluta, pero cuando la intentamos hacer relativa y no funciona
+        String ruta2 = "./src/Compiladorcito/LexerCup.flex";
         String[] rutaS = { "-parser", "Sintax",
-                "C:/Users/Juda/Desktop/Mini-C_ProyectoCompiladores/Mini-C/src/Compiladorcito/Sintax.cup" };
+                "./src/Compiladorcito/Sintax.cup" };
         generar(ruta1, ruta2, rutaS);
     }
 
@@ -28,24 +27,23 @@ public class Main {
         archivo = new File(ruta2);
         JFlex.Main.generate(archivo);
         java_cup.Main.main(rutaS);
-
+        
         Path rutaSym = Paths
-                .get("C:/Users/Juda/Desktop/Mini-C_ProyectoCompiladores/Mini-C/src/Compiladorcito/sym.java");
+                .get("./src/Compiladorcito/sym.java");
         if (Files.exists(rutaSym)) {
             Files.delete(rutaSym);
         }
         Files.move(
-                Paths.get("C:/Users/Juda/Desktop/Mini-C_ProyectoCompiladores/Mini-C/sym.java"),
-                Paths.get("C:/Users/Juda/Desktop/Mini-C_ProyectoCompiladores/Mini-C/src/Compiladorcito/sym.java"));
+                Paths.get("./sym.java"),
+                Paths.get("./src/Compiladorcito/sym.java"));
 
-        Path rutaSin = Paths
-                .get("C:/Users/Juda/Desktop/Mini-C_ProyectoCompiladores/Mini-C/src/Compiladorcito/Sintax.java");
+        Path rutaSin = Paths.get("./src/Compiladorcito/Sintax.java");
         if (Files.exists(rutaSin)) {
             Files.delete(rutaSin);
         }
 
         Files.move(
-                Paths.get("C:/Users/Juda/Desktop/Mini-C_ProyectoCompiladores/Mini-C/Sintax.java"),
-                Paths.get("C:/Users/Juda/Desktop/Mini-C_ProyectoCompiladores/Mini-C/src/Compiladorcito/Sintax.java"));
+                Paths.get("./Sintax.java"),
+                Paths.get("./src/Compiladorcito/Sintax.java"));
     }
 }

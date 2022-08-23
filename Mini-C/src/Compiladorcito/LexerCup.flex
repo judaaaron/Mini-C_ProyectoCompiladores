@@ -63,62 +63,61 @@ TERNARIO = "?"
 
    /* Palabras reservadas */
     
-    {ELSE} {return new Symbol(sym.TKN_ELSE           ,yyline+1, yycolumn+1, yytext());}
-    {CHAR} {return new Symbol(sym.TKN_CHAR           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {INT}  {return new Symbol(sym.TKN_INT           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {MAIN} {return new Symbol(sym.TKN_MAIN           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {IF} {return new Symbol(sym.TKN_IF           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {WHILE} {return new Symbol(sym.TKN_WHILE           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {FOR} {return new Symbol(sym.TKN_FOR           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {RETURN} {return new Symbol(sym.TKN_RETURN           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {NUMEROS} {return new Symbol(sym.TKN_NUM           ,yyline+1 ,yycolumn+1 ,yytext());}
-     {INTP} {return new Symbol(sym.TKN_INTP           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {CHARP} {return new Symbol(sym.TKN_CHARP           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {ELSE} {return new Symbol(sym.tkn_else           ,yyline+1, yycolumn+1, yytext());}
+    {CHAR} {return new Symbol(sym.tkn_char           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {INT}  {return new Symbol(sym.tkn_int           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {MAIN} {return new Symbol(sym.tkn_main           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {IF} {return new Symbol(sym.tkn_if           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {WHILE} {return new Symbol(sym.tkn_while           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {FOR} {return new Symbol(sym.tkn_for           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {RETURN} {return new Symbol(sym.tkn_return           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {NUMEROS} {return new Symbol(sym.tkn_num           ,yyline+1 ,yycolumn+1 ,yytext());}
+     {INTP} {return new Symbol(sym.tkn_intp           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {CHARP} {return new Symbol(sym.tkn_charp           ,yyline+1 ,yycolumn+1 ,yytext());}
 
-    {ASIGNACION}         {return new Symbol(sym.TKN_IGUAL        ,yyline+1 ,yycolumn+1 ,yytext());}
-    ( "\n" ) {return new Symbol(sym.TKN_SALTO        ,yyline+1 ,yycolumn+1 ,yytext());}
+    {ASIGNACION}         {return new Symbol(sym.tkn_igual        ,yyline+1 ,yycolumn+1 ,yytext());}
+    ( "\n" ) {return new Symbol(sym.tkn_salto        ,yyline+1 ,yycolumn+1 ,yytext());}
 
     /* Unarios */
-    {INCREMENT} {return new Symbol(sym.TKN_INCREMENT           ,yyline+1, yycolumn+1, yytext());}
-    {DECREMENT} {return new Symbol(sym.TKN_DECREMENT           ,yyline+1, yycolumn+1, yytext());}
+    {INCREMENT} {return new Symbol(sym.tkn_increment           ,yyline+1, yycolumn+1, yytext());}
+    {DECREMENT} {return new Symbol(sym.tkn_decrement           ,yyline+1, yycolumn+1, yytext());}
     
     /* Operadores logicos */
 
-    {OPREL} {return new Symbol(sym.TKN_OPREL           ,yyline+1 ,yycolumn+1 ,yytext());}
-     {TERNARIO}  {return new Symbol(sym.TKN_TERNARIO           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {LineComment}              { /* skip it */ }
+    {OPREL} {return new Symbol(sym.tkn_oprel           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {TERNARIO}  {return new Symbol(sym.tkn_ternario           ,yyline+1 ,yycolumn+1 ,yytext());}
     {BlockComment}              { /* skip it */ }
 
      /* Arithmetic Operators */
 
-    {OPADICION} {return new Symbol(sym.TKN_OPADICION           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {OPMULTI} {return new Symbol(sym.TKN_OPMULTI           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {OPADICION} {return new Symbol(sym.tkn_opadicion           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {OPMULTI} {return new Symbol(sym.tkn_opmulti           ,yyline+1 ,yycolumn+1 ,yytext());}
 
 
      /* Overloaded */
 
-    {AND} {return new Symbol(sym.TKN_AND           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {OR} {return new Symbol(sym.TKN_OR           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {DIGITOS} {return new Symbol(sym.TKN_DIGITOS       ,yyline+1 ,yycolumn+1 ,yytext());}
+    {AND} {return new Symbol(sym.tkn_and           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {OR} {return new Symbol(sym.tkn_or           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {DIGITOS} {return new Symbol(sym.tkn_digitos       ,yyline+1 ,yycolumn+1 ,yytext());}
     
        /* Separators */
 
-    {PUNTOCOMA} {return new Symbol(sym.TKN_PUNTOCOMA           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {DOSPUNTOS} {return new Symbol(sym.TKN_DOSPUNTOS           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {LLAVEIZ} {return new Symbol(sym.TKN_LLAVEIZ           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {LLAVEDER} {return new Symbol(sym.TKN_LLAVEDER           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {PARENTESISIZ} {return new Symbol(sym.TKN_PARENTESISIZ           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {PARENTESISDE} {return new Symbol(sym.TKN_PARENTESISDE           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {PUNTOCOMA} {return new Symbol(sym.tkn_puntocoma           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {DOSPUNTOS} {return new Symbol(sym.tkn_dospuntos           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {LLAVEIZ} {return new Symbol(sym.tkn_llaveiz           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {LLAVEDER} {return new Symbol(sym.tkn_llaveder           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {PARENTESISIZ} {return new Symbol(sym.tkn_parentesisiz           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {PARENTESISDE} {return new Symbol(sym.tkn_parentesisde           ,yyline+1 ,yycolumn+1 ,yytext());}
 
      /* Funciones */
-     {PRINTF} {return new Symbol(sym.TKN_PRINTF           ,yyline+1 ,yycolumn+1 ,yytext());}
-     {SCANF} {return new Symbol(sym.TKN_SCANF           ,yyline+1 ,yycolumn+1 ,yytext());}
+     {PRINTF} {return new Symbol(sym.tkn_printf           ,yyline+1 ,yycolumn+1 ,yytext());}
+     {SCANF} {return new Symbol(sym.tkn_scanf           ,yyline+1 ,yycolumn+1 ,yytext());}
 
   
 
        /* Ids */
 
-    {ID} {return new Symbol(sym.TKN_ID           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {ID} {return new Symbol(sym.tkn_id           ,yyline+1 ,yycolumn+1 ,yytext());}
 
       
 

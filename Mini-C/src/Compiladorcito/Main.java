@@ -28,8 +28,7 @@ public class Main {
         JFlex.Main.generate(archivo);
         java_cup.Main.main(rutaS);
         
-        Path rutaSym = Paths
-                .get("./src/Compiladorcito/sym.java");
+        Path rutaSym = Paths.get("./src/Compiladorcito/sym.java");
         if (Files.exists(rutaSym)) {
             Files.delete(rutaSym);
         }

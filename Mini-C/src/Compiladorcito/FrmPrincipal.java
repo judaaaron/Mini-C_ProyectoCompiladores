@@ -181,7 +181,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Analisis Sintáctico");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 570, 150, 30));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 510, 150, 30));
 
         btn_archivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/code.png"))); // NOI18N
         btn_archivo.setContentAreaFilled(false);
@@ -191,7 +191,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 btn_archivoActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_archivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(-80, 90, 330, 60));
+        getContentPane().add(btn_archivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(-80, 40, 330, 60));
 
         btn_compilar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/compilador (2).png"))); // NOI18N
         btn_compilar.setContentAreaFilled(false);
@@ -201,21 +201,21 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 btn_compilarActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_compilar, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 510, 200, 70));
+        getContentPane().add(btn_compilar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 450, 200, 70));
 
         txt_lex.setEditable(false);
         txt_lex.setColumns(20);
         txt_lex.setRows(5);
         jScrollPane3.setViewportView(txt_lex);
 
-        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 180, 390, 330));
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 120, 390, 330));
 
         txt_sin.setEditable(false);
         txt_sin.setColumns(20);
         txt_sin.setRows(5);
         jScrollPane2.setViewportView(txt_sin);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 610, 770, 270));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 550, 770, 270));
 
         btn_analizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.png"))); // NOI18N
         btn_analizar.setContentAreaFilled(false);
@@ -225,18 +225,18 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 btn_analizarActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_analizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 90, 160, 60));
+        getContentPane().add(btn_analizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 40, 160, 60));
 
         txt_resultado.setColumns(20);
         txt_resultado.setRows(5);
         jScrollPane1.setViewportView(txt_resultado);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 330, 330));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 330, 330));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Analisis Lexico");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 140, 150, 30));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 90, 150, 30));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
@@ -246,13 +246,13 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Cargar codigo");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 150, 30));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 150, 30));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo3.gif"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, -20, 800, 590));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo3.gif"))); // NOI18N
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 570, 790, 450));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 570, 790, 320));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));

@@ -17,17 +17,26 @@ parser code
 :};
 
 
-terminal TKN_OPADICION,TKN_OPMULTI, TKN_BREAK ;
-terminal TKN_OPREL ,TKN_MAIN, TKN_IGUAL, TKN_INTP, TKN_CHARP;
-terminal TKN_DIGITOS,TKN_IF ,TKN_WHILE, TKN_ELSE,TKN_PARENTESISIZ ,TKN_PARENTESISDE ,TKN_LLAVEIZ ,TKN_LLAVEDER ; 
-terminal TKN_AND,TKN_OR,TKN_FOR,TKN_RETURN, TKN_PRINTF, TKN_SCANF, TKN_INCREMENT, TKN_DECREMENT;
-terminal TKN_DOSPUNTOS,TKN_INT ,TKN_CHAR, TKN_ID, TKN_PUNTOCOMA, TKN_TERNARIO, TKN_SALTO, TKN_NUM;
 
-non terminal INICIO, WHILE, IF, FOR, DECLARACION, SENTENCIA;
+
+terminal tkn_opadicion,tkn_opmulti, tkn_break ;
+terminal tkn_oprel ,tkn_main, tkn_igual, tkn_intp, tkn_charp;
+terminal tkn_digitos,tkn_if ,tkn_while, tkn_else,tkn_parentesisiz ,tkn_parentesisde ,tkn_llaveiz ,tkn_llaveder ; 
+terminal tkn_and,tkn_or,tkn_for,tkn_return, tkn_printf, tkn_scanf, tkn_increment, tkn_decrement;
+terminal tkn_dospuntos,tkn_int ,tkn_char, tkn_id, tkn_puntocoma, tkn_ternario, tkn_salto, tkn_num;
+
+
+non terminal INICIO, WHILE, IF, FOR, DECLARACION, SENTENCIA, EXPRESION, ELSE;
 
 start with INICIO;
 
-INICIO ::= TKN_INT TKN_MAIN TKN_PARENTESISIZ TKN_PARENTESISDE TKN_LLAVEIZ SENTENCIA TKN_LLAVEDER
+INICIO ::= tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz SENTENCIA tkn_llaveder | tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz IF tkn_llaveder
 ;
-SENTENCIA::= TKN_SALTO TKN_INT TKN_ID TKN_PUNTOCOMA TKN_SALTO | TKN_SALTO TKN_INT TKN_ID TKN_IGUAL TKN_NUM TKN_PUNTOCOMA TKN_SALTO
+SENTENCIA::= tkn_salto tkn_int tkn_id tkn_puntocoma tkn_salto | tkn_salto tkn_int tkn_id tkn_igual tkn_num tkn_puntocoma tkn_salto
 ;
+IF::= tkn_if tkn_parentesisiz tkn_id tkn_oprel tkn_id tkn_parentesisde tkn_llaveiz tkn_salto SENTENCIA tkn_salto tkn_llaveder ELSE 
+;
+ELSE ::= tkn_else tkn_llaveiz tkn_salto SENTENCIA tkn_salto tkn_llaveder
+;
+
+

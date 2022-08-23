@@ -76,7 +76,7 @@ TERNARIO = "?"
     {CHARP} {return new Symbol(sym.tkn_charp           ,yyline+1 ,yycolumn+1 ,yytext());}
 
     {ASIGNACION}         {return new Symbol(sym.tkn_igual        ,yyline+1 ,yycolumn+1 ,yytext());}
-    ( "\n" ) {return new Symbol(sym.tkn_salto        ,yyline+1 ,yycolumn+1 ,yytext());}
+    
 
     /* Unarios */
     {INCREMENT} {return new Symbol(sym.tkn_increment           ,yyline+1, yycolumn+1, yytext());}
@@ -122,7 +122,7 @@ TERNARIO = "?"
       
 
         {BlankSpace}            { /* skip it */ }
-    
+        {SALTO}                 {}
     
     .  { erroresLexicos.add("Error lexico en linea: "+ (yyline+1) +" y columna " + (yycolumn+1) +" y en el texto: "+yytext()); }
  

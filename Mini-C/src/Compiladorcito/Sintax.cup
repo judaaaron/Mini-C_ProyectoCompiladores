@@ -23,20 +23,44 @@ terminal tkn_opadicion,tkn_opmulti, tkn_break ;
 terminal tkn_oprel ,tkn_main, tkn_igual, tkn_intp, tkn_charp;
 terminal tkn_digitos,tkn_if ,tkn_while, tkn_else,tkn_parentesisiz ,tkn_parentesisde ,tkn_llaveiz ,tkn_llaveder ; 
 terminal tkn_and,tkn_or,tkn_for,tkn_return, tkn_printf, tkn_scanf, tkn_increment, tkn_decrement;
-terminal tkn_dospuntos,tkn_int ,tkn_char, tkn_id, tkn_puntocoma, tkn_ternario, tkn_salto, tkn_num;
+terminal tkn_dospuntos,tkn_int ,tkn_char, tkn_id, tkn_puntocoma, tkn_ternario, tkn_num;
 
 
-non terminal INICIO, WHILE, IF, FOR, DECLARACION, SENTENCIA, EXPRESION, ELSE;
+non terminal INICIO, WHILE, IF, FOR, DECLARACION, BLOQUE, CONDICION, EXPRESION, ELSE, CONDICIONP, OPCONDICION, VALOR;
 
 start with INICIO;
 
-INICIO ::= tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz SENTENCIA tkn_llaveder | tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz IF tkn_llaveder
+INICIO ::= tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder 
 ;
-SENTENCIA::= tkn_salto tkn_int tkn_id tkn_puntocoma tkn_salto | tkn_salto tkn_int tkn_id tkn_igual tkn_num tkn_puntocoma tkn_salto
+DECLARACION::= tkn_int tkn_id tkn_puntocoma | tkn_int tkn_id tkn_igual tkn_num tkn_puntocoma
 ;
-IF::= tkn_if tkn_parentesisiz tkn_id tkn_oprel tkn_id tkn_parentesisde tkn_llaveiz tkn_salto SENTENCIA tkn_salto tkn_llaveder ELSE 
+IF::= tkn_if tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE 
 ;
-ELSE ::= tkn_else tkn_llaveiz tkn_salto SENTENCIA tkn_salto tkn_llaveder
+ELSE ::= tkn_else tkn_llaveiz BLOQUE tkn_llaveder
 ;
-
-
+FOR ::= tkn_for tkn_parentesisiz tkn_int tkn_id tkn_igual tkn_num tkn_puntocoma CONDICION tkn_puntocoma tkn_id tkn_increment tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder
+;
+WHILE ::= tkn_while tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder
+;
+BLOQUE ::= WHILE BLOQUE
+            | FOR BLOQUE
+            | IF BLOQUE
+            | DECLARACION BLOQUE
+            | 
+;
+CONDICION ::= CONDICIONP tkn_and CONDICION
+            | CONDICIONP tkn_or CONDICION
+            | tkn_parentesisiz CONDICIONP tkn_parentesisde tkn_and CONDICION 
+            | tkn_parentesisiz CONDICIONP tkn_parentesisde tkn_or CONDICION 
+            | tkn_parentesisiz CONDICIONP tkn_parentesisde
+            | CONDICIONP
+;
+CONDICIONP::= VALOR OPCONDICION VALOR
+;
+OPCONDICION::= tkn_oprel 
+                | tkn_igual 
+;
+VALOR::= tkn_digitos 
+                | tkn_num 
+                | tkn_id               
+;

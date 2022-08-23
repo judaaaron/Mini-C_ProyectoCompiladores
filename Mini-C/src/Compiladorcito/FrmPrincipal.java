@@ -20,6 +20,7 @@ import javax.swing.JFileChooser;
 import static Compiladorcito.Tokens.*;
 import java.awt.Color;
 import java_cup.runtime.Symbol;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -56,6 +57,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
                     cont++;
                     resultado += "LINEA " + cont + "\n";
                     break;
+                case INT:
+                    resultado += " Se indetificó el token: <int>\t\t" + lexer.lexeme + "\n";
+                    break;
                 case IF:
                     resultado += " Se indetificó el token: <if>\t\t" + lexer.lexeme + "\n";
                     break;
@@ -77,13 +81,13 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 case FOR:
                     resultado += " Se indetificó el token: <for>\t\t" + lexer.lexeme + "\n";
                     break;
-                 case RETURN:
+                case RETURN:
                     resultado += " Se indetificó el token: <return>\t\t" + lexer.lexeme + "\n";
                     break;
                 case ASIGNACION:
                     resultado += " Se indetificó el token: <asignacion> \t" + lexer.lexeme + "\n";
                     break;
-                 case TERNARIO:
+                case TERNARIO:
                     resultado += " Se indetificó el token operador: <ternario>\t" + lexer.lexeme + "\n";
                     break;
                 case NUMEROS:
@@ -132,9 +136,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
                     resultado += " Se indetificó el token operador logico: <or>\t" + lexer.lexeme + "\n";
                     break;
                 case PUNTOCOMA:
-                    resultado += " Se indetificó el token: <unto y coma>\t" + lexer.lexeme + "\n";
+                    resultado += " Se indetificó el token: <punto y coma>\t" + lexer.lexeme + "\n";
                     break;
-                 case DOSPUNTOS:
+                case DOSPUNTOS:
                     resultado += " Se indetificó el token: <dos puntos>\t" + lexer.lexeme + "\n";
                     break;
                 case ID:
@@ -263,19 +267,46 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_archivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_archivoActionPerformed
-        // TODO add your handling code here:
-        JFileChooser chooser = new JFileChooser();
-        chooser.showOpenDialog(null);
-        File archivo = new File(chooser.getSelectedFile().getAbsolutePath());
-        try {
-            String ST = new String(Files.readAllBytes(archivo.toPath()));
-            txt_resultado.setText(ST);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
+        txt_resultado.setText("");
+        JFileChooser chooser = new JFileChooser("./Pruebas");
+        chooser.showOpenDialog(this);
+        String ruta = chooser.getSelectedFile().getAbsolutePath();
+        File archivo = new File(ruta);
+        archivo = chooser.getSelectedFile();
+        String texto = "", aux = "", ant="";
+        boolean flag = true;
+        if (archivo != null) {
+            FileReader archivos = null;
+            try {
+                archivos = new FileReader(archivo);
+            } catch (FileNotFoundException ex) {
+            }
+            BufferedReader lee = new BufferedReader(archivos);
+            try {
+                while ((aux = lee.readLine()) != null) {
+                    if(flag){
+                        flag=false;
+                    }else{
+                        texto += ant + "\n";
+                    }
+                    ant = aux;
+                }
+                
+                texto+=ant;
+                    
+               txt_resultado.setText(texto);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "No se seleccionó ningún archivo" + ex);
+            }
+            try {
+                lee.close();
+            } catch (IOException ex) {
+                 JOptionPane.showMessageDialog(null, "No se seleccionó ningún archivo" + ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "" + "\nNo se ha encontrado el archivo", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btn_archivoActionPerformed
 
     private void btn_compilarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_compilarActionPerformed

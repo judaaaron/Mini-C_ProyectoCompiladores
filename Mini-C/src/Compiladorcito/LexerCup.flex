@@ -52,6 +52,7 @@ SALTO = "\n";
 LineComment = "//" {InputCharacter}* {LineTerminator}?
 BlockComment = "/*"(.|{LineTerminator})*"*/" 
 DOSPUNTOS = :
+COMILLA = '
 TERNARIO = "?"
 
 
@@ -106,6 +107,7 @@ TERNARIO = "?"
     
        /* Separators */
 
+    {COMILLA} {return new Symbol(sym.tkn_comilla           ,yyline+1 ,yycolumn+1 ,yytext());}
     {PUNTOCOMA} {return new Symbol(sym.tkn_puntocoma           ,yyline+1 ,yycolumn+1 ,yytext());}
     {COMA}          {return new Symbol(sym.tkn_coma         ,yyline+1 ,yycolumn+1 ,yytext());}
     {DOSPUNTOS} {return new Symbol(sym.tkn_dospuntos           ,yyline+1 ,yycolumn+1 ,yytext());}
@@ -123,6 +125,7 @@ TERNARIO = "?"
        /* Ids */
 
     {ID} {return new Symbol(sym.tkn_id           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {LETRAS} {return new Symbol(sym.tkn_letra           ,yyline+1 ,yycolumn+1 ,yytext());}
 
       
 

@@ -23,18 +23,21 @@ terminal tkn_opadicion,tkn_opmulti, tkn_break ;
 terminal tkn_oprel ,tkn_main, tkn_igual, tkn_intp, tkn_charp;
 terminal tkn_digitos,tkn_if ,tkn_while, tkn_else,tkn_parentesisiz ,tkn_parentesisde ,tkn_llaveiz ,tkn_llaveder ; 
 terminal tkn_and,tkn_or,tkn_for,tkn_return, tkn_printf, tkn_scanf, tkn_increment, tkn_decrement;
-terminal tkn_dospuntos,tkn_int ,tkn_char, tkn_id, tkn_puntocoma, tkn_ternario, tkn_num, tkn_coma, tkn_porcentaje;
+terminal tkn_dospuntos,tkn_int ,tkn_char, tkn_id, tkn_puntocoma, tkn_ternario, tkn_num, tkn_coma, tkn_porcentaje, tkn_letra, tkn_comilla;
 
 
-non terminal INICIO, WHILE, IF, FOR, DECLARACION, BLOQUE, CONDICION, EXPRESION, ELSE, CONDICIONP, OPCONDICION, VALOR, TIPO, ID;
+non terminal INICIO, WHILE, IF, FOR, DECLARACION, BLOQUE, CONDICION, EXPRESION, ELSE, CONDICIONP, OPCONDICION, VALOR, TIPO, TIPOINT, TIPOCHAR, IDINT, IDCHAR, VARIOS;
 
 start with INICIO;
 
 INICIO ::= tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder 
 ;
-DECLARACION::= TIPO ID tkn_igual tkn_num tkn_puntocoma | TIPO ID tkn_puntocoma
+DECLARACION::= TIPOINT IDINT tkn_puntocoma | TIPOCHAR IDCHAR tkn_puntocoma
 ;
-ID::= tkn_id tkn_coma ID | tkn_id 
+IDINT::= tkn_id tkn_coma IDINT | tkn_id | tkn_id tkn_igual tkn_num tkn_coma IDINT | tkn_id tkn_igual tkn_num
+;
+
+IDCHAR::= tkn_id tkn_coma IDCHAR | tkn_id | tkn_id tkn_igual tkn_comilla tkn_letra tkn_comilla tkn_coma IDCHAR | tkn_id tkn_igual tkn_comilla tkn_letra tkn_comilla
 ;
 IF::= tkn_if tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE 
 ;
@@ -69,6 +72,14 @@ VALOR::= tkn_digitos
                 | tkn_id               
 ;
 
-TIPO::= tkn_int 
-        | tkn_char
+TIPO::= TIPOINT
+        |TIPOCHAR
+;
+
+TIPOINT::= tkn_int 
+        |tkn_intp
+;
+
+TIPOCHAR::= tkn_char 
+        |tkn_charp
 ;

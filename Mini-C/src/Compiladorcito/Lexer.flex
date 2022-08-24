@@ -44,6 +44,7 @@ BlankSpace = {LineTerminator} | [ \t\f]
 LineComment = "//" {InputCharacter}* {LineTerminator}?
 BlockComment = "/*"(.|{LineTerminator})*"*/" 
 TERNARIO = "?"
+COMILLA = '
 DOSPUNTOS = :
 
 
@@ -98,6 +99,7 @@ DOSPUNTOS = :
 
     
        /* Separators */
+    {COMILLA} {lexeme=yytext(); return COMILLA; }
     {COMA} {lexeme=yytext(); return COMA; }
     {PUNTOCOMA} {lexeme=yytext(); return PUNTOCOMA; }
     {DOSPUNTOS} {lexeme=yytext(); return DOSPUNTOS; }
@@ -114,6 +116,7 @@ DOSPUNTOS = :
        /* Ids */
 
     {ID} {lexeme=yytext(); return ID; }
+    {LETRAS} {lexeme=yytext(); return LETRAS; }
 
       
 

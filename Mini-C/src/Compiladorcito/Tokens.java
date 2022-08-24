@@ -49,6 +49,7 @@ public enum Tokens {
     TERNARIO,
     DOSPUNTOS,
     ASIGNACION,
+    COMILLA,
     NUMEROS,
     COMA,
     PORCENTAJE,

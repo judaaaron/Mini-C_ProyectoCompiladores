@@ -1,5 +1,15 @@
 int main(){
     for(int i=0; i<a; i++){
         int var = 6;
+	if(a<b){
+		int var;
+		if(a>b){
+			int var;
+		}else{
+			int var;
+		}
+	}else{
+		int var;
+	}
     }
 }

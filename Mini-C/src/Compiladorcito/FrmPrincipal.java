@@ -144,6 +144,12 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 case ID:
                     resultado += " Se indetificó el token: <identificador>\t" + lexer.lexeme + "\n";
                     break;
+                case COMA:
+                    resultado += " Se indetificó el token: <coma>\t" + lexer.lexeme + "\n";
+                    break;
+                case PORCENTAJE:
+                    resultado += " Se indetificó el token: <porcentaje>\t" + lexer.lexeme + "\n";
+                    break;
                 case ERROR:
                     resultado += "  <Simbolo no definido>\n";
                     break;

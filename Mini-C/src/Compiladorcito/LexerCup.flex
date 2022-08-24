@@ -36,6 +36,8 @@ PRINTF = "printf"
 SCANF = "scanf"
 AND = "&&"
 OR = "||"
+PORCENTAJE = "%"
+COMA = ","
 ASIGNACION = "="
 OPADICION = "+"|"-"
 OPMULTI = "*"|"/"
@@ -51,6 +53,7 @@ LineComment = "//" {InputCharacter}* {LineTerminator}?
 BlockComment = "/*"(.|{LineTerminator})*"*/" 
 DOSPUNTOS = :
 TERNARIO = "?"
+
 
 %{
     public String lexeme;
@@ -74,6 +77,7 @@ TERNARIO = "?"
     {NUMEROS} {return new Symbol(sym.tkn_num           ,yyline+1 ,yycolumn+1 ,yytext());}
      {INTP} {return new Symbol(sym.tkn_intp           ,yyline+1 ,yycolumn+1 ,yytext());}
     {CHARP} {return new Symbol(sym.tkn_charp           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {PORCENTAJE} {return new Symbol(sym.tkn_porcentaje          ,yyline+1 ,yycolumn+1 ,yytext());}
 
     {ASIGNACION}         {return new Symbol(sym.tkn_igual        ,yyline+1 ,yycolumn+1 ,yytext());}
     
@@ -103,6 +107,7 @@ TERNARIO = "?"
        /* Separators */
 
     {PUNTOCOMA} {return new Symbol(sym.tkn_puntocoma           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {COMA}          {return new Symbol(sym.tkn_coma         ,yyline+1 ,yycolumn+1 ,yytext());}
     {DOSPUNTOS} {return new Symbol(sym.tkn_dospuntos           ,yyline+1 ,yycolumn+1 ,yytext());}
     {LLAVEIZ} {return new Symbol(sym.tkn_llaveiz           ,yyline+1 ,yycolumn+1 ,yytext());}
     {LLAVEDER} {return new Symbol(sym.tkn_llaveder           ,yyline+1 ,yycolumn+1 ,yytext());}

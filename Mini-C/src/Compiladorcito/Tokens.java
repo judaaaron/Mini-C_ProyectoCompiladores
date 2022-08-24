@@ -50,5 +50,7 @@ public enum Tokens {
     DOSPUNTOS,
     ASIGNACION,
     NUMEROS,
+    COMA,
+    PORCENTAJE,
     ERROR
 }

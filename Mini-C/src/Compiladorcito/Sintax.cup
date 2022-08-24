@@ -23,20 +23,24 @@ terminal tkn_opadicion,tkn_opmulti, tkn_break ;
 terminal tkn_oprel ,tkn_main, tkn_igual, tkn_intp, tkn_charp;
 terminal tkn_digitos,tkn_if ,tkn_while, tkn_else,tkn_parentesisiz ,tkn_parentesisde ,tkn_llaveiz ,tkn_llaveder ; 
 terminal tkn_and,tkn_or,tkn_for,tkn_return, tkn_printf, tkn_scanf, tkn_increment, tkn_decrement;
-terminal tkn_dospuntos,tkn_int ,tkn_char, tkn_id, tkn_puntocoma, tkn_ternario, tkn_num;
+terminal tkn_dospuntos,tkn_int ,tkn_char, tkn_id, tkn_puntocoma, tkn_ternario, tkn_num, tkn_coma, tkn_porcentaje;
 
 
-non terminal INICIO, WHILE, IF, FOR, DECLARACION, BLOQUE, CONDICION, EXPRESION, ELSE, CONDICIONP, OPCONDICION, VALOR;
+non terminal INICIO, WHILE, IF, FOR, DECLARACION, BLOQUE, CONDICION, EXPRESION, ELSE, CONDICIONP, OPCONDICION, VALOR, TIPO, ID;
 
 start with INICIO;
 
 INICIO ::= tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder 
 ;
-DECLARACION::= tkn_int tkn_id tkn_puntocoma | tkn_int tkn_id tkn_igual tkn_num tkn_puntocoma
+DECLARACION::= TIPO ID tkn_igual tkn_num tkn_puntocoma | TIPO ID tkn_puntocoma
+;
+ID::= tkn_id tkn_coma ID | tkn_id 
 ;
 IF::= tkn_if tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE 
 ;
 ELSE ::= tkn_else tkn_llaveiz BLOQUE tkn_llaveder
+        | tkn_else IF
+        |
 ;
 FOR ::= tkn_for tkn_parentesisiz tkn_int tkn_id tkn_igual tkn_num tkn_puntocoma CONDICION tkn_puntocoma tkn_id tkn_increment tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder
 ;
@@ -63,4 +67,8 @@ OPCONDICION::= tkn_oprel
 VALOR::= tkn_digitos 
                 | tkn_num 
                 | tkn_id               
+;
+
+TIPO::= tkn_int 
+        | tkn_char
 ;

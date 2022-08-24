@@ -25,6 +25,8 @@ LLAVEIZ = "{"
 LLAVEDER = "}"
 OPREL = "<"|">"|"<="|">="|"!="|"=="
 ASIGNACION = "="
+COMA = ","
+PORCENTAJE = "%"
 ID = {LETRAS}({LETRAS}|{DIGITOS})*|{LETRAS}({LETRAS}|{DIGITOS})*
 PRINTF = "printf"
 SCANF = "scanf"
@@ -43,6 +45,7 @@ LineComment = "//" {InputCharacter}* {LineTerminator}?
 BlockComment = "/*"(.|{LineTerminator})*"*/" 
 TERNARIO = "?"
 DOSPUNTOS = :
+
 
 %{
     public String lexeme;
@@ -64,6 +67,7 @@ DOSPUNTOS = :
     {RETURN} {lexeme=yytext(); return RETURN;}
     {BREAK} {lexeme=yytext(); return BREAK; }
     {NUMEROS} {lexeme=yytext(); return NUMEROS; }
+    {PORCENTAJE} {lexeme=yytext(); return PORCENTAJE; }
     ( "\n" ) {return Linea;}
 
     /* Unarios */
@@ -94,7 +98,7 @@ DOSPUNTOS = :
 
     
        /* Separators */
-
+    {COMA} {lexeme=yytext(); return COMA; }
     {PUNTOCOMA} {lexeme=yytext(); return PUNTOCOMA; }
     {DOSPUNTOS} {lexeme=yytext(); return DOSPUNTOS; }
     {LLAVEIZ} {lexeme=yytext(); return LLAVEIZ; }

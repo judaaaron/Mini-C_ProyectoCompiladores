@@ -52,6 +52,8 @@ public enum Tokens {
     COMILLA,
     NUMEROS,
     COMA,
-    PORCENTAJE,
+    PORCENTAJED,
+    PORCENTAJEC,
+    COMILLAS,
     ERROR
 }

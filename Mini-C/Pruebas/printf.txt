@@ -1,0 +1,4 @@
+int main(){
+	printf("%d", hola);
+	printf("%c", hola);
+}

@@ -36,7 +36,8 @@ PRINTF = "printf"
 SCANF = "scanf"
 AND = "&&"
 OR = "||"
-PORCENTAJE = "%"
+PORCENTAJED = "%d"
+PORCENTAJEC = "%c"
 COMA = ","
 ASIGNACION = "="
 OPADICION = "+"|"-"
@@ -54,6 +55,7 @@ BlockComment = "/*"(.|{LineTerminator})*"*/"
 DOSPUNTOS = :
 COMILLA = '
 TERNARIO = "?"
+COMILLAS = \"
 
 
 %{
@@ -78,7 +80,8 @@ TERNARIO = "?"
     {NUMEROS} {return new Symbol(sym.tkn_num           ,yyline+1 ,yycolumn+1 ,yytext());}
      {INTP} {return new Symbol(sym.tkn_intp           ,yyline+1 ,yycolumn+1 ,yytext());}
     {CHARP} {return new Symbol(sym.tkn_charp           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {PORCENTAJE} {return new Symbol(sym.tkn_porcentaje          ,yyline+1 ,yycolumn+1 ,yytext());}
+    {PORCENTAJED} {return new Symbol(sym.tkn_porcentajed          ,yyline+1 ,yycolumn+1 ,yytext());}
+    {PORCENTAJEC} {return new Symbol(sym.tkn_porcentajec          ,yyline+1 ,yycolumn+1 ,yytext());}
 
     {ASIGNACION}         {return new Symbol(sym.tkn_igual        ,yyline+1 ,yycolumn+1 ,yytext());}
     
@@ -106,7 +109,7 @@ TERNARIO = "?"
     {DIGITOS} {return new Symbol(sym.tkn_digitos       ,yyline+1 ,yycolumn+1 ,yytext());}
     
        /* Separators */
-
+    {COMILLAS} {return new Symbol(sym.tkn_comillas           ,yyline+1 ,yycolumn+1 ,yytext());}
     {COMILLA} {return new Symbol(sym.tkn_comilla           ,yyline+1 ,yycolumn+1 ,yytext());}
     {PUNTOCOMA} {return new Symbol(sym.tkn_puntocoma           ,yyline+1 ,yycolumn+1 ,yytext());}
     {COMA}          {return new Symbol(sym.tkn_coma         ,yyline+1 ,yycolumn+1 ,yytext());}

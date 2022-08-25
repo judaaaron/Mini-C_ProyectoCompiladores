@@ -26,7 +26,8 @@ LLAVEDER = "}"
 OPREL = "<"|">"|"<="|">="|"!="|"=="
 ASIGNACION = "="
 COMA = ","
-PORCENTAJE = "%"
+PORCENTAJED = "%d"
+PORCENTAJEC = "%c"
 ID = {LETRAS}({LETRAS}|{DIGITOS})*|{LETRAS}({LETRAS}|{DIGITOS})*
 PRINTF = "printf"
 SCANF = "scanf"
@@ -44,8 +45,10 @@ BlankSpace = {LineTerminator} | [ \t\f]
 LineComment = "//" {InputCharacter}* {LineTerminator}?
 BlockComment = "/*"(.|{LineTerminator})*"*/" 
 TERNARIO = "?"
+COMILLAS = \"
 COMILLA = '
 DOSPUNTOS = :
+
 
 
 %{
@@ -68,7 +71,8 @@ DOSPUNTOS = :
     {RETURN} {lexeme=yytext(); return RETURN;}
     {BREAK} {lexeme=yytext(); return BREAK; }
     {NUMEROS} {lexeme=yytext(); return NUMEROS; }
-    {PORCENTAJE} {lexeme=yytext(); return PORCENTAJE; }
+    {PORCENTAJED} {lexeme=yytext(); return PORCENTAJED; }
+    {PORCENTAJEC} {lexeme=yytext(); return PORCENTAJEC; }
     ( "\n" ) {return Linea;}
 
     /* Unarios */
@@ -99,6 +103,7 @@ DOSPUNTOS = :
 
     
        /* Separators */
+    {COMILLAS} {lexeme=yytext(); return COMILLAS; }
     {COMILLA} {lexeme=yytext(); return COMILLA; }
     {COMA} {lexeme=yytext(); return COMA; }
     {PUNTOCOMA} {lexeme=yytext(); return PUNTOCOMA; }

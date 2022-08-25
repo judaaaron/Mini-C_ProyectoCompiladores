@@ -1,0 +1,9 @@
+int main(){
+    int var = 6;
+}
+
+char var (int a){
+printf("%c", hola);
+
+return hola;
+}

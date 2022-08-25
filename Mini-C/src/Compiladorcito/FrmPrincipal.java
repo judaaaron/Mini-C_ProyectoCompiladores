@@ -162,6 +162,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 case LETRAS:
                     resultado += " Se indetificó un caracter:\t\t" + lexer.lexeme + "\n";
                     break;
+                case AMPERSAND:
+                    resultado += " Se indetificó un caracter: <ampersand>\t\t" + lexer.lexeme + "\n";
+                    break;
                 case ERROR:
                     resultado += "  <Simbolo no definido>\n";
                     break;

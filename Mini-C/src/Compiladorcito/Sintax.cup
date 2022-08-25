@@ -24,23 +24,37 @@ terminal tkn_oprel ,tkn_main, tkn_igual, tkn_intp, tkn_charp;
 terminal tkn_digitos,tkn_if ,tkn_while, tkn_else,tkn_parentesisiz ,tkn_parentesisde ,tkn_llaveiz ,tkn_llaveder ; 
 terminal tkn_and,tkn_or,tkn_for,tkn_return, tkn_printf, tkn_scanf, tkn_increment, tkn_decrement;
 terminal tkn_dospuntos,tkn_int ,tkn_char, tkn_id, tkn_puntocoma, tkn_ternario, tkn_num, tkn_coma, tkn_porcentajed, tkn_porcentajec, tkn_letra;
-terminal tkn_comilla, tkn_comillas;
+terminal tkn_comilla, tkn_comillas, tkn_ampersand;
 
 
 non terminal INICIO, WHILE, IF, FOR, DECLARACION, BLOQUE, CONDICION, EXPRESION, ELSE, CONDICIONP, OPCONDICION, VALOR, TIPO, 
-    TIPOINT, TIPOCHAR, IDINT, IDCHAR, PRINTF, CONSTSTR, TERNARIO, CONTADOR;
+    TIPOINT, TIPOCHAR, IDINT, IDCHAR, PRINTF, CONSTSTR, TERNARIO, CONTADOR, SCANF, FUNCION, PARAMS, DECLAPARAM, IDINT2, IDCHAR2;
 
 start with INICIO;
 
-INICIO ::= tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder 
+INICIO ::= tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder  | tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder FUNCION
 ;
 DECLARACION::= TIPOINT IDINT tkn_puntocoma | TIPOCHAR IDCHAR tkn_puntocoma
+;
+
+DECLAPARAM::= TIPOINT IDINT2 DECLAPARAM | TIPOCHAR IDCHAR2 | TIPOINT IDINT2 | TIPOCHAR IDCHAR2 DECLAPARAM
 ;
 IDINT::= tkn_id tkn_coma IDINT | tkn_id | tkn_id tkn_igual tkn_num tkn_coma IDINT | tkn_id tkn_igual tkn_num |
 ;
 
+IDINT2::= tkn_id | tkn_id tkn_coma 
+;
+
 IDCHAR::= tkn_id tkn_coma IDCHAR | tkn_id | tkn_id tkn_igual tkn_comilla tkn_letra tkn_comilla tkn_coma IDCHAR | tkn_id tkn_igual tkn_comilla tkn_letra tkn_comilla |
 ;
+
+IDCHAR2::= tkn_id tkn_coma | tkn_id |
+;
+
+
+FUNCION::= TIPOINT tkn_id tkn_parentesisiz DECLAPARAM tkn_parentesisde tkn_llaveiz BLOQUE tkn_return tkn_id tkn_puntocoma tkn_llaveder | TIPOINT tkn_id tkn_parentesisiz DECLAPARAM tkn_parentesisde tkn_llaveiz BLOQUE tkn_return tkn_num tkn_puntocoma tkn_llaveder | TIPOCHAR tkn_id tkn_parentesisiz DECLAPARAM tkn_parentesisde tkn_llaveiz BLOQUE tkn_return tkn_id tkn_puntocoma tkn_llaveder
+;
+
 IF::= tkn_if tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE 
 ;
 ELSE ::= tkn_else tkn_llaveiz BLOQUE tkn_llaveder
@@ -58,6 +72,8 @@ BLOQUE ::= WHILE BLOQUE
             | PRINTF BLOQUE
             | TERNARIO BLOQUE
             | CONTADOR BLOQUE
+            | SCANF BLOQUE
+            | FUNCION BLOQUE
             |
 ;
 CONDICION ::= CONDICIONP tkn_and CONDICION
@@ -101,3 +117,8 @@ TERNARIO ::=  CONDICION tkn_ternario BLOQUE tkn_dospuntos BLOQUE tkn_puntocoma
 
 CONTADOR ::= tkn_id tkn_increment tkn_puntocoma | tkn_id tkn_decrement tkn_puntocoma
 ;
+
+SCANF ::= tkn_scanf tkn_parentesisiz CONSTSTR tkn_coma tkn_ampersand tkn_id tkn_parentesisde tkn_puntocoma
+;
+
+

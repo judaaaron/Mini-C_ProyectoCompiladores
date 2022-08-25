@@ -55,5 +55,6 @@ public enum Tokens {
     PORCENTAJED,
     PORCENTAJEC,
     COMILLAS,
+    AMPERSAND,
     ERROR
 }

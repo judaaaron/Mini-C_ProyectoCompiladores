@@ -48,7 +48,7 @@ TERNARIO = "?"
 COMILLAS = \"
 COMILLA = '
 DOSPUNTOS = :
-
+AMPERSAND = &
 
 
 %{
@@ -100,6 +100,7 @@ DOSPUNTOS = :
 
     {AND} {lexeme=yytext(); return AND; }
     {OR} {lexeme=yytext(); return OR; }
+    {AMPERSAND} {lexeme=yytext(); return AMPERSAND; }
 
     
        /* Separators */

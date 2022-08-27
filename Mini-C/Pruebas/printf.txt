@@ -1,4 +1,6 @@
 int main(){
 	printf("%d", hola);
 	printf("%c", hola);
+
+return 0;
 }

@@ -1,11 +1,27 @@
-int func(int a, int b, char c, char, char*, int*);
+int func(int a, int b, char c, char, char*, int* x);
+int* func(int a, int b, char c, char, char*, int* m);
+char func(int a, int b, char c, char, char*, int*);
+char* func(int a, int b, char c, char, char*, int*);
 
 int main(){
     int var = 6;
+    return 0;
 }
 
 char var (int a){
 printf("%c", hola);
 
 return hola;
+}
+
+int var (int a, int b){
+printf("%c", hola);
+
+return 5;
+}
+
+int var (int a, int b, char* x){
+printf("%c", hola);
+
+return a;
 }

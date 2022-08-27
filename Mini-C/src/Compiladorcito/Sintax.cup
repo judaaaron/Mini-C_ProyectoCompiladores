@@ -29,12 +29,13 @@ terminal tkn_comilla, tkn_comillas, tkn_ampersand;
 
 non terminal INICIO, WHILE, IF, FOR, DECLARACION, BLOQUE, CONDICION, EXPRESION, ELSE, CONDICIONP, OPCONDICION, VALOR, TIPO, 
     IDINT, PRINTF, CONSTSTR, TERNARIO, CONTADOR, SCANF, FUNCION, PARAMS, DECLAPARAM, PROTOTIPO, PROTOTIPOS, PROTOPARAMS, 
-    FUNCIONES, RETURN, PARAMS2;
+    FUNCIONES, RETURN, PARAMS2, TIPOS;
 
-start with INICIO;
+start with PROTOTIPOS;
 
-INICIO ::= tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder FUNCIONES
+INICIO ::=  tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE tkn_return tkn_num tkn_puntocoma tkn_llaveder FUNCIONES
 ;
+
 DECLARACION::= TIPO IDINT tkn_puntocoma
 ;
 
@@ -42,17 +43,31 @@ IDINT::= tkn_id tkn_coma IDINT | tkn_id | tkn_id tkn_igual tkn_num tkn_coma IDIN
 ;
 
 FUNCIONES::= FUNCION FUNCIONES:s
-            |    
+            |   
+;
+
+PROTOTIPOS::= PROTOTIPO PROTOTIPOS
+            | INICIO   
 ;
 
 PARAMS::= DECLAPARAM
             |
 ;
 
+PARAMS2::= PROTOPARAMS
+            |
+;
+
+PROTOPARAMS::= TIPO tkn_id tkn_coma PROTOPARAMS| TIPO tkn_coma PROTOPARAMS | TIPO | TIPO tkn_id
+;
+
 DECLAPARAM::= TIPO tkn_id tkn_coma DECLAPARAM| TIPO tkn_id
 ;
 
 FUNCION::= TIPO tkn_id tkn_parentesisiz PARAMS tkn_parentesisde tkn_llaveiz BLOQUE tkn_return RETURN tkn_puntocoma tkn_llaveder 
+;
+
+PROTOTIPO::= TIPO tkn_id tkn_parentesisiz PARAMS2 tkn_parentesisde tkn_puntocoma
 ;
 
 IF::= tkn_if tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE 
@@ -73,7 +88,6 @@ BLOQUE ::= WHILE BLOQUE
             | TERNARIO BLOQUE
             | CONTADOR BLOQUE
             | SCANF BLOQUE
-            | FUNCION BLOQUE
             |
 ;
 CONDICION ::= CONDICIONP tkn_and CONDICION
@@ -93,11 +107,12 @@ VALOR::= tkn_digitos
                 | tkn_id               
 ;
 
-TIPO::= tkn_int
-        |tkn_char
+TIPO::= tkn_char
         |tkn_intp
         |tkn_charp
+        |tkn_int
 ;
+
 
 CONSTSTR::= tkn_comillas tkn_porcentajed tkn_comillas | tkn_comillas tkn_porcentajec tkn_comillas
 ;

@@ -1,3 +1,5 @@
+int func(int a, int b, char c, char, char*, int*);
+
 int main(){
     int var = 6;
 }

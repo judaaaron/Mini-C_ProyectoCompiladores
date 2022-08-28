@@ -5,6 +5,8 @@ char* func(int a, int b, char c, char, char*, int*);
 
 int main(){
     int var = 6;
+    int bar = jeje();
+    char x = calculo(a,b,c);
     return 0;
 }
 

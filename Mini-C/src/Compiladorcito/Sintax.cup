@@ -24,7 +24,7 @@ terminal tkn_oprel ,tkn_main, tkn_igual, tkn_intp, tkn_charp;
 terminal tkn_digitos,tkn_if ,tkn_while, tkn_else,tkn_parentesisiz ,tkn_parentesisde ,tkn_llaveiz ,tkn_llaveder ; 
 terminal tkn_and,tkn_or,tkn_for,tkn_return, tkn_printf, tkn_scanf, tkn_increment, tkn_decrement;
 terminal tkn_dospuntos,tkn_int ,tkn_char, tkn_id, tkn_puntocoma, tkn_ternario, tkn_num, tkn_coma, tkn_porcentajed, tkn_porcentajec, tkn_letra;
-terminal tkn_comilla, tkn_comillas, tkn_ampersand;
+terminal tkn_comilla, tkn_comillas, tkn_ampersand, tkn_id2;
 
 
 non terminal INICIO, WHILE, IF, FOR, DECLARACION, BLOQUE, CONDICION, EXPRESION, ELSE, CONDICIONP, OPCONDICION, VALOR, TIPO, 
@@ -135,10 +135,10 @@ TIPO::= tkn_char
         |tkn_int
 ;
 
-CONSTSTR::= tkn_comillas tkn_porcentajed tkn_comillas | tkn_comillas tkn_porcentajec tkn_comillas
-;
 
-PRINTF ::= tkn_printf tkn_parentesisiz  CONSTSTR  tkn_coma tkn_id tkn_parentesisde tkn_puntocoma| tkn_printf tkn_parentesisiz tkn_id tkn_parentesisde tkn_puntocoma
+
+PRINTF ::= tkn_printf tkn_parentesisiz tkn_id2 tkn_coma tkn_id tkn_parentesisde tkn_puntocoma
+        | tkn_printf tkn_parentesisiz tkn_id2 tkn_parentesisde tkn_puntocoma
 ;
 
 TERNARIO ::=  CONDICION tkn_ternario BLOQUE tkn_dospuntos BLOQUE tkn_puntocoma

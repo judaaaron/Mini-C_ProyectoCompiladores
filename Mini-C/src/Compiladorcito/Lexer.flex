@@ -26,8 +26,6 @@ LLAVEDER = "}"
 OPREL = "<"|">"|"<="|">="|"!="|"=="
 ASIGNACION = "="
 COMA = ","
-PORCENTAJED = "%d"
-PORCENTAJEC = "%c"
 ID = {LETRAS}({LETRAS}|{DIGITOS})*|{LETRAS}({LETRAS}|{DIGITOS})*
 PRINTF = "printf"
 SCANF = "scanf"
@@ -45,10 +43,11 @@ BlankSpace = {LineTerminator} | [ \t\f]
 LineComment = "//" {InputCharacter}* {LineTerminator}?
 BlockComment = "/*"(.|{LineTerminator})*"*/" 
 TERNARIO = "?"
-COMILLAS = \"
+COMILLAS = "\""
 COMILLA = '
 DOSPUNTOS = :
 AMPERSAND = &
+ID2 = {COMILLAS}{LETRAS}({LETRAS}|{DIGITOS})*|{LETRAS}({LETRAS}|{DIGITOS}{OPREL})*{COMILLAS}
 
 
 %{
@@ -71,8 +70,6 @@ AMPERSAND = &
     {RETURN} {lexeme=yytext(); return RETURN;}
     {BREAK} {lexeme=yytext(); return BREAK; }
     {NUMEROS} {lexeme=yytext(); return NUMEROS; }
-    {PORCENTAJED} {lexeme=yytext(); return PORCENTAJED; }
-    {PORCENTAJEC} {lexeme=yytext(); return PORCENTAJEC; }
     ( "\n" ) {return Linea;}
 
     /* Unarios */
@@ -104,8 +101,6 @@ AMPERSAND = &
 
     
        /* Separators */
-    {COMILLAS} {lexeme=yytext(); return COMILLAS; }
-    {COMILLA} {lexeme=yytext(); return COMILLA; }
     {COMA} {lexeme=yytext(); return COMA; }
     {PUNTOCOMA} {lexeme=yytext(); return PUNTOCOMA; }
     {DOSPUNTOS} {lexeme=yytext(); return DOSPUNTOS; }
@@ -122,7 +117,7 @@ AMPERSAND = &
        /* Ids */
 
     {ID} {lexeme=yytext(); return ID; }
-    {LETRAS} {lexeme=yytext(); return LETRAS; }
+    {ID2} {lexeme=yytext(); return ID2; }
 
       
 

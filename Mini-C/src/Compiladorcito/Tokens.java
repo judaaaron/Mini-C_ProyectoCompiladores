@@ -12,7 +12,6 @@ package Compiladorcito;
 public enum Tokens {
     Linea,
     DIGITOS,
-    LETRAS,
     CHAR,
     IF,
     INT,
@@ -49,12 +48,9 @@ public enum Tokens {
     TERNARIO,
     DOSPUNTOS,
     ASIGNACION,
-    COMILLA,
     NUMEROS,
     COMA,
-    PORCENTAJED,
-    PORCENTAJEC,
-    COMILLAS,
     AMPERSAND,
+    ID2,
     ERROR
 }

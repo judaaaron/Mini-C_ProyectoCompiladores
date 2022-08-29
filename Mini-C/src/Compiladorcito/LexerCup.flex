@@ -36,8 +36,6 @@ PRINTF = "printf"
 SCANF = "scanf"
 AND = "&&"
 OR = "||"
-PORCENTAJED = "%d"
-PORCENTAJEC = "%c"
 COMA = ","
 ASIGNACION = "="
 OPADICION = "+"|"-"
@@ -55,8 +53,9 @@ BlockComment = "/*"(.|{LineTerminator})*"*/"
 DOSPUNTOS = :
 COMILLA = '
 TERNARIO = "?"
-COMILLAS = \"
+COMILLAS = "\""
 AMPERSAND = &
+ID2 = {COMILLAS}{LETRAS}({LETRAS}|{DIGITOS})*|{LETRAS}({LETRAS}|{DIGITOS}{OPREL})*{COMILLAS}
 
 
 %{
@@ -81,9 +80,6 @@ AMPERSAND = &
     {NUMEROS} {return new Symbol(sym.tkn_num           ,yyline+1 ,yycolumn+1 ,yytext());}
      {INTP} {return new Symbol(sym.tkn_intp           ,yyline+1 ,yycolumn+1 ,yytext());}
     {CHARP} {return new Symbol(sym.tkn_charp           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {PORCENTAJED} {return new Symbol(sym.tkn_porcentajed          ,yyline+1 ,yycolumn+1 ,yytext());}
-    {PORCENTAJEC} {return new Symbol(sym.tkn_porcentajec          ,yyline+1 ,yycolumn+1 ,yytext());}
-
     {ASIGNACION}         {return new Symbol(sym.tkn_igual        ,yyline+1 ,yycolumn+1 ,yytext());}
     
 
@@ -111,8 +107,6 @@ AMPERSAND = &
     {DIGITOS} {return new Symbol(sym.tkn_digitos       ,yyline+1 ,yycolumn+1 ,yytext());}
     
        /* Separators */
-    {COMILLAS} {return new Symbol(sym.tkn_comillas           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {COMILLA} {return new Symbol(sym.tkn_comilla           ,yyline+1 ,yycolumn+1 ,yytext());}
     {PUNTOCOMA} {return new Symbol(sym.tkn_puntocoma           ,yyline+1 ,yycolumn+1 ,yytext());}
     {COMA}          {return new Symbol(sym.tkn_coma         ,yyline+1 ,yycolumn+1 ,yytext());}
     {DOSPUNTOS} {return new Symbol(sym.tkn_dospuntos           ,yyline+1 ,yycolumn+1 ,yytext());}
@@ -130,7 +124,7 @@ AMPERSAND = &
        /* Ids */
 
     {ID} {return new Symbol(sym.tkn_id           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {LETRAS} {return new Symbol(sym.tkn_letra           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {ID2} {return new Symbol(sym.tkn_id2           ,yyline+1 ,yycolumn+1 ,yytext());}
 
       
 

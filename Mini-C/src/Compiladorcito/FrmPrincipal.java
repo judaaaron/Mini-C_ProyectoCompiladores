@@ -147,23 +147,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 case COMA:
                     resultado += " Se indetificó el token: <coma>\t" + lexer.lexeme + "\n";
                     break;
-                case PORCENTAJED:
-                    resultado += " Se indetificó el token: <conststr int>\t" + lexer.lexeme + "\n";
-                    break;
-                case PORCENTAJEC:
-                    resultado += " Se indetificó el token: <conststr char>\t" + lexer.lexeme + "\n";
-                    break;
-                case COMILLA:
-                    resultado += " Se indetificó el token: <comilla simple>\t" + lexer.lexeme + "\n";
-                    break;
-                case COMILLAS:
-                    resultado += " Se indetificó el token: <comilla doble>\t" + lexer.lexeme + "\n";
-                    break;
-                case LETRAS:
-                    resultado += " Se indetificó un caracter:\t\t" + lexer.lexeme + "\n";
-                    break;
                 case AMPERSAND:
                     resultado += " Se indetificó un caracter: <ampersand>\t\t" + lexer.lexeme + "\n";
+                    break;
+                case ID2:
+                    resultado += " Se indetificó una cadena: <string>\t" + lexer.lexeme + "\n";
                     break;
                 case ERROR:
                     resultado += "  <Simbolo no definido>\n";

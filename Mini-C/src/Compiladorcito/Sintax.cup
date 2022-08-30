@@ -86,7 +86,7 @@ CALLBACK::= tkn_id tkn_parentesisiz PARAMS3 tkn_parentesisde tkn_puntocoma
 LLAMADO::= TIPO tkn_id tkn_igual CALLBACK | CALLBACK
 ;
 
-PROTOTIPO::= TIPO tkn_id tkn_parentesisiz PARAMS2 tkn_parentesisde tkn_puntocoma
+PROTOTIPO::= TIPO tkn_id tkn_parentesisiz PARAMS2 tkn_parentesisde tkn_puntocoma | DECLARACION
 ;
 
 IF::= tkn_if tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE 

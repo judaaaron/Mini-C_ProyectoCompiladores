@@ -55,7 +55,8 @@ COMILLA = '
 TERNARIO = "?"
 COMILLAS = "\""
 AMPERSAND = &
-ID2 = "\""(.)*"\""
+CADENA = "\""(.)*"\""
+CONSTCHAR = "\'"(.)"\'" 
 
 
 %{
@@ -124,8 +125,8 @@ ID2 = "\""(.)*"\""
        /* Ids */
 
     {ID} {return new Symbol(sym.tkn_id           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {ID2} {return new Symbol(sym.tkn_id2           ,yyline+1 ,yycolumn+1 ,yytext());}
-
+    {CADENA} {return new Symbol(sym.tkn_cadena           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {CONSTCHAR} {return new Symbol(sym.tkn_caracter           ,yyline+1 ,yycolumn+1 ,yytext());}
       
 
         {BlankSpace}            { /* skip it */ }

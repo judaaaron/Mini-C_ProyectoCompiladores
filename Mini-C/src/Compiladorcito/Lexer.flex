@@ -47,7 +47,8 @@ COMILLAS = "\""
 COMILLA = '
 DOSPUNTOS = :
 AMPERSAND = &
-ID2 = "\""(.)*"\""
+CADENA = "\""(.)*"\""
+CONSTCHAR = "\'"(.)"\'" 
 
 
 %{
@@ -117,7 +118,8 @@ ID2 = "\""(.)*"\""
        /* Ids */
 
     {ID} {lexeme=yytext(); return ID; }
-    {ID2} {lexeme=yytext(); return ID2; }
+    {CADENA} {lexeme=yytext(); return CADENA; }
+    {CONSTCHAR} {lexeme=yytext(); return CONSTCHAR; }
 
       
 

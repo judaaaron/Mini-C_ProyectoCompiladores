@@ -51,6 +51,7 @@ public enum Tokens {
     NUMEROS,
     COMA,
     AMPERSAND,
-    ID2,
+    CADENA,
+    CONSTCHAR,
     ERROR
 }

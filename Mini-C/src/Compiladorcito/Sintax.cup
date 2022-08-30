@@ -158,5 +158,5 @@ SCANF::= tkn_scanf tkn_parentesisiz CONSTSTR tkn_coma tkn_ampersand tkn_id tkn_p
 
 RETURN::= tkn_id
           | tkn_num
-          |tkn_letra
+          |tkn_caracter
 ;

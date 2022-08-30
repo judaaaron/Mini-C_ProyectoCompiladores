@@ -48,7 +48,7 @@ LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
 BlankSpace = {LineTerminator} | [ \t\f]
 SALTO = "\n";
-LineComment = "//" {InputCharacter}* {LineTerminator}?
+LineComment = "//" (.)*{InputCharacter}* {LineTerminator}?
 BlockComment = "/*"(.|{LineTerminator})*"*/" 
 DOSPUNTOS = :
 COMILLA = '
@@ -93,6 +93,7 @@ CONSTCHAR = "\'"(.)"\'"
     {OPREL} {return new Symbol(sym.tkn_oprel           ,yyline+1 ,yycolumn+1 ,yytext());}
     {TERNARIO}  {return new Symbol(sym.tkn_ternario           ,yyline+1 ,yycolumn+1 ,yytext());}
     {BlockComment}              { /* skip it */ }
+    {LineComment}              { /* skip it */ }
 
      /* Arithmetic Operators */
 

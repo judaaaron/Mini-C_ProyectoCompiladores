@@ -133,6 +133,6 @@ CONSTCHAR = "\'"(.)"\'"
         {BlankSpace}            { /* skip it */ }
         {SALTO}                 {}
     
-    .  { erroresLexicos.add("Error lexico en linea: "+ (yyline+1) +" y columna " + (yycolumn+1) +" y en el texto: "+yytext()); }
+    .  { erroresLexicos.add("Error léxico en linea: "+ (yyline+1) +", columna " + (yycolumn+1) +" y en el texto: "+yytext()); }
  
 }

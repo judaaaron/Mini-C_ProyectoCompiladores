@@ -52,6 +52,7 @@ start with INICIO;
 MAIN ::=  tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE tkn_return tkn_num tkn_puntocoma tkn_llaveder FUNCIONES:d
           |error tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE tkn_return tkn_num tkn_puntocoma tkn_llaveder FUNCIONES {:parser.errores.add("\ntipo de dato int ausente en la función main");:}
           |tkn_int tkn_main tkn_parentesisiz tkn_parentesisde error BLOQUE tkn_return tkn_num tkn_puntocoma tkn_llaveder FUNCIONES{:parser.errores.add("\n llave de apertura ausente '{' en el main");:}
+          |tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE tkn_return tkn_num tkn_puntocoma error FUNCIONES{:parser.errores.add("\n llave de cierre ausente '}' en el main");:}
 ;
 
 DECLARACION::= TIPO IDINT tkn_puntocoma
@@ -107,7 +108,9 @@ LLAMADO::= TIPO tkn_id tkn_igual tkn_id tkn_parentesisiz ARGS tkn_parentesisde t
 PROTOTIPO::= TIPO tkn_id tkn_parentesisiz PROTOPARAMS tkn_parentesisde tkn_puntocoma | DECLARACION
 ;
 
-IF::= tkn_if tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE 
+IF::= tkn_if tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE
+    | tkn_if tkn_parentesisiz error tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE {:parser.errores.add("\nbloque if sin condición");:} 
+    | tkn_if tkn_parentesisiz CONDICION tkn_parentesisde error BLOQUE tkn_llaveder ELSE {:parser.errores.add("\n bloque if sin llave de apertura '{'");:}
 ;
 
 ELSE ::= tkn_else tkn_llaveiz BLOQUE tkn_llaveder

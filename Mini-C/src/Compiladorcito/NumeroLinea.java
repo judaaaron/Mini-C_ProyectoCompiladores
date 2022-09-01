@@ -11,7 +11,7 @@ import javax.swing.text.*;
 
 /**
  *
- * @author Juda
+ * @author Juda & Paulina
  */
 public class NumeroLinea extends JPanel
         implements CaretListener, DocumentListener, PropertyChangeListener {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Compiladorcito;
 
 import java.awt.Color;
@@ -243,6 +238,30 @@ public class FrmPrincipal extends javax.swing.JFrame {
                     }
                     txt_sin.setForeground(Color.red);
 
+                } else if (!(lexer.erroresLexicos.isEmpty()) && !(p.errores.isEmpty())) {
+                    txt_sin.append("Analizando léxico..." + "\n");
+                    txt_sin.append("Se encontraron errores léxicos" + "\n");
+                    for (int i = 0; i < lexer.erroresLexicos.size(); i++) {
+                        txt_sin.append(lexer.erroresLexicos.get(i) + "\n");
+                        txt_sin.setForeground(Color.red);
+                        contErrors++;
+                    }
+                    txt_sin.append("Analizando sintaxis..." + "\n");
+                    txt_sin.append("Se encontraron errores sintácticos" + "\n");
+                    for (int i = 0; i < p.errores.size(); i++) {
+                        System.out.println(p.errores.get(i));
+                        txt_sin.append(p.errores.get(i).toString() + "\n");
+                        txt_sin.setForeground(Color.red);
+                        contErrors++;
+                    }
+                    long endTime = System.currentTimeMillis() - startTime; // tiempo en que se ejecuta su método
+                    txt_sin.append("\n");
+                    if (contErrors == 1) {
+                        txt_sin.append("Compiliación fallida con: " + contErrors + " error, tiempo total: " + endTime + "ms\n");
+                    } else {
+                        txt_sin.append("Compiliación fallida con: " + contErrors + " errores, tiempo total: " + endTime + "ms\n");
+                    }
+                    txt_sin.setForeground(Color.red);
                 }
                 txt_sin.append("\n");
 
@@ -254,7 +273,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
-                //System.out.println("entro a la exception");
                 Symbol sym = p.getS();
                 System.out.println("error en columna " + (sym.right) + " fila: " + (sym.left) + ", texto: " + sym.toString());
                 txt_sin.setForeground(Color.red);
@@ -331,8 +349,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JTextArea txt_resultado;
     private javax.swing.JTextArea txt_sin;
     // End of variables declaration//GEN-END:variables
-
-    // boolean codigoabierto = false;
 
     /*comandos para ejectutar
     jflex LexerCup.flex

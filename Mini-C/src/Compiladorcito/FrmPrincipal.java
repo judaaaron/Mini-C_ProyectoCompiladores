@@ -21,12 +21,15 @@ import java_cup.Lexer;
 import java_cup.runtime.Symbol;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 /**
  *
- * @author Juda
+ * @author Juda & Paulina
  */
 public class FrmPrincipal extends javax.swing.JFrame {
+
+    NumeroLinea numerolinea;
 
     /**
      * Creates new form FrmPrincipal
@@ -40,155 +43,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     }
 
-    //holla
-    // private void analizarLexico() throws IOException {
-    // int cont = 1;
-    //
-    // String expr = (String) txt_resultado.getText();
-    // Lexer lexer = new Lexer(new StringReader(expr));
-    // String resultado = "LINEA " + cont + "\t\t\tRepresentación\n";
-    // while (true) {
-    // Tokens token = lexer.yylex();
-    // if (token == null) {
-    // txt_lex.setText(resultado);
-    // return;
-    // }
-    // switch (token) {
-    // case Linea:
-    // cont++;
-    // resultado += "LINEA " + cont + "\n";
-    // break;
-    // case INT:
-    // resultado += " Se indetificó el token: <int>\t\t" + lexer.lexeme + "\n";
-    // break;
-    // case IF:
-    // resultado += " Se indetificó el token: <if>\t\t" + lexer.lexeme + "\n";
-    // break;
-    // case ELSE:
-    // resultado += " Se indetificó el token: <else>\t\t" + lexer.lexeme + "\n";
-    // break;
-    // case BREAK:
-    // resultado += " Se indetificó el token: <break>\t\t" + lexer.lexeme + "\n";
-    // break;
-    // case WHILE:
-    // resultado += " Se indetificó el token: <while>\t\t" + lexer.lexeme + "\n";
-    // break;
-    // case PRINTF:
-    // resultado += " Se indetificó el token función: <printf>\t" + lexer.lexeme +
-    // "\n";
-    // break;
-    // case SCANF:
-    // resultado += " Se indetificó el token función: <scanf>\t" + lexer.lexeme +
-    // "\n";
-    // break;
-    // case FOR:
-    // resultado += " Se indetificó el token: <for>\t\t" + lexer.lexeme + "\n";
-    // break;
-    // case RETURN:
-    // resultado += " Se indetificó el token: <return>\t\t" + lexer.lexeme + "\n";
-    // break;
-    // case ASIGNACION:
-    // resultado += " Se indetificó el token: <asignacion> \t" + lexer.lexeme +
-    // "\n";
-    // break;
-    // case TERNARIO:
-    // resultado += " Se indetificó el token operador: <ternario>\t" + lexer.lexeme
-    // + "\n";
-    // break;
-    // case NUMEROS:
-    // resultado += " Se indetificó número de tipo: <entero>\t" + lexer.lexeme +
-    // "\n";
-    // break;
-    // case OPADICION:
-    // resultado += " Se indetificó el token operador: <suma/resta>\t" +
-    // lexer.lexeme + "\n";
-    // break;
-    // case OPMULTI:
-    // resultado += " Se indetificó el token operador: <mul/div>\t" + lexer.lexeme +
-    // "\n";
-    // break;
-    // case OPREL:
-    // resultado += " Se indetificó el token operador: <logico>\t" + lexer.lexeme +
-    // "\n";
-    // break;
-    // case INCREMENT:
-    // resultado += " Se indetificó el token : <autoincremento>\t" + lexer.lexeme +
-    // "\n";
-    // break;
-    // case DECREMENT:
-    // resultado += " Se indetificó el token: <autodecremento>\t" + lexer.lexeme +
-    // "\n";
-    // break;
-    // case PARENTESISIZ:
-    // resultado += " Se indetificó el token: <parentesis de apertura>\t" +
-    // lexer.lexeme + "\n";
-    // break;
-    // case PARENTESISDE:
-    // resultado += " Se indetificó el token: <parentesis de cierre>\t" +
-    // lexer.lexeme + "\n";
-    // break;
-    // case LLAVEIZ:
-    // resultado += " Se indetificó el token: <llave de apertura>\t" + lexer.lexeme
-    // + "\n";
-    // break;
-    // case LLAVEDER:
-    // resultado += " Se indetificó el token: <llave de cierre>\t" + lexer.lexeme +
-    // "\n";
-    // break;
-    // case INTP:
-    // resultado += " Se indetificó el token: <puntero de enteros>\t" + lexer.lexeme
-    // + "\n";
-    // break;
-    // case CHARP:
-    // resultado += " Se indetificó el token: <puntero de chars>\t" + lexer.lexeme +
-    // "\n";
-    // break;
-    // case MAIN:
-    // resultado += " Se indetificó el token: <main>\t\t" + lexer.lexeme + "\n";
-    // break;
-    // case AND:
-    // resultado += " Se indetificó el token operador logico: <and>\t" +
-    // lexer.lexeme + "\n";
-    // break;
-    // case OR:
-    // resultado += " Se indetificó el token operador logico: <or>\t" + lexer.lexeme
-    // + "\n";
-    // break;
-    // case PUNTOCOMA:
-    // resultado += " Se indetificó el token: <punto y coma>\t" + lexer.lexeme +
-    // "\n";
-    // break;
-    // case DOSPUNTOS:
-    // resultado += " Se indetificó el token: <dos puntos>\t" + lexer.lexeme + "\n";
-    // break;
-    // case ID:
-    // resultado += " Se indetificó el token: <identificador>\t" + lexer.lexeme +
-    // "\n";
-    // break;
-    // case COMA:
-    // resultado += " Se indetificó el token: <coma>\t" + lexer.lexeme + "\n";
-    // break;
-    // case AMPERSAND:
-    // resultado += " Se indetificó un caracter: <ampersand>\t\t" + lexer.lexeme +
-    // "\n";
-    // break;
-    // case CADENA:
-    // resultado += " Se indetificó una cadena: <string>\t" + lexer.lexeme + "\n";
-    // break;
-    //
-    // case CONSTCHAR:
-    // resultado += " Se indetificó un caracter \t" + lexer.lexeme + "\n";
-    // break;
-    // case ERROR:
-    // resultado += " <Simbolo no definido>\n";
-    // break;
-    // default:
-    // resultado += " < " + lexer.lexeme + " >\n";
-    // break;
-    // hola
-    // }
-    // }
-    // }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -243,6 +97,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         txt_sin.setBackground(new java.awt.Color(0, 0, 0));
         txt_sin.setColumns(20);
         txt_sin.setRows(5);
+        txt_sin.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jScrollPane2.setViewportView(txt_sin);
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 550, 770, 270));
@@ -305,9 +160,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 }
 
                 texto += ant;
-
+                numerolinea = new NumeroLinea(txt_resultado);
+                jScrollPane1.setRowHeaderView(numerolinea);
                 txt_resultado.setText(texto);
-                codigoabierto = true;
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "No se seleccionó ningún archivo" + ex);
             }
@@ -320,47 +175,55 @@ public class FrmPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "" + "\nNo se ha encontrado el archivo", "Advertencia",
                     JOptionPane.WARNING_MESSAGE);
         }
-    }// GEN-LAST:event_btn_archivoActionPerformed
+    }
 
     private void btn_compilarActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_compilarActionPerformed
 
         txt_sin.setText("");
         int contErrors = 0;
-        if (codigoabierto == true) {
+        String longitud = txt_resultado.getText();
+        if (!longitud.isEmpty()) {
             LexerCup lexer;
             parser p = null;
 
             try {
                 long startTime = System.currentTimeMillis();
-
                 String ST = txt_resultado.getText();
-//               Sintax s = new Sintax(new Compiladorcito.LexerCup(new StringReader(ST)));
                 lexer = new LexerCup((new StringReader(ST)));
-
                 p = new parser(lexer);
-
                 p.parse();
 
-                if (lexer.erroresLexicos.size() == 0 && p.errores.isEmpty()) {
+                if (lexer.erroresLexicos.isEmpty() && p.errores.isEmpty()) {
                     txt_sin.append("Analizando léxico..." + "\n");
                     txt_sin.append("No se encontraron errores léxicos" + "\n");
                     txt_sin.append("Analizando sintaxis..." + "\n");
-                    txt_sin.setForeground(Color.green);
-
                     txt_sin.append("No se encontraron errores sintácticos" + "\n");
-                    txt_sin.append("...." + "\n");
+                    txt_sin.append("\n");
                     long endTime = System.currentTimeMillis() - startTime; // tiempo en que se ejecuta su método
                     txt_sin.append("Compiliación finalizada con 0 errores, tiempo total: " + endTime + "ms\n");
                     txt_sin.setForeground(Color.green);
+                } else if (lexer.erroresLexicos.isEmpty() && !(p.errores.isEmpty())) {
+                    txt_sin.append("Analizando léxico..." + "\n");
+                    txt_sin.append("No se encontraron errores léxicos" + "\n");
+                    txt_sin.append("Analizando sintaxis..." + "\n");
+                    txt_sin.append("Se encontraron errores sintácticos" + "\n");
+                    txt_sin.append("\n");
+                    for (int i = 0; i < p.errores.size(); i++) {
+                        System.out.println(p.errores.get(i));
+                        txt_sin.append(p.errores.get(i).toString() + "\n");
+                        txt_sin.setForeground(Color.red);
+                        contErrors++;
+                    }
+                    long endTime = System.currentTimeMillis() - startTime; // tiempo en que se ejecuta su método
+                    txt_sin.append("\n");
+                    if (contErrors == 1) {
+                        txt_sin.append("Compiliación fallida con: " + contErrors + " error, tiempo total: " + endTime + "ms\n");
+                    } else {
+                        txt_sin.append("Compiliación fallida con: " + contErrors + " errores, tiempo total: " + endTime + "ms\n");
+                    }
+                    txt_sin.setForeground(Color.red);
 
-//                } else {
-//                    for (int i = 0; i < p.errores.size(); i++) {
-//                        txt_sin.append(p.errores.get(i).toString() + " ");
-//                        txt_sin.setForeground(Color.red);
-//                        System.out.println(p.errores.get(i));
-//                    }
-                } else {
-                    // JOptionPane.showMessageDialog(this, "se encontraron errores de caracteres especiales");
+                } else if (!(lexer.erroresLexicos.isEmpty()) && p.errores.isEmpty()) {
                     txt_sin.append("Analizando léxico..." + "\n");
                     txt_sin.append("Se encontraron errores léxicos" + "\n");
                     for (int i = 0; i < lexer.erroresLexicos.size(); i++) {
@@ -368,22 +231,18 @@ public class FrmPrincipal extends javax.swing.JFrame {
                         txt_sin.setForeground(Color.red);
                         contErrors++;
                     }
-                    for (int i = 0; i < p.errores.size(); i++) {
-                        System.out.println(p.errores.get(i));
-                        txt_sin.append(p.errores.get(i).toString() + "\n");
-                        txt_sin.setForeground(Color.red);
-                        contErrors++;
-                    }
-                    txt_sin.append("Se encontraron errores sintácticos" + "\n");
-                    txt_sin.append("...." + "\n");
+                    txt_sin.append("Analizando sintaxis..." + "\n");
+                    txt_sin.append("No se encontraron errores sintácticos" + "\n");
+                    txt_sin.append("\n");
                     long endTime = System.currentTimeMillis() - startTime; // tiempo en que se ejecuta su método
+                    txt_sin.append("\n");
                     if (contErrors == 1) {
                         txt_sin.append("Compiliación fallida con: " + contErrors + " error, tiempo total: " + endTime + "ms\n");
                     } else {
                         txt_sin.append("Compiliación fallida con: " + contErrors + " errores, tiempo total: " + endTime + "ms\n");
                     }
-
                     txt_sin.setForeground(Color.red);
+
                 }
                 txt_sin.append("\n");
 
@@ -401,22 +260,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 txt_sin.setForeground(Color.red);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "no se ha abierto ningun archivo valido");
+            JOptionPane.showMessageDialog(this, "no se ha cargado algun archivo o escrito código");
         }
 
-//        String ST = txt_resultado.getText();
-//        Sintax s = new Sintax(new Compiladorcito.LexerCup(new StringReader(ST)));
-//
-//        try {
-//            s.parse();
-//            txt_sin.setText("Analisis realizado correctamente");
-//            txt_sin.setForeground(new Color(25, 111, 61));
-//        } catch (Exception ex) {
-//            Symbol sym = s.getS();
-//            txt_sin.setText("Error de sintaxis. Linea: " + (sym.right + 1) + " Columna: " + (sym.left + 1)
-//                    + ", Texto: \"" + sym.value + "\"");
-//            txt_sin.setForeground(Color.red);
-//        }
     }// GEN-LAST:event_btn_compilarActionPerformed
 
     private void btn_analizarActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_analizarActionPerformed
@@ -485,6 +331,12 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JTextArea txt_resultado;
     private javax.swing.JTextArea txt_sin;
     // End of variables declaration//GEN-END:variables
-   boolean codigoabierto = false;
-    //File archivo = new File("C:\\Users\\User\\Desktop\\CompiladorLenguajePropio\\Compilador_Propio\\Prueba1.txt");
+
+    // boolean codigoabierto = false;
+
+    /*comandos para ejectutar
+    jflex LexerCup.flex
+    java -jar java-cup-11a.jar Sintax.cup
+
+     */
 }

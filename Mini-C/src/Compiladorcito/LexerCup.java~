@@ -703,7 +703,7 @@ class LexerCup implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { erroresLexicos.add("Error lexico en linea: "+ (yyline+1) +" y columna " + (yycolumn+1) +" y en el texto: "+yytext());
+            { erroresLexicos.add("Error léxico en linea: "+ (yyline+1) +", columna " + (yycolumn+1) +" y en el texto: "+yytext());
             }
             // fall through
           case 37: break;

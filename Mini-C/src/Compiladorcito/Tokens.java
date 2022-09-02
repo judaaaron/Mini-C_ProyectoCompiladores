@@ -35,6 +35,7 @@ public enum Tokens {
     OR,
     OPADICION,
     OPMULTI,
+    OPMOD,
     PUNTOCOMA,
     INCREMENT,
     DECREMENT,

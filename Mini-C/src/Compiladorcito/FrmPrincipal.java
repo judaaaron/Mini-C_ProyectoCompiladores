@@ -102,6 +102,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 case OPREL:
                     resultado += " Se indetificó el token operador: <logico>\t" + lexer.lexeme + "\n";
                     break;
+                case OPMOD:
+                    resultado += " Se indetificó el token operador: <mod>\t" + lexer.lexeme + "\n";
+                    break;
                 case INCREMENT:
                     resultado += " Se indetificó el token : <autoincremento>\t" + lexer.lexeme + "\n";
                     break;
@@ -154,7 +157,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
                     resultado += " Se indetificó una cadena: <string>\t" + lexer.lexeme + "\n";
                     break;
                     
-                    case CONSTCHAR:
+                case CONSTCHAR:
                     resultado += " Se indetificó un caracter \t" + lexer.lexeme + "\n";
                     break;
                 case ERROR:

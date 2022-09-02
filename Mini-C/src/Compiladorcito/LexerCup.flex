@@ -40,6 +40,7 @@ COMA = ","
 ASIGNACION = "="
 OPADICION = "+"|"-"
 OPMULTI = "*"|"/"
+OPMOD = "%"
 PUNTOCOMA = ;
 INCREMENT = "++"
 DECREMENT = --
@@ -99,6 +100,7 @@ CONSTCHAR = "\'"(.)"\'"
 
     {OPADICION} {return new Symbol(sym.tkn_opadicion           ,yyline+1 ,yycolumn+1 ,yytext());}
     {OPMULTI} {return new Symbol(sym.tkn_opmulti           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {OPMOD} {return new Symbol(sym.tkn_opmod           ,yyline+1 ,yycolumn+1 ,yytext());}
 
 
      /* Overloaded */

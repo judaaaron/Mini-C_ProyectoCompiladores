@@ -1,38 +1,27 @@
 package Compiladorcito;
 
-import java_cup.runtime.*;
+import java_cup.runtime.Symbol;
 import java.util.ArrayList;
 import java.util.*;
 import java.io.*;
 
 
- parser code {:
-    ArrayList gramas = new ArrayList();
-    public int cont = 0;
-    ArrayList errores=new ArrayList();
-    public Symbol s;
-    @Override
-    public void syntax_error (Symbol s){
-        if(s.left==-1){
-        }else{
-                errores.add("En la linea: " + (s.left) + " y Columna: " +(s.right)+ " con el simbolo= "+(s.value));
+parser code
+{:
+    private Symbol s;
+    
+    public void syntax_error(Symbol s){
+        this.s = s;
     }
-}
-    @Override
-    public void unrecovered_syntax_error(Symbol s){
-    if(s.left==-1){
-    }else{
-        errores.add("Error desconocido, por favor revise la linea: " + (s.left ) + " y columna:  " + (s.right )+ "Con simbolo: "+s.value);
-    }    
-    }
+
     public Symbol getS(){
         return this.s;
     }
-:} ;
+:};
 
 
 
-terminal tkn_opadicion,tkn_opmulti, tkn_break ;
+terminal tkn_opadicion,tkn_opmulti, tkn_break, tkn_opmod ;
 terminal tkn_oprel ,tkn_main, tkn_igual, tkn_intp, tkn_charp;
 terminal tkn_digitos,tkn_if ,tkn_while, tkn_else,tkn_parentesisiz ,tkn_parentesisde ,tkn_llaveiz ,tkn_llaveder ; 
 terminal tkn_and,tkn_or,tkn_for,tkn_return, tkn_printf, tkn_scanf, tkn_increment, tkn_decrement;
@@ -42,7 +31,10 @@ terminal tkn_comilla, tkn_comillas, tkn_ampersand, tkn_cadena, tkn_caracter;
 
 non terminal INICIO, WHILE, IF, FOR, DECLARACION, BLOQUE, CONDICION, EXPRESION, ELSE, CONDICIONP, OPCONDICION, VALOR, TIPO, 
     IDINT, PRINTF, CONSTSTR, TERNARIO, CONTADOR, SCANF, FUNCION, FUNCIONPARAMS, DECLAPARAM, PROTOTIPO, MAIN, PROTOPARAMS, 
-    FUNCIONES, RETURN, PARAMS, TIPOS, LLAMADO, CALLBACK, ARGSPARAMS, ARGS;
+    FUNCIONES, RETURN, PARAMS, TIPOS, LLAMADO, CALLBACK, ARGSPARAMS, ARGS, EXPRTERNARIO, OPARITM, EXPRFIN, EXPR;
+
+precedence left tkn_opadicion;
+precedence left tkn_opmulti, tkn_opmod;
 
 start with INICIO;
 
@@ -93,10 +85,9 @@ FUNCION::= TIPO tkn_id tkn_parentesisiz FUNCIONPARAMS tkn_parentesisde tkn_llave
 ARGSPARAMS ::= tkn_id tkn_coma ARGSPARAMS| tkn_id
 ;
 
-LLAMADO::= TIPO tkn_id tkn_igual tkn_id tkn_parentesisiz ARGS tkn_parentesisde tkn_puntocoma 
-        | tkn_id tkn_parentesisiz ARGS tkn_parentesisde tkn_puntocoma
+LLAMADO::= tkn_id tkn_parentesisiz ARGS tkn_parentesisde tkn_puntocoma
+        | TIPO tkn_id tkn_igual tkn_id tkn_parentesisiz ARGS tkn_parentesisde tkn_puntocoma 
 ;
-
 PROTOTIPO::= TIPO tkn_id tkn_parentesisiz PROTOPARAMS tkn_parentesisde tkn_puntocoma | DECLARACION
 ;
 
@@ -123,6 +114,7 @@ BLOQUE ::= WHILE BLOQUE
             | CONTADOR BLOQUE
             | SCANF BLOQUE
             | LLAMADO BLOQUE
+            | EXPRFIN BLOQUE
             |
 ;
 
@@ -151,14 +143,30 @@ TIPO::= tkn_char
         |tkn_charp
         |tkn_int
 ;
-
+OPARITM ::= OPARITM EXPRFIN | EXPRFIN
+;
+EXPRFIN ::= EXPR tkn_puntocoma
+;
+EXPR ::= EXPR tkn_opadicion EXPR 
+        | EXPR tkn_opmulti EXPR 
+        | EXPR tkn_opmod EXPR 
+        | tkn_parentesisiz EXPR tkn_parentesisde  
+        | VALOR 
+;
 
 
 PRINTF ::= tkn_printf tkn_parentesisiz tkn_cadena tkn_coma tkn_id tkn_parentesisde tkn_puntocoma
         | tkn_printf tkn_parentesisiz tkn_cadena tkn_parentesisde tkn_puntocoma
 ;
 
-TERNARIO ::=  CONDICION tkn_ternario BLOQUE tkn_dospuntos BLOQUE tkn_puntocoma
+TERNARIO ::=  CONDICION tkn_ternario EXPRTERNARIO tkn_dospuntos EXPRTERNARIO tkn_puntocoma
+;
+EXPRTERNARIO ::= tkn_cadena 
+                | PRINTF 
+                | tkn_caracter 
+                | VALOR 
+                | tkn_id tkn_parentesisiz ARGS tkn_parentesisde tkn_puntocoma
+                | TERNARIO
 ;
 
 CONTADOR ::= tkn_id tkn_increment tkn_puntocoma | tkn_id tkn_decrement tkn_puntocoma

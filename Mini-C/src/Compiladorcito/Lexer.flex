@@ -33,6 +33,7 @@ AND = "&&"
 OR = "||"
 OPADICION = "+"|"-"
 OPMULTI = "*"|"/"
+OPMOD = "%"
 PUNTOCOMA = ;
 INCREMENT = "++"
 DECREMENT = "--"
@@ -92,6 +93,7 @@ CONSTCHAR = "\'"(.)"\'"
 
     {OPADICION} {lexeme=yytext(); return OPADICION;}
     {OPMULTI} {lexeme=yytext(); return OPMULTI;}
+    {OPMOD} {lexeme=yytext(); return OPMOD;}
 
 
      /* Overloaded */

@@ -45,7 +45,7 @@ terminal tkn_comilla, tkn_comillas, tkn_ampersand, tkn_cadena, tkn_caracter;
 
 non terminal INICIO, WHILE, IF, FOR, DECLARACION, BLOQUE, CONDICION, EXPRESION, ELSE, CONDICIONP, OPCONDICION, VALOR, TIPO, 
     IDINT, PRINTF, CONSTSTR, TERNARIO, CONTADOR, SCANF, FUNCION, FUNCIONPARAMS, DECLAPARAM, PROTOTIPO, MAIN, PROTOPARAMS, 
-    FUNCIONES, RETURN, PARAMS, TIPOS, LLAMADO, CALLBACK, ARGSPARAMS, ARGS;
+    FUNCIONES, RETURN, PARAMS, TIPOS, LLAMADO, CALLBACK, ARGSPARAMS, ARGS, ITERADOR;
 
 start with INICIO;
 
@@ -64,7 +64,7 @@ IDINT::= tkn_id tkn_coma IDINT
         | tkn_id tkn_igual tkn_num 
         | tkn_id tkn_igual tkn_caracter tkn_coma IDINT
         | tkn_id tkn_igual tkn_caracter
-        |
+        |error {:parser.errores.add("Identificador mas declarado");:} 
 ;
 
 FUNCIONES::= FUNCION:i FUNCIONES:s
@@ -95,7 +95,6 @@ DECLAPARAM::= TIPO tkn_id tkn_coma DECLAPARAM| TIPO tkn_id
 
 FUNCION::= TIPO tkn_id tkn_parentesisiz FUNCIONPARAMS tkn_parentesisde tkn_llaveiz BLOQUE tkn_return RETURN tkn_puntocoma tkn_llaveder
             | TIPO error tkn_parentesisiz FUNCIONPARAMS tkn_parentesisde tkn_llaveiz BLOQUE tkn_return RETURN tkn_puntocoma tkn_llaveder  {:parser.errores.add("Identificador incorrecto para la función");:} 
-            | TIPO tkn_id tkn_parentesisiz FUNCIONPARAMS tkn_parentesisde tkn_llaveiz BLOQUE tkn_return error tkn_puntocoma tkn_llaveder {:parser.errores.add("La función no retorna tipo de dato correcto");:}
 ;
 
 ARGSPARAMS ::= tkn_id tkn_coma ARGSPARAMS| tkn_id
@@ -118,10 +117,20 @@ ELSE ::= tkn_else tkn_llaveiz BLOQUE tkn_llaveder
         |
 ;
 
-FOR ::= tkn_for tkn_parentesisiz tkn_int tkn_id tkn_igual tkn_num tkn_puntocoma CONDICION tkn_puntocoma tkn_id tkn_increment tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder
+FOR ::= tkn_for tkn_parentesisiz tkn_int tkn_id tkn_igual tkn_num tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder
+        | tkn_for tkn_parentesisiz tkn_id tkn_igual tkn_num tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder
+        | tkn_for tkn_parentesisiz tkn_int tkn_id error tkn_num tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("\nno se esta asignando valor correctamente, se espera simbolo de asignación '='");:}
+        | tkn_for tkn_parentesisiz tkn_int tkn_id tkn_igual error tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("\nvariable inicializada incorrectamente, se espera un tipo de dato'int'");:}
+        | tkn_for tkn_parentesisiz tkn_int tkn_id tkn_igual tkn_num error CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("\nsimbolo punto y coma ausente ';'");:}
+        | tkn_for tkn_parentesisiz tkn_int tkn_id tkn_igual tkn_num tkn_puntocoma CONDICION tkn_puntocoma tkn_id error tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("\ncontrol de iteracion no ha sido incrementado o decrementado, se espera un '++ o --'");:}
+        | error tkn_parentesisiz tkn_int tkn_id tkn_igual tkn_num tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("\nbloque for sin palabra reservada: 'for'");:}
+        | tkn_for tkn_parentesisiz tkn_int tkn_id tkn_igual tkn_num tkn_puntocoma error tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("\nbloque for sin condicion");:}
+        | tkn_for error tkn_int tkn_id tkn_igual tkn_num tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("\nparentesis de apertura ausente en bloque for '('");:}
+        | tkn_for tkn_parentesisiz tkn_int error tkn_igual tkn_num tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("\nidentificador ausente en bloque for");:}
 ;
 
 WHILE ::= tkn_while tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder
+        | tkn_while tkn_parentesisiz CONDICION error tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("\nbloque while sin parentesis de cierra ')'");:}
 ;
 
 BLOQUE ::= WHILE BLOQUE:s
@@ -148,25 +157,27 @@ CONDICIONP::= VALOR OPCONDICION VALOR
 ;
 
 OPCONDICION::= tkn_oprel 
-                | tkn_igual 
+                | tkn_igual
+                | error{:parser.errores.add("\noperador relacional incorrecto");:}
 ;
 
-VALOR::= tkn_digitos 
-                | tkn_num 
-                | tkn_id               
+VALOR::=  tkn_num 
+          | tkn_id               
 ;
 
 TIPO::= tkn_char
         |tkn_intp
         |tkn_charp
         |tkn_int
-        | error {:parser.errores.add("Tipo de dato incorrecto");:}
+        |error {:parser.errores.add("\ntipo de dato incorrecto, debe de ser 'int, char, int* o char*");:}
+        
 ;
 
 
 
 PRINTF ::= tkn_printf tkn_parentesisiz tkn_cadena tkn_coma tkn_id tkn_parentesisde tkn_puntocoma
         | tkn_printf tkn_parentesisiz tkn_cadena tkn_parentesisde tkn_puntocoma
+        | tkn_printf tkn_parentesisiz error tkn_coma tkn_id tkn_parentesisde tkn_puntocoma{:parser.errores.add("\nconststr ausente en función printf");:}
 ;
 
 TERNARIO ::=  CONDICION tkn_ternario BLOQUE tkn_dospuntos BLOQUE tkn_puntocoma
@@ -175,10 +186,15 @@ TERNARIO ::=  CONDICION tkn_ternario BLOQUE tkn_dospuntos BLOQUE tkn_puntocoma
 CONTADOR ::= tkn_id tkn_increment tkn_puntocoma | tkn_id tkn_decrement tkn_puntocoma
 ;
 
-SCANF::= tkn_scanf tkn_parentesisiz CONSTSTR tkn_coma tkn_ampersand tkn_id tkn_parentesisde tkn_puntocoma
+SCANF::= tkn_scanf tkn_parentesisiz tkn_cadena tkn_coma tkn_ampersand tkn_id tkn_parentesisde tkn_puntocoma
 ;
 
 RETURN::= tkn_id
-          | tkn_num
+          |tkn_num
           |tkn_caracter
+          |error {:parser.errores.add("\tipo de dato de retorno incorrecto");:}
+;
+
+ITERADOR::= tkn_increment
+            |tkn_decrement
 ;

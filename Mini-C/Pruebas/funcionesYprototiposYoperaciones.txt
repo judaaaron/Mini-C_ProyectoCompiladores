@@ -4,25 +4,13 @@ char func(int a, int b, char c, char, char*, int*);
 char* func(int a, int b, char c, char, char*, int*);
 
 int main(){
+    a+b*8/1;
     int var = 6;
     int bar = jeje();
     calculo(a,b,c);
     5<10 ? "Hola" : 10;
     5<10 ? X : printf("%c", hola);;
     5<10 ? 5<10 ? "Hola" : 10; : calculo(a,b,c);;
-    for(int i=0; i<a; i++){
-        int var = 6;
-	if(a<b){
-		int var;
-		if(a>b){
-			int var;
-		}else{
-			int var;
-		}
-	}else{
-		int var;
-	}
-    }
     return 0;
 }
 
@@ -33,9 +21,7 @@ return hola;
 }
 
 int var (int a, int b){
-    while(i<a || (5<4)){
-       int var = 6;
-    }
+printf("%c", hola);
 
 return 5;
 }

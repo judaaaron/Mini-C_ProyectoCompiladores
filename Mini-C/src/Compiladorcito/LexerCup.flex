@@ -30,14 +30,13 @@ PARENTESISIZ = "("
 PARENTESISDE = ")"
 LLAVEIZ = "{"
 LLAVEDER = "}"
-OPREL = "<"|">"|"<="|">="|"!="|"=="
+OPREL = "<"|">"|"<="|">="|"!="|"=="|"="
 ID = {LETRAS}({LETRAS}|{DIGITOS})*|{LETRAS}({LETRAS}|{DIGITOS})*
 PRINTF = "printf"
 SCANF = "scanf"
 AND = "&&"
 OR = "||"
 COMA = ","
-ASIGNACION = "="
 OPADICION = "+"|"-"
 OPMULTI = "*"|"/"
 OPMOD = "%"
@@ -82,7 +81,6 @@ CONSTCHAR = "\'"(.)"\'"
     {NUMEROS} {return new Symbol(sym.tkn_num           ,yyline+1 ,yycolumn+1 ,yytext());}
      {INTP} {return new Symbol(sym.tkn_intp           ,yyline+1 ,yycolumn+1 ,yytext());}
     {CHARP} {return new Symbol(sym.tkn_charp           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {ASIGNACION}         {return new Symbol(sym.tkn_igual        ,yyline+1 ,yycolumn+1 ,yytext());}
     
 
     /* Unarios */

@@ -23,8 +23,7 @@ PARENTESISIZ = "("
 PARENTESISDE = ")"
 LLAVEIZ = "{"
 LLAVEDER = "}"
-OPREL = "<"|">"|"<="|">="|"!="|"=="
-ASIGNACION = "="
+OPREL = "<"|">"|"<="|">="|"!="|"=="|"="
 COMA = ","
 ID = {LETRAS}({LETRAS}|{DIGITOS})*|{LETRAS}({LETRAS}|{DIGITOS})*
 PRINTF = "printf"
@@ -85,7 +84,6 @@ CONSTCHAR = "\'"(.)"\'"
 
     /* Operadores logicos */
     
-    {ASIGNACION} {lexeme=yytext(); return ASIGNACION;}
     {OPREL} { lexeme=yytext(); return OPREL;}
     {TERNARIO}  {lexeme=yytext(); return TERNARIO;}
 

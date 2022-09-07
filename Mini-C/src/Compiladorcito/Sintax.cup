@@ -22,7 +22,7 @@ parser code
 
 
 terminal tkn_opadicion,tkn_opmulti, tkn_break, tkn_opmod ;
-terminal tkn_oprel ,tkn_main, tkn_igual, tkn_intp, tkn_charp;
+terminal tkn_oprel ,tkn_main, tkn_intp, tkn_charp;
 terminal tkn_digitos,tkn_if ,tkn_while, tkn_else,tkn_parentesisiz ,tkn_parentesisde ,tkn_llaveiz ,tkn_llaveder ; 
 terminal tkn_and,tkn_or,tkn_for,tkn_return, tkn_printf, tkn_scanf, tkn_increment, tkn_decrement;
 terminal tkn_dospuntos,tkn_int ,tkn_char, tkn_id, tkn_puntocoma, tkn_ternario, tkn_num, tkn_coma, tkn_porcentajed, tkn_porcentajec, tkn_letra;
@@ -31,7 +31,8 @@ terminal tkn_comilla, tkn_comillas, tkn_ampersand, tkn_cadena, tkn_caracter;
 
 non terminal INICIO, WHILE, IF, FOR, DECLARACION, BLOQUE, CONDICION, EXPRESION, ELSE, CONDICIONP, OPCONDICION, VALOR, TIPO, 
     IDINT, PRINTF, CONSTSTR, TERNARIO, CONTADOR, SCANF, FUNCION, FUNCIONPARAMS, DECLAPARAM, PROTOTIPO, MAIN, PROTOPARAMS, 
-    FUNCIONES, RETURN, PARAMS, TIPOS, LLAMADO, CALLBACK, ARGSPARAMS, ARGS, EXPRTERNARIO, OPARITM, EXPRFIN, EXPR, DECLVAR, ASIGN;
+    FUNCIONES, RETURN, PARAMS, TIPOS, LLAMADO, CALLBACK, ARGSPARAMS, ARGS, EXPRTERNARIO, OPARITM, EXPRFIN, EXPR, DECLVAR, ASIGN, ITERADOR,
+    DECLARACIONES;
 
 precedence left tkn_opadicion;
 precedence left tkn_opmulti, tkn_opmod;
@@ -40,21 +41,15 @@ start with INICIO;
 
 MAIN ::=  tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE tkn_return tkn_num tkn_puntocoma tkn_llaveder FUNCIONES
 ;
-ASIGN ::= tkn_id tkn_igual
-;
-DECLARACION::= DECLVAR tkn_puntocoma
+
+ASIGN ::= tkn_id tkn_oprel
 ;
 
-DECLVAR ::= TIPO IDINT
+DECLARACION::= TIPO IDINT tkn_puntocoma
+             {:System.out.println("DENTRO DE UNA DECLARACION");:}
 ;
 
-IDINT::= tkn_id tkn_coma IDINT 
-        | tkn_id 
-        | ASIGN tkn_num tkn_coma IDINT 
-        | ASIGN tkn_digitos 
-        | ASIGN tkn_caracter tkn_coma IDINT
-        | ASIGN tkn_caracter
-        |
+IDINT::= RETURN tkn_coma IDINT | ASIGN RETURN tkn_coma IDINT | RETURN
 ;
 
 FUNCIONES::= FUNCION FUNCIONES:s
@@ -74,7 +69,7 @@ PROTOPARAMS::= PARAMS
 ;
 
 ARGS::= ARGSPARAMS
-            |
+        |
 ;
 
 PARAMS::= TIPO tkn_id tkn_coma PARAMS| TIPO tkn_coma PARAMS | TIPO | TIPO tkn_id
@@ -84,15 +79,21 @@ DECLAPARAM::= TIPO tkn_id tkn_coma DECLAPARAM| TIPO tkn_id
 ;
 
 FUNCION::= TIPO tkn_id tkn_parentesisiz FUNCIONPARAMS tkn_parentesisde tkn_llaveiz BLOQUE tkn_return RETURN tkn_puntocoma tkn_llaveder 
+    {:System.out.println("DENTRO DE UNA FUNCION");:}
 ;
 
 ARGSPARAMS ::= tkn_id tkn_coma ARGSPARAMS| tkn_id
 ;
 
-LLAMADO::= tkn_id tkn_parentesisiz ARGS tkn_parentesisde tkn_puntocoma
-        | TIPO ASIGN tkn_id tkn_parentesisiz ARGS tkn_parentesisde tkn_puntocoma 
+LLAMADO::= TIPO ASIGN tkn_id tkn_parentesisiz ARGS tkn_parentesisde tkn_puntocoma
+        
+        
 ;
-PROTOTIPO::= TIPO tkn_id tkn_parentesisiz PROTOPARAMS tkn_parentesisde tkn_puntocoma | DECLARACION
+PROTOTIPO::= TIPO tkn_id tkn_parentesisiz PROTOPARAMS tkn_parentesisde tkn_puntocoma 
+             {:System.out.println("DENTRO DE UN PROTOTIPO");:}
+             | DECLARACION
+
+       
 ;
 
 IF::= tkn_if tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE 
@@ -103,7 +104,7 @@ ELSE ::= tkn_else tkn_llaveiz BLOQUE tkn_llaveder
         |
 ;
 
-FOR ::= tkn_for tkn_parentesisiz tkn_int ASIGN tkn_num tkn_puntocoma CONDICION tkn_puntocoma tkn_id tkn_increment tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder
+FOR ::= tkn_for tkn_parentesisiz tkn_int ASIGN RETURN tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder
 ;
 
 WHILE ::= tkn_while tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder
@@ -114,11 +115,9 @@ BLOQUE ::= WHILE BLOQUE
             | IF BLOQUE
             | DECLARACION BLOQUE
             | PRINTF BLOQUE
-            | TERNARIO BLOQUE
-            | CONTADOR BLOQUE
             | SCANF BLOQUE
-            | LLAMADO BLOQUE
             | EXPRFIN BLOQUE
+            | LLAMADO BLOQUE
             |
 ;
 
@@ -130,54 +129,41 @@ CONDICION ::= CONDICIONP tkn_and CONDICION
             | CONDICIONP
 ;
 
-CONDICIONP::= EXPR OPCONDICION EXPR
+CONDICIONP::= EXPR tkn_oprel EXPR
+{:System.out.println("DENTRO DE condicionp");:}
 ;
-
-OPCONDICION::= tkn_oprel 
-                | tkn_igual 
-;
-
 
 TIPO::= tkn_char
         |tkn_intp
         |tkn_charp
         |tkn_int
 ;
-OPARITM ::= OPARITM EXPRFIN | EXPRFIN
+
+EXPRFIN ::= TIPO ASIGN EXPR tkn_puntocoma | ASIGN EXPR tkn_puntocoma
+{:System.out.println("DENTRO DE exprfins");:}
 ;
-EXPRFIN ::= TIPO ASIGN EXPR tkn_puntocoma 
-;
+
+
 EXPR ::= EXPR tkn_opadicion EXPR 
         | EXPR tkn_opmulti EXPR 
         | EXPR tkn_opmod EXPR 
         | tkn_parentesisiz EXPR tkn_parentesisde  
-        | tkn_num 
-        | tkn_id                
+        | RETURN
+{:System.out.println("DENTRO DE expr");:}     
 ;
-
 
 PRINTF ::= tkn_printf tkn_parentesisiz tkn_cadena tkn_coma tkn_id tkn_parentesisde tkn_puntocoma
         | tkn_printf tkn_parentesisiz tkn_cadena tkn_parentesisde tkn_puntocoma
 ;
 
-TERNARIO ::=  CONDICION tkn_ternario EXPRTERNARIO tkn_dospuntos EXPRTERNARIO tkn_puntocoma
-;
-EXPRTERNARIO ::= tkn_cadena 
-                | PRINTF 
-                | tkn_caracter 
-                | tkn_num 
-                | tkn_id
-                | tkn_id tkn_parentesisiz ARGS tkn_parentesisde tkn_puntocoma
-                | TERNARIO
-;
-
-CONTADOR ::= tkn_id tkn_increment tkn_puntocoma | tkn_id tkn_decrement tkn_puntocoma
-;
-
-SCANF::= tkn_scanf tkn_parentesisiz CONSTSTR tkn_coma tkn_ampersand tkn_id tkn_parentesisde tkn_puntocoma
-;
 
 RETURN::= tkn_id
           | tkn_num
           |tkn_caracter
+;
+
+ITERADOR::= tkn_increment
+            |tkn_decrement
+            | tkn_opadicion tkn_oprel RETURN
+
 ;

@@ -133,6 +133,7 @@ BLOQUE ::= WHILE BLOQUE
             | SCANF BLOQUE
             | EXPRFIN BLOQUE
             | LLAMADO BLOQUE
+            | CONTADOR BLOQUE
             |
 ;
 
@@ -181,4 +182,17 @@ ITERADOR::= tkn_increment
             |tkn_decrement
             | tkn_opadicion tkn_oprel RETURN
 
+;
+
+TERNARIO ::=  CONDICION tkn_ternario EXPRTERNARIO tkn_dospuntos EXPRTERNARIO tkn_puntocoma
+;
+EXPRTERNARIO ::= tkn_cadena 
+                | PRINTF 
+                | tkn_caracter 
+                | VALOR 
+                | tkn_id tkn_parentesisiz ARGS tkn_parentesisde tkn_puntocoma
+                | TERNARIO
+;
+
+CONTADOR ::= tkn_id tkn_increment tkn_puntocoma | tkn_id tkn_decrement tkn_puntocoma
 ;

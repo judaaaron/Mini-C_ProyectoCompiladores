@@ -1,23 +1,38 @@
 package Compiladorcito;
 
-import java_cup.runtime.Symbol;
+import java_cup.runtime.*;
 import java.util.ArrayList;
 import java.util.*;
 import java.io.*;
 
-
-parser code
-{:
-    private Symbol s;
-    
-    public void syntax_error(Symbol s){
-        this.s = s;
+parser code {:
+     ArrayList gramas = new ArrayList();
+    public int cont = 0;
+    public int maximo(){
+    int a=5;
+    return a;
+}
+    ArrayList errores=new ArrayList();
+    public Symbol s;
+    @Override
+    public void syntax_error (Symbol s){
+        if(s.left==-1){
+        }else{
+                errores.add("Syntax error en la línea: " + (s.left) + " , columna: " +(s.right)+ " con el símbolo = "+(s.value));
     }
-
+}
+    @Override
+    public void unrecovered_syntax_error(Symbol s){
+    if(s.left==-1){
+    }else{
+        errores.add("Error desconocido, por favor revise la linea: " + (s.left ) + " y columna:  " + (s.right )+ "Con simbolo: "+s.value);
+    }    
+    }
     public Symbol getS(){
         return this.s;
     }
-:};
+:} ;
+
 
 
 

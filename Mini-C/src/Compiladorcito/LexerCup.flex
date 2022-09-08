@@ -31,6 +31,7 @@ PARENTESISDE = ")"
 LLAVEIZ = "{"
 LLAVEDER = "}"
 OPREL = "<"|">"|"<="|">="|"!="|"=="|"="
+VOID = "void"
 ID = {LETRAS}({LETRAS}|{DIGITOS})*|{LETRAS}({LETRAS}|{DIGITOS})*
 PRINTF = "printf"
 SCANF = "scanf"
@@ -39,6 +40,7 @@ OR = "||"
 COMA = ","
 OPADICION = "+"|"-"
 OPMULTI = "*"|"/"
+OPMOD = "%"
 PUNTOCOMA = ;
 INCREMENT = "++"
 DECREMENT = --
@@ -80,6 +82,7 @@ CONSTCHAR = "\'"(.)"\'"
     {NUMEROS} {return new Symbol(sym.tkn_num           ,yyline+1 ,yycolumn+1 ,yytext());}
      {INTP} {return new Symbol(sym.tkn_intp           ,yyline+1 ,yycolumn+1 ,yytext());}
     {CHARP} {return new Symbol(sym.tkn_charp           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {VOID} {return new Symbol(sym.tkn_void           ,yyline+1 ,yycolumn+1 ,yytext());}
    
     
 
@@ -98,6 +101,7 @@ CONSTCHAR = "\'"(.)"\'"
 
     {OPADICION} {return new Symbol(sym.tkn_opadicion           ,yyline+1 ,yycolumn+1 ,yytext());}
     {OPMULTI} {return new Symbol(sym.tkn_opmulti           ,yyline+1 ,yycolumn+1 ,yytext());}
+    {OPMOD} {return new Symbol(sym.tkn_opmod           ,yyline+1 ,yycolumn+1 ,yytext());}
 
 
      /* Overloaded */

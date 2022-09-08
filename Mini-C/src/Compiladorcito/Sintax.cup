@@ -37,7 +37,7 @@ parser code {:
 
 
 terminal tkn_opadicion,tkn_opmulti, tkn_break, tkn_opmod ;
-terminal tkn_oprel ,tkn_main, tkn_intp, tkn_charp;
+terminal tkn_oprel ,tkn_main, tkn_intp, tkn_charp, tkn_void;
 terminal tkn_digitos,tkn_if ,tkn_while, tkn_else,tkn_parentesisiz ,tkn_parentesisde ,tkn_llaveiz ,tkn_llaveder ; 
 terminal tkn_and,tkn_or,tkn_for,tkn_return, tkn_printf, tkn_scanf, tkn_increment, tkn_decrement;
 terminal tkn_dospuntos,tkn_int ,tkn_char, tkn_id, tkn_puntocoma, tkn_ternario, tkn_num, tkn_coma, tkn_porcentajed, tkn_porcentajec, tkn_letra;

@@ -35,7 +35,6 @@ parser code {:
 
 
 
-
 terminal tkn_opadicion,tkn_opmulti, tkn_break, tkn_opmod ;
 terminal tkn_oprel ,tkn_main, tkn_intp, tkn_charp, tkn_void;
 terminal tkn_digitos,tkn_if ,tkn_while, tkn_else,tkn_parentesisiz ,tkn_parentesisde ,tkn_llaveiz ,tkn_llaveder ; 
@@ -64,7 +63,7 @@ DECLARACION::= TIPO IDINT tkn_puntocoma
              {:System.out.println("DENTRO DE UNA DECLARACION");:}
 ;
 
-IDINT::= RETURN tkn_coma IDINT | ASIGN RETURN tkn_coma IDINT | RETURN
+IDINT::= RETURN tkn_coma IDINT | ASIGN RETURN tkn_coma IDINT | RETURN |
 ;
 
 FUNCIONES::= FUNCION FUNCIONES:s
@@ -153,6 +152,7 @@ TIPO::= tkn_char
         |tkn_intp
         |tkn_charp
         |tkn_int
+        |tkn_void
 ;
 
 EXPRFIN ::= TIPO ASIGN EXPR tkn_puntocoma | ASIGN EXPR tkn_puntocoma
@@ -184,15 +184,5 @@ ITERADOR::= tkn_increment
 
 ;
 
-TERNARIO ::=  CONDICION tkn_ternario EXPRTERNARIO tkn_dospuntos EXPRTERNARIO tkn_puntocoma
-;
-EXPRTERNARIO ::= tkn_cadena 
-                | PRINTF 
-                | tkn_caracter 
-                | VALOR 
-                | tkn_id tkn_parentesisiz ARGS tkn_parentesisde tkn_puntocoma
-                | TERNARIO
-;
-
-CONTADOR ::= tkn_id tkn_increment tkn_puntocoma | tkn_id tkn_decrement tkn_puntocoma
+CONTADOR ::= tkn_id ITERADOR tkn_puntocoma
 ;

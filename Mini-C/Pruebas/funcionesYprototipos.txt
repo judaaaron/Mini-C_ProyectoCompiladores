@@ -4,9 +4,13 @@ char func(int a, int b, char c, char, char*, int*);
 char* func(int a, int b, char c, char, char*, int*);
 
 int main(){
+    int a = a+b*8/1;
     int var = 6;
     int bar = jeje();
-    char x = calculo(a,b,c);
+    calculo(a,b,c);
+    5<10 ? "Hola" : 10;
+    5<10 ? X : printf("%c", hola);;
+    5<10 ? 5<10 ? "Hola" : 10; : calculo(a,b,c);;
     return 0;
 }
 

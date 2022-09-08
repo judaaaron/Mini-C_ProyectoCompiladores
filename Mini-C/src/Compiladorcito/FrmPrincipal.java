@@ -265,11 +265,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 }
                 txt_sin.append("\n");
 
-//                for (int i = 0; i < p.gramas.size(); i++) {
-//                    Text_final.append(p.gramas.get(i).toString() + "\n");
-//                }
-//                String formato = "edge [color=red];" + hacerDFS(p.raiz);
-//                p.raiz.exportarArbol(formato, "AST");
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {

@@ -59,6 +59,14 @@ MAIN ::=  tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE 
 ASIGN ::= tkn_id tkn_oprel
 ;
 
+TERNARIO ::= CONDICION tkn_ternario EXPRTERNARIO tkn_dospuntos EXPRTERNARIO tkn_puntocoma
+;
+EXPRTERNARIO ::= tkn_cadena 
+                | PRINTF 
+                | TERNARIO
+                | RETURN
+;
+
 DECLARACION::= TIPO IDINT tkn_puntocoma
              {:System.out.println("DENTRO DE UNA DECLARACION");:}
 ;
@@ -133,6 +141,7 @@ BLOQUE ::= WHILE BLOQUE
             | EXPRFIN BLOQUE
             | LLAMADO BLOQUE
             | CONTADOR BLOQUE
+            | TERNARIO BLOQUE
             |
 ;
 
@@ -155,7 +164,7 @@ TIPO::= tkn_char
         |tkn_void
 ;
 
-EXPRFIN ::= TIPO ASIGN EXPR tkn_puntocoma | ASIGN EXPR tkn_puntocoma
+EXPRFIN ::= TIPO ASIGN EXPR tkn_puntocoma
 {:System.out.println("DENTRO DE exprfins");:}
 ;
 
@@ -186,3 +195,4 @@ ITERADOR::= tkn_increment
 
 CONTADOR ::= tkn_id ITERADOR tkn_puntocoma
 ;
+

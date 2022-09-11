@@ -207,8 +207,8 @@ public class FrmPrincipal extends javax.swing.JFrame {
                         System.out.println(p.errores.get(i));
                         txt_sin.append(p.errores.get(i).toString() + "\n");
                         txt_sin.setForeground(Color.red);
-                        contErrors++;
                     }
+                     contErrors+= p.errores.size()/2;
                     long endTime = System.currentTimeMillis() - startTime; // tiempo en que se ejecuta su método
                     txt_sin.append("\n");
                     if (contErrors == 1) {
@@ -252,8 +252,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
                         System.out.println(p.errores.get(i));
                         txt_sin.append(p.errores.get(i).toString() + "\n");
                         txt_sin.setForeground(Color.red);
-                        contErrors++;
+                       
                     }
+                    contErrors+= p.errores.size()/2;
                     long endTime = System.currentTimeMillis() - startTime; // tiempo en que se ejecuta su método
                     txt_sin.append("\n");
                     if (contErrors == 1) {

@@ -45,8 +45,8 @@ public class Nodo {
         return idNodo + " [label=\"" + etiqueta +"\"];";
     }
 
-    public void addHijo(Object hijo) {
-        this.hijos.add((Nodo) hijo);
+    public void addHijo(Nodo hijo) {
+        this.hijos.add(hijo);
     }
 
     public String getEtiqueta() {

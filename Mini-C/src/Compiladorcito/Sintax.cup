@@ -38,28 +38,30 @@ parser code {:
 
 terminal tkn_opadicion,tkn_opmulti, tkn_break, tkn_opmod ;
 terminal tkn_oprel ,tkn_main, tkn_intp, tkn_charp, tkn_void;
-terminal tkn_digitos,tkn_if ,tkn_while, tkn_else,tkn_parentesisiz ,tkn_parentesisde ,tkn_llaveiz ,tkn_llaveder ; 
+terminal tkn_if ,tkn_while, tkn_else,tkn_parentesisiz ,tkn_parentesisde ,tkn_llaveiz ,tkn_llaveder ; 
 terminal tkn_and,tkn_or,tkn_for,tkn_return, tkn_printf, tkn_scanf, tkn_increment, tkn_decrement;
-terminal tkn_dospuntos,tkn_int ,tkn_char, tkn_id, tkn_puntocoma, tkn_ternario, tkn_num, tkn_coma, tkn_porcentajed, tkn_porcentajec, tkn_letra;
-terminal tkn_comilla, tkn_comillas, tkn_ampersand, tkn_cadena, tkn_caracter;
+terminal tkn_dospuntos,tkn_int ,tkn_char, tkn_id, tkn_puntocoma, tkn_ternario, tkn_num, tkn_coma;
+terminal tkn_ampersand, tkn_cadena, tkn_caracter;
 
 
-non terminal INICIO, WHILE, IF, FOR, DECLARACION, BLOQUE, CONDICION, ELSE, CONDICIONP, OPCONDICION, TIPO, 
-    IDINT, PRINTF, CONSTSTR, TERNARIO, CONTADOR, SCANF, FUNCION, FUNCIONPARAMS, DECLAPARAM, PROTOTIPO, MAIN, PROTOPARAMS, 
-    FUNCIONES, RETURN, PARAMS, TIPOS, LLAMADO, ARGSPARAMS, ARGS, EXPRTERNARIO, OPARITM, EXPRFIN, EXPR, DECLVAR, ASIGN, ITERADOR;
-
+non terminal WHILE, IF, FOR,CONDICION, ELSE, CONDICIONP, TIPO, 
+    IDINT, TERNARIO, CONTADOR, SCANF, FUNCION, FUNCIONPARAMS, DECLAPARAM, PROTOTIPO, PROTOPARAMS, 
+    RETURN, PARAMS, LLAMADO, ARGSPARAMS, ARGS, EXPRTERNARIO, EXPRFIN, EXPR, ASIGN, ITERADOR;
+non terminal Nodo INICIO,MAIN,BLOQUE,FUNCIONES,PRINTF,DECLARACION;
 
 precedence left tkn_opadicion;
 precedence left tkn_opmulti, tkn_opmod;
 
 start with INICIO;
 
-MAIN ::=  tkn_int tkn_main:id tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE:b tkn_return tkn_num tkn_puntocoma tkn_llaveder FUNCIONES:d
+MAIN ::=  tkn_int tkn_main:id tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE:p tkn_return tkn_num tkn_puntocoma tkn_llaveder FUNCIONES:d
           {:
             parser.gramas.add("Funcion main reconocida");
             System.out.println(id);
             Nodo nodo = new Nodo(id.toString(),parser.cont);
             parser.cont++;
+            nodo.addHijo(p);
+            System.out.println(p);
             parser.raiz=nodo;
           :}
           | tkn_int tkn_main tkn_parentesisiz error tkn_llaveiz BLOQUE tkn_return tkn_num tkn_puntocoma tkn_llaveder FUNCIONES {:parser.errores.add("Parentesis de cierre ')' ausente en el main\n");:}
@@ -162,7 +164,8 @@ WHILE ::= tkn_while tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQ
           | tkn_while tkn_parentesisiz CONDICION error tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("Parentesis de cierre ')' ausente en bloque while");:}
 ;
 
-BLOQUE ::= WHILE:i BLOQUE:s
+BLOQUE ::= 
+            DECLARACION:i BLOQUE:s
             {:
                 Nodo nodo = new Nodo("BLOQUE",parser.cont);
                 parser.cont++;
@@ -172,8 +175,15 @@ BLOQUE ::= WHILE:i BLOQUE:s
             :}    
             | FOR:i BLOQUE:s
             | IF:i BLOQUE:s
-            | DECLARACION:i BLOQUE:s
+            | WHILE:i BLOQUE:s
             | PRINTF:i BLOQUE:s
+            {:
+                Nodo nodo = new Nodo("BLOQUE",parser.cont);
+                parser.cont++;
+                nodo.addHijo(i);
+                nodo.addHijo(s);
+                RESULT=nodo;
+            :}
             | SCANF:i BLOQUE:s
             | EXPRFIN:i BLOQUE:s
             | LLAMADO:i BLOQUE:s

@@ -196,6 +196,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
                     txt_sin.append("\n");
                     long endTime = System.currentTimeMillis() - startTime; // tiempo en que se ejecuta su método
                     txt_sin.append("Compiliación finalizada con 0 errores, tiempo total: " + endTime + "ms\n");
+                    String formato = "edge [color=purple];" + hacerDFS(p.raiz);
+                    p.raiz.exportarArbol(formato, "AST");
+                    JOptionPane.showMessageDialog(this, "Árbol generado de forma satisfactoria");
                     txt_sin.setForeground(Color.green);
                 } else if (lexer.erroresLexicos.isEmpty() && !(p.errores.isEmpty())) {
                     txt_sin.append("Analizando léxico..." + "\n");
@@ -208,7 +211,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
                         txt_sin.append(p.errores.get(i).toString() + "\n");
                         txt_sin.setForeground(Color.red);
                     }
-                     contErrors+= p.errores.size()/2;
+                    contErrors += p.errores.size() / 2;
                     long endTime = System.currentTimeMillis() - startTime; // tiempo en que se ejecuta su método
                     txt_sin.append("\n");
                     if (contErrors == 1) {
@@ -252,9 +255,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
                         System.out.println(p.errores.get(i));
                         txt_sin.append(p.errores.get(i).toString() + "\n");
                         txt_sin.setForeground(Color.red);
-                       
+
                     }
-                    contErrors+= p.errores.size()/2;
+                    contErrors += p.errores.size() / 2;
                     long endTime = System.currentTimeMillis() - startTime; // tiempo en que se ejecuta su método
                     txt_sin.append("\n");
                     if (contErrors == 1) {
@@ -271,7 +274,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
             } catch (Exception ex) {
                 Symbol sym = p.getS();
                 System.out.println("error en columna " + (sym.right) + " fila: " + (sym.left) + ", texto: " + sym.toString());
-                txt_sin.setForeground(Color.red);
+                txt_sin.setForeground(Color.green);
             }
         } else {
             JOptionPane.showMessageDialog(this, "no se ha cargado algun archivo o escrito código");
@@ -329,6 +332,38 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 new FrmPrincipal().setVisible(true);
             }
         });
+    }
+
+    public String hacerDFS(Nodo node) {
+        ArrayList<String> recorrido = new ArrayList<>();
+        DFS(node, recorrido);
+        DFSAristas(node, node.getIdNodo(), recorrido);
+        String formato = "";
+        for (int i = 0; i < recorrido.size(); i++) {
+            formato += recorrido.get(i);
+        }
+        return formato;
+    }
+
+    public void DFS(Nodo node, ArrayList<String> recorrido) {
+        if (!node.getEtiqueta().equals("VACIO")) {
+            System.out.println(node.toString());
+            recorrido.add(node.toString());
+        }
+        for (int i = 0; i < node.getHijos().size(); i++) {
+            DFS(node.getHijos().get(i), recorrido);
+        }
+    }
+
+    public void DFSAristas(Nodo node, int padre, ArrayList<String> recorrido) {
+        if (node.getIdNodo() != padre) {
+            if (!node.getEtiqueta().equals("VACIO")) {
+                recorrido.add(padre + "->" + node.getIdNodo() + ";");
+            }
+        }
+        for (int i = 0; i < node.getHijos().size(); i++) {
+            DFSAristas(node.getHijos().get(i), node.getIdNodo(), recorrido);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

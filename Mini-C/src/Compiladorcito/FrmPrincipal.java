@@ -46,7 +46,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jLabel3 = new javax.swing.JLabel();
@@ -62,6 +62,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -197,10 +198,10 @@ public class FrmPrincipal extends javax.swing.JFrame {
                     txt_sin.append("\n");
                     long endTime = System.currentTimeMillis() - startTime; // tiempo en que se ejecuta su método
                     txt_sin.append("Compiliación finalizada con 0 errores, tiempo total: " + endTime + "ms\n");
-                    String formato = "edge [color=purple];" + hacerDFS(p.raiz);
-                    p.raiz.exportarArbol(formato, "AST");
-                    JOptionPane.showMessageDialog(this, "Árbol generado de forma satisfactoria");
-                    txt_sin.setForeground(Color.green);
+//                    String formato = "edge [color=purple];" + hacerDFS(p.raiz);
+//                    p.raiz.exportarArbol(formato, "AST");
+//                    JOptionPane.showMessageDialog(this, "Árbol generado de forma satisfactoria");
+                      txt_sin.setForeground(Color.green);
                 } else if (lexer.erroresLexicos.isEmpty() && !(p.errores.isEmpty())) {
                     txt_sin.append("Analizando léxico..." + "\n");
                     txt_sin.append("No se encontraron errores léxicos" + "\n");

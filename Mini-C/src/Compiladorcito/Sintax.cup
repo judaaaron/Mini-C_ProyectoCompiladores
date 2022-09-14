@@ -148,7 +148,7 @@ PROTOTIPO::= TIPO tkn_id tkn_parentesisiz PROTOPARAMS tkn_parentesisde tkn_punto
  
 ;
 
-IF::= tkn_if tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder
+IF::= tkn_if tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder
        {:parser.gramas.add("Funcion if reconocida");
                 Nodo nodo = new Nodo("IF",parser.cont);
                 parser.cont++;
@@ -179,7 +179,7 @@ FOR ::= tkn_for tkn_parentesisiz tkn_int ASIGN RETURN tkn_puntocoma CONDICION:i 
        | tkn_for tkn_parentesisiz tkn_int ASIGN RETURN tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde error BLOQUE tkn_llaveder {:parser.errores.add("Llave de apertura '{' ausente en bloque for");:}
 ;
 
-WHILE ::= tkn_while tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder
+WHILE ::= tkn_while tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder
            {:parser.gramas.add("Funcion WHILE reconocida");
                 Nodo nodo = new Nodo("WHILE",parser.cont);
                 parser.cont++;

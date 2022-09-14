@@ -14,19 +14,12 @@ public class Nodo {
 
     public Nodo() {
     }
-
-   
-    /////
+    
     public Nodo(String _etiqueta, int _idNodo) {
         this.etiqueta = _etiqueta;
         this.idNodo = _idNodo;
         
-    }    
-   
-
-    
-   
-  
+    }  
     public void exportarArbol(String dotFormat, String fileName) {
         GraphViz gv = new GraphViz();
         gv.addln(gv.start_graph());

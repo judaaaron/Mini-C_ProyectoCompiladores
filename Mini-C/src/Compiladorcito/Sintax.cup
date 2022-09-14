@@ -44,24 +44,25 @@ terminal tkn_dospuntos,tkn_int ,tkn_char, tkn_id, tkn_puntocoma, tkn_ternario, t
 terminal tkn_ampersand, tkn_cadena, tkn_caracter;
 
 
-non terminal WHILE, IF, FOR,CONDICION, ELSE, CONDICIONP, TIPO, 
+non terminal Nodo WHILE, IF, FOR,CONDICION, ELSE, CONDICIONP, TIPO, 
     IDINT, TERNARIO, CONTADOR, SCANF, FUNCION, FUNCIONPARAMS, DECLAPARAM, PROTOTIPO, PROTOPARAMS, 
     RETURN, PARAMS, LLAMADO, ARGSPARAMS, ARGS, EXPRTERNARIO, EXPRFIN, EXPR, ASIGN, ITERADOR;
-non terminal Nodo INICIO,MAIN,BLOQUE,FUNCIONES,PRINTF,DECLARACION;
+non terminal Nodo INICIO,MAIN,BLOQUE,FUNCIONES,PRINTF,DECLARACION, MAINS;
 
 precedence left tkn_opadicion;
 precedence left tkn_opmulti, tkn_opmod;
 
-start with INICIO;
+start with MAINS;
+MAINS::= INICIO
+        | MAIN
+;
 
-MAIN ::=  tkn_int tkn_main:id tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE:p tkn_return tkn_num tkn_puntocoma tkn_llaveder FUNCIONES:d
+MAIN ::= tkn_int tkn_main:id tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE:p tkn_return tkn_num tkn_puntocoma tkn_llaveder FUNCIONES:d
           {:
             parser.gramas.add("Funcion main reconocida");
-            System.out.println(id);
             Nodo nodo = new Nodo(id.toString(),parser.cont);
             parser.cont++;
             nodo.addHijo(p);
-            System.out.println(p);
             parser.raiz=nodo;
           :}
           | tkn_int tkn_main tkn_parentesisiz error tkn_llaveiz BLOQUE tkn_return tkn_num tkn_puntocoma tkn_llaveder FUNCIONES {:parser.errores.add("Parentesis de cierre ')' ausente en el main\n");:}
@@ -83,7 +84,8 @@ EXPRTERNARIO ::= tkn_cadena
                 | RETURN
 ;
 
-DECLARACION::= TIPO IDINT tkn_puntocoma | error IDINT tkn_puntocoma {:parser.errores.add("Tipo de dato incorrecto para declaración de variables\n");:}
+DECLARACION::= TIPO:i IDINT:j tkn_puntocoma 
+            | error IDINT tkn_puntocoma {:parser.errores.add("Tipo de dato incorrecto para declaración de variables\n");:}
 ;
 
 IDINT::= RETURN tkn_coma IDINT | ASIGN RETURN tkn_coma IDINT | RETURN |
@@ -94,7 +96,7 @@ FUNCIONES::= FUNCION FUNCIONES:s
 ;
 
 INICIO::= PROTOTIPO INICIO
-            | MAIN   
+          |     
 ;
 
 FUNCIONPARAMS::= DECLAPARAM
@@ -130,17 +132,29 @@ ARGSPARAMS ::= tkn_id tkn_coma ARGSPARAMS| tkn_id
 ;
 
 LLAMADO::= TIPO ASIGN tkn_id tkn_parentesisiz ARGS tkn_parentesisde tkn_puntocoma
-        
-        
-;
-PROTOTIPO::= TIPO tkn_id tkn_parentesisiz PROTOPARAMS tkn_parentesisde tkn_puntocoma 
-             | DECLARACION
-             |error tkn_id tkn_parentesisiz PROTOPARAMS tkn_parentesisde tkn_puntocoma  {:parser.errores.add("Tipo de dato incorrecto para prototipo\n");:}
-
        
 ;
 
-IF::= tkn_if tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE 
+
+PROTOTIPO::= TIPO tkn_id tkn_parentesisiz PROTOPARAMS tkn_parentesisde tkn_puntocoma 
+            {:
+            parser.gramas.add("PROTOTIPO reconocida");
+            Nodo nodo = new Nodo("PROTOTIPO",parser.cont);
+            parser.cont++;
+            parser.raiz=nodo;
+          :}
+             | DECLARACION
+             |error tkn_id tkn_parentesisiz PROTOPARAMS tkn_parentesisde tkn_puntocoma  {:parser.errores.add("Tipo de dato incorrecto para prototipo\n");:}
+ 
+;
+
+IF::= tkn_if tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder
+       {:parser.gramas.add("Funcion if reconocida");
+                Nodo nodo = new Nodo("IF",parser.cont);
+                parser.cont++;
+                nodo.addHijo(j);
+                RESULT=nodo;
+        :}  
       |tkn_if error CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE {:parser.errores.add("Parentesis de apertura ausente");:}
       |tkn_if tkn_parentesisiz CONDICION tkn_parentesisde error BLOQUE tkn_llaveder ELSE {:parser.errores.add("Llave de apertura ausente en bloque if");:}
       |tkn_if tkn_parentesisiz CONDICION error tkn_llaveiz BLOQUE tkn_llaveder ELSE {:parser.errores.add("Parentesis de cierre ausente ')' en bloque if");:}
@@ -151,14 +165,27 @@ ELSE ::= tkn_else tkn_llaveiz BLOQUE tkn_llaveder
         |
 ;
 
-FOR ::= tkn_for tkn_parentesisiz tkn_int ASIGN RETURN tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder
+FOR ::= tkn_for tkn_parentesisiz tkn_int ASIGN RETURN tkn_puntocoma CONDICION:i tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder
+        {:parser.gramas.add("Funcion FOR reconocida");
+                Nodo nodo = new Nodo("FOR",parser.cont);
+                parser.cont++;
+                nodo.addHijo(i);
+                nodo.addHijo(j);
+                RESULT=nodo;
+            :}  
        | tkn_for tkn_parentesisiz ASIGN RETURN tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder
        | tkn_for error tkn_int ASIGN RETURN tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("Parentesis de apertura '(' ausente en bloque for");:}
        | tkn_for tkn_parentesisiz tkn_int ASIGN RETURN tkn_puntocoma CONDICION tkn_puntocoma tkn_id error tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("autoincremento o autodecremento ausente en bloque for");:}
        | tkn_for tkn_parentesisiz tkn_int ASIGN RETURN tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde error BLOQUE tkn_llaveder {:parser.errores.add("Llave de apertura '{' ausente en bloque for");:}
 ;
 
-WHILE ::= tkn_while tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder
+WHILE ::= tkn_while tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder
+           {:parser.gramas.add("Funcion WHILE reconocida");
+                Nodo nodo = new Nodo("WHILE",parser.cont);
+                parser.cont++;
+                nodo.addHijo(j);
+                RESULT=nodo;
+            :}  
           | tkn_while tkn_parentesisiz CONDICION tkn_parentesisde error BLOQUE tkn_llaveder {:parser.errores.add("Llave de apertura '{' ausente en bloque while");:}
           | tkn_while error CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("Parentesis de apertura '(' ausente en bloque while");:}
           | tkn_while tkn_parentesisiz CONDICION error tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("Parentesis de cierre ')' ausente en bloque while");:}
@@ -174,8 +201,29 @@ BLOQUE ::=
                 RESULT=nodo;
             :}    
             | FOR:i BLOQUE:s
+            {:
+                Nodo nodo = new Nodo("BLOQUE",parser.cont);
+                parser.cont++;
+                nodo.addHijo(i);
+                nodo.addHijo(s);
+                RESULT=nodo;
+            :}
             | IF:i BLOQUE:s
+            {:
+                Nodo nodo = new Nodo("BLOQUE",parser.cont);
+                parser.cont++;
+                nodo.addHijo(i);
+                nodo.addHijo(s);
+                RESULT=nodo;
+            :}
             | WHILE:i BLOQUE:s
+            {:
+                Nodo nodo = new Nodo("BLOQUE",parser.cont);
+                parser.cont++;
+                nodo.addHijo(i);
+                nodo.addHijo(s);
+                RESULT=nodo;
+            :}
             | PRINTF:i BLOQUE:s
             {:
                 Nodo nodo = new Nodo("BLOQUE",parser.cont);
@@ -184,12 +232,49 @@ BLOQUE ::=
                 nodo.addHijo(s);
                 RESULT=nodo;
             :}
+            
             | SCANF:i BLOQUE:s
+            {:
+                Nodo nodo = new Nodo("BLOQUE",parser.cont);
+                parser.cont++;
+                nodo.addHijo(i);
+                nodo.addHijo(s);
+                RESULT=nodo;
+            :}
             | EXPRFIN:i BLOQUE:s
+            {:
+                Nodo nodo = new Nodo("BLOQUE",parser.cont);
+                parser.cont++;
+                nodo.addHijo(i);
+                nodo.addHijo(s);
+                RESULT=nodo;
+            :}
             | LLAMADO:i BLOQUE:s
+            {:
+                Nodo nodo = new Nodo("BLOQUE",parser.cont);
+                parser.cont++;
+                nodo.addHijo(i);
+                nodo.addHijo(s);
+                RESULT=nodo;
+            :}
             | CONTADOR:i BLOQUE:s
+            {:
+                Nodo nodo = new Nodo("BLOQUE",parser.cont);
+                parser.cont++;
+                nodo.addHijo(i);
+                nodo.addHijo(s);
+                RESULT=nodo;
+            :}
             | TERNARIO:i BLOQUE:s
-            |{:
+            {:
+                Nodo nodo = new Nodo("BLOQUE",parser.cont);
+                parser.cont++;
+                nodo.addHijo(i);
+                nodo.addHijo(s);
+                RESULT=nodo;
+            :}
+            |
+            {:
                     Nodo node = new Nodo("VACIO",parser.cont);
                     parser.cont++;
                     node.addHijo(new Nodo("VACIO",parser.cont++));
@@ -228,6 +313,11 @@ EXPR ::= EXPR tkn_opadicion EXPR
 ;
 
 PRINTF ::= tkn_printf tkn_parentesisiz tkn_cadena tkn_coma tkn_id tkn_parentesisde tkn_puntocoma
+            {:parser.gramas.add("Funcion PRINTF reconocida");
+                Nodo nodo = new Nodo("PRINT F",parser.cont);
+                parser.cont++;
+                RESULT=nodo;
+            :}
         |  tkn_printf tkn_parentesisiz tkn_cadena tkn_parentesisde tkn_puntocoma
         |  tkn_printf tkn_parentesisiz tkn_cadena error tkn_id tkn_parentesisde tkn_puntocoma {:parser.errores.add("coma ',' ausente en la funcion printf");:}
         |  tkn_printf tkn_parentesisiz tkn_cadena tkn_coma error tkn_parentesisde tkn_puntocoma {:parser.errores.add("identificador ausente en la funcion printf");:}
@@ -236,6 +326,11 @@ PRINTF ::= tkn_printf tkn_parentesisiz tkn_cadena tkn_coma tkn_id tkn_parentesis
 ;
 
 SCANF::= tkn_scanf tkn_parentesisiz tkn_cadena tkn_coma tkn_ampersand tkn_id tkn_parentesisde tkn_puntocoma
+            {:parser.gramas.add("Funcion SCANF reconocida");
+                Nodo nodo = new Nodo("SCANF",parser.cont);
+                parser.cont++;
+                RESULT=nodo;
+            :}
          | tkn_scanf tkn_parentesisiz tkn_cadena tkn_coma error tkn_id tkn_parentesisde tkn_puntocoma {:parser.errores.add("Puntero a identificador '&' ausente en la funcion scanf");:}
          | tkn_scanf tkn_parentesisiz tkn_cadena tkn_coma tkn_ampersand error tkn_parentesisde tkn_puntocoma {:parser.errores.add("identificador ausente en la funcion scanf");:}
          | tkn_scanf tkn_parentesisiz tkn_cadena tkn_coma tkn_ampersand tkn_id error tkn_puntocoma {:parser.errores.add("parentesis de cierre ')' ausente en la funcion scanf");:}

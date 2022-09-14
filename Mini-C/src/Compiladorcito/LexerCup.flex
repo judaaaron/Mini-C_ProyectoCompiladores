@@ -109,7 +109,6 @@ CONSTCHAR = "\'"(.)"\'"
     {AND} {return new Symbol(sym.tkn_and           ,yyline+1 ,yycolumn+1 ,yytext());}
     {AMPERSAND} {return new Symbol(sym.tkn_ampersand          ,yyline+1 ,yycolumn+1 ,yytext());}
     {OR} {return new Symbol(sym.tkn_or           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {DIGITOS} {return new Symbol(sym.tkn_digitos       ,yyline+1 ,yycolumn+1 ,yytext());}
     
        /* Separators */
     {PUNTOCOMA} {return new Symbol(sym.tkn_puntocoma           ,yyline+1 ,yycolumn+1 ,yytext());}

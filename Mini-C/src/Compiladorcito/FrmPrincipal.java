@@ -45,7 +45,8 @@ public class FrmPrincipal extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jLabel3 = new javax.swing.JLabel();
@@ -172,7 +173,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         }
     }
 
-    private void btn_compilarActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_compilarActionPerformed
+     private void btn_compilarActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_compilarActionPerformed
 
         txt_sin.setText("");
         int contErrors = 0;
@@ -282,14 +283,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     }// GEN-LAST:event_btn_compilarActionPerformed
 
-    private void btn_analizarActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_analizarActionPerformed
-
-        // try {
-        // analizarLexico();
-        // } catch (IOException ex) {
-        // Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        // }
-    }// GEN-LAST:event_btn_analizarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -380,10 +373,12 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JTextArea txt_resultado;
     private javax.swing.JTextArea txt_sin;
     // End of variables declaration//GEN-END:variables
-
-    /*comandos para ejectutar
-    jflex LexerCup.flex
-    java -jar java-cup-11a.jar Sintax.cup
-
+    boolean codigoabierto = true;
+    File archivo = new File("C:\\Users\\Juda\\Desktop\\Mini-C_ProyectoCompiladores\\Mini-C\\Pruebas\\printf.txt");
+    /*
+     * comandos para ejectutar
+     * jflex LexerCup.flex
+     * java -jar java-cup-11a.jar Sintax.cup
+     * 
      */
 }

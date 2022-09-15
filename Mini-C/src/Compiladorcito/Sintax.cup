@@ -44,35 +44,27 @@ terminal tkn_dospuntos,tkn_int ,tkn_char, tkn_id, tkn_puntocoma, tkn_ternario, t
 terminal tkn_ampersand, tkn_cadena, tkn_caracter;
 
 
-non terminal WHILE, IF, FOR,CONDICION, ELSE, CONDICIONP, TIPO, 
+non terminal Nodo WHILE, IF, FOR,CONDICION, ELSE, CONDICIONP, TIPO, 
     IDINT, TERNARIO, CONTADOR, SCANF, FUNCION, FUNCIONPARAMS, DECLAPARAM, PROTOTIPO, PROTOPARAMS, 
     RETURN, PARAMS, LLAMADO, ARGSPARAMS, ARGS, EXPRTERNARIO, EXPRFIN, EXPR, ASIGN, ITERADOR;
-non terminal INICIO,MAIN,BLOQUE,FUNCIONES,PRINTF,DECLARACION, PROGRAM,LISTADO_PROTOTIPOS,LISTADO_FUNCIONES, DECLR, COSO;
+non terminal Nodo INICIO,MAIN,BLOQUE,FUNCIONES,PRINTF,DECLARACION, PROGRAM,PROTOTIPOS,LISTADO_FUNCIONES, DECLR, PROTOFUN;
 
-start with LISTADO_PROTOTIPOS;
+start with INICIO;
 
-PROGRAM::= LISTADO_FUNCIONES:f
+INICIO::= PROGRAM
 ;
 
-DECLR::= TIPO tkn_id
+PROGRAM::= PROTOTIPO PROGRAM
+          | FUNCION PROGRAM
 ;
 
-COSO::= DECLR tkn_parentesisiz PARAMS tkn_parentesisde
+PROTOTIPO::= PROTOFUN tkn_puntocoma
 ;
 
-PARAMS::= TIPO tkn_coma PARAMS
-         | DECLR tkn_coma PARAMS
-         | DECLR
-         | TIPO
+FUNCION::= PROTOFUN tkn_llaveiz tkn_llaveder
 ;
 
-
-LISTADO_FUNCIONES ::= FUNCION LISTADO_FUNCIONES
-;
-
-LISTADO_PROTOTIPOS::= PROTOTIPO LISTADO_PROTOTIPOS
-                    | PROGRAM
-                    |
+PROTOFUN::= DECLR tkn_parentesisiz PARAMS tkn_parentesisde
 ;
 
 TIPO::= tkn_int
@@ -81,8 +73,11 @@ TIPO::= tkn_int
         | tkn_intp
 ;
 
-FUNCION::= COSO tkn_llaveiz tkn_llaveder
+DECLR::= TIPO tkn_id
 ;
 
-PROTOTIPO::= COSO tkn_puntocoma
+PARAMS::= TIPO tkn_coma PARAMS
+         | DECLR tkn_coma PARAMS
+         | DECLR
+         | TIPO
 ;

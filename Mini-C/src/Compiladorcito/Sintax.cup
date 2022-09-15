@@ -93,7 +93,7 @@ DECLASIGN::= DECLR tkn_oprel EXPR tkn_coma DECLASIGN
             | DECLR tkn_oprel EXPR
             | DECLR tkn_coma DECLASIGN 
             | tkn_id tkn_coma DECLASIGN
-            | tkn_id error DECLASIGN {:parser.errores.add("Se esperaba el simbolo ',' en declaración \n");:}
+            | tkn_id error DECLASIGN {:parser.errores.add("Se esperaba el simbolo ',' en declaración o en argumentos en llamado de la función \n");:}
             | tkn_id tkn_oprel EXPR tkn_coma DECLASIGN 
             | tkn_id tkn_oprel EXPR
             | tkn_id error EXPR {:parser.errores.add("Se esperaba operador relacional en declaración \n");:}
@@ -102,6 +102,8 @@ DECLASIGN::= DECLR tkn_oprel EXPR tkn_coma DECLASIGN
             | tkn_id tkn_oprel tkn_id tkn_parentesisiz ARGS tkn_parentesisde
             | DECLR tkn_oprel tkn_id tkn_parentesisiz error tkn_parentesisde {:parser.errores.add("Argumentos en llamado de función erroneos \n");:}
             | tkn_id tkn_oprel tkn_id tkn_parentesisiz error tkn_parentesisde {:parser.errores.add("Argumentos en llamado de función erroneos \n");:}
+            | tkn_id tkn_parentesisiz ARGS tkn_parentesisde
+            | tkn_id tkn_parentesisiz ARGS error {:parser.errores.add("Se esperaba un ')' en llamado de la funcion \n");:}
 ;
 
 
@@ -191,6 +193,7 @@ CONDICION ::= CONDICIONP tkn_and CONDICION
 ;
 
 CONDICIONP::= EXPR tkn_oprel EXPR
+
 ;
 
 TIPO::= tkn_char

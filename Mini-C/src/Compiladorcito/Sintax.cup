@@ -105,6 +105,8 @@ PARAMS::= TIPO tkn_coma PARAMS
 
 IF::= tkn_if tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE 
      | tkn_if tkn_parentesisiz CONDICION tkn_parentesisde error BLOQUE tkn_llaveder ELSE {:parser.errores.add("Llave de apertura '{' ausente en bloque if\n");:}
+     | tkn_if error CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE {:parser.errores.add("Se esperaba el simbolo '(' en bloque if\n");:}
+     | tkn_if tkn_parentesisiz CONDICION error tkn_llaveiz BLOQUE tkn_llaveder ELSE {:parser.errores.add("Se esperaba el simbolo ')' en bloque if\n");:}
 ;
 
 ELSE ::= tkn_else tkn_llaveiz BLOQUE tkn_llaveder
@@ -119,6 +121,7 @@ FOR ::= tkn_for tkn_parentesisiz ASIGNACION EXPR tkn_puntocoma CONDICION tkn_pun
 
 WHILE ::= tkn_while tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder
         | tkn_while tkn_parentesisiz CONDICION tkn_parentesisde error BLOQUE:j tkn_llaveder  {:parser.errores.add("Se esperaba un '{' en bloque while\n");:}
+        | tkn_while tkn_parentesisiz CONDICION error tkn_llaveiz BLOQUE:j tkn_llaveder  {:parser.errores.add("Se esperaba un ')' en bloque while\n");:}
 ;
 
 PRINTF ::= tkn_printf tkn_parentesisiz tkn_cadena tkn_coma tkn_id tkn_parentesisde tkn_puntocoma

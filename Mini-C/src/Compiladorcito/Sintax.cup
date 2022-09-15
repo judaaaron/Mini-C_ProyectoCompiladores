@@ -46,8 +46,10 @@ terminal tkn_ampersand, tkn_cadena, tkn_caracter;
 
 non terminal Nodo WHILE, IF, FOR,CONDICION, ELSE, CONDICIONP, TIPO, 
     IDINT, TERNARIO, CONTADOR, SCANF, FUNCION, FUNCIONPARAMS, DECLAPARAM, PROTOTIPO, PROTOPARAMS, 
-    RETURN, PARAMS, LLAMADO, ARGSPARAMS, ARGS, EXPRTERNARIO, EXPRFIN, EXPR, ASIGN, ITERADOR;
+    RETURN, PARAMS, LLAMADO, ARGSPARAMS, ARGS, EXPRTERNARIO, EXPRFIN, EXPR, ASIGN, ITERADOR, ASIGNACION, DECLASIGN;
 non terminal Nodo INICIO,MAIN,BLOQUE,FUNCIONES,PRINTF,DECLARACION, PROGRAM,PROTOTIPOS,LISTADO_FUNCIONES, DECLR, PROTOFUN;
+precedence left tkn_opadicion;
+precedence left tkn_opmulti, tkn_opmod;
 
 start with INICIO;
 
@@ -56,28 +58,119 @@ INICIO::= PROGRAM
 
 PROGRAM::= PROTOTIPO PROGRAM
           | FUNCION PROGRAM
+          | ASIGN PROGRAM
 ;
 
 PROTOTIPO::= PROTOFUN tkn_puntocoma
 ;
 
-FUNCION::= PROTOFUN tkn_llaveiz tkn_llaveder
+FUNCION::= PROTOFUN tkn_llaveiz BLOQUE tkn_return EXPR tkn_puntocoma tkn_llaveder | tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE tkn_return EXPR tkn_puntocoma tkn_llaveder
 ;
 
 PROTOFUN::= DECLR tkn_parentesisiz PARAMS tkn_parentesisde
 ;
 
-TIPO::= tkn_int
-        | tkn_char
-        | tkn_charp
-        | tkn_intp
+DECLR::= TIPO tkn_id
 ;
 
-DECLR::= TIPO tkn_id
+ASIGNACION::= TIPO tkn_id tkn_oprel | tkn_id tkn_oprel
+;
+
+DECLASIGN::= DECLR tkn_oprel EXPR tkn_coma DECLASIGN 
+            | DECLR tkn_oprel EXPR
+            | DECLR tkn_coma DECLASIGN 
+            | tkn_id tkn_coma DECLASIGN
+            | tkn_id tkn_oprel EXPR tkn_coma DECLASIGN 
+            | tkn_id tkn_oprel EXPR
+            | DECLR 
+            | DECLR tkn_oprel tkn_id tkn_parentesisiz ARGS tkn_parentesisde 
+            | tkn_id tkn_oprel tkn_id tkn_parentesisiz ARGS tkn_parentesisde
+;
+
+ASIGN::= DECLASIGN tkn_puntocoma
 ;
 
 PARAMS::= TIPO tkn_coma PARAMS
          | DECLR tkn_coma PARAMS
          | DECLR
          | TIPO
+         | 
 ;
+
+IF::= tkn_if tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE 
+;
+
+ELSE ::= tkn_else tkn_llaveiz BLOQUE tkn_llaveder
+        | tkn_else IF
+        |
+;
+
+FOR ::= tkn_for tkn_parentesisiz ASIGNACION EXPR tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder  
+;
+
+WHILE ::= tkn_while tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder
+;
+
+PRINTF ::= tkn_printf tkn_parentesisiz tkn_cadena tkn_coma tkn_id tkn_parentesisde tkn_puntocoma
+          | tkn_printf tkn_parentesisiz tkn_cadena tkn_parentesisde tkn_puntocoma
+;
+
+SCANF::= tkn_scanf tkn_parentesisiz tkn_cadena tkn_coma tkn_ampersand tkn_id tkn_parentesisde tkn_puntocoma
+;
+
+BLOQUE ::=  IF BLOQUE
+            | FOR BLOQUE
+            | WHILE BLOQUE
+            | ASIGN BLOQUE
+            | SCANF BLOQUE
+            | PRINTF BLOQUE
+            | CONTADOR BLOQUE
+            |
+;
+
+
+ITERADOR::= tkn_increment
+            |tkn_decrement
+            | tkn_opadicion tkn_oprel EXPR
+            | tkn_opmulti tkn_oprel EXPR
+
+;
+
+CONDICION ::= CONDICIONP tkn_and CONDICION
+            | CONDICIONP tkn_or CONDICION
+            | tkn_parentesisiz CONDICIONP tkn_parentesisde tkn_and CONDICION 
+            | tkn_parentesisiz CONDICIONP tkn_parentesisde tkn_or CONDICION 
+            | tkn_parentesisiz CONDICIONP tkn_parentesisde
+            | CONDICIONP
+;
+
+CONDICIONP::= EXPR tkn_oprel EXPR
+;
+
+TIPO::= tkn_char
+        |tkn_intp
+        |tkn_charp
+        |tkn_int
+        |tkn_void
+;
+
+EXPR ::= EXPR tkn_opadicion EXPR 
+        | EXPR tkn_opmulti EXPR 
+        | EXPR tkn_opmod EXPR 
+        | tkn_parentesisiz EXPR tkn_parentesisde
+        | tkn_id 
+        | tkn_num
+        | tkn_caracter 
+
+;
+ARGS::= ARGSPARAMS
+        |
+;
+
+ARGSPARAMS ::= tkn_id tkn_coma ARGSPARAMS| tkn_id
+;
+
+CONTADOR ::= tkn_id ITERADOR tkn_puntocoma
+;
+
+

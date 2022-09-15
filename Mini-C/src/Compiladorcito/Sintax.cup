@@ -44,16 +44,23 @@ terminal tkn_dospuntos,tkn_int ,tkn_char, tkn_id, tkn_puntocoma, tkn_ternario, t
 terminal tkn_ampersand, tkn_cadena, tkn_caracter;
 
 
-non terminal Nodo WHILE, IF, FOR,CONDICION, ELSE, CONDICIONP, TIPO, 
-    IDINT, TERNARIO, CONTADOR, SCANF, FUNCION, FUNCIONPARAMS, DECLAPARAM, PROTOTIPO, PROTOPARAMS, 
-    RETURN, PARAMS, LLAMADO, ARGSPARAMS, ARGS, EXPRTERNARIO, EXPRFIN, EXPR, ASIGN, ITERADOR, ASIGNACION, DECLASIGN;
-non terminal Nodo INICIO,MAIN,BLOQUE,FUNCIONES,PRINTF,DECLARACION, PROGRAM,PROTOTIPOS,LISTADO_FUNCIONES, DECLR, PROTOFUN;
+non terminal Nodo WHILE, IF, FOR,CONDICION, ELSE, CONDICIONP, TIPO, CONTADOR, SCANF, FUNCION, PROTOTIPO, 
+    PARAMS, ARGSPARAMS, ARGS, EXPR, ASIGN, ITERADOR, ASIGNACION, DECLASIGN;
+non terminal Nodo INICIO,BLOQUE,PRINTF, PROGRAM, DECLR, PROTOFUN;
+
 precedence left tkn_opadicion;
 precedence left tkn_opmulti, tkn_opmod;
 
 start with INICIO;
 
-INICIO::= PROGRAM
+INICIO::= PROGRAM:p
+        {:
+            parser.gramas.add("Inicio de programa reconocido");
+            Nodo nodo = new Nodo("PROGRAMA",parser.cont);
+            parser.cont++;
+            nodo.addHijo(p);
+            parser.raiz=nodo;
+          :}
 ;
 
 PROGRAM::= PROTOTIPO PROGRAM
@@ -61,7 +68,7 @@ PROGRAM::= PROTOTIPO PROGRAM
           | ASIGN PROGRAM
 ;
 
-PROTOTIPO::= PROTOFUN tkn_puntocoma | PROTOFUN error {:parser.errores.add("Error en fin de linea se espera un ';' \n");:}
+PROTOTIPO::= PROTOFUN tkn_puntocoma
 ;
 
 FUNCION::= PROTOFUN tkn_llaveiz BLOQUE tkn_return EXPR tkn_puntocoma tkn_llaveder 
@@ -72,28 +79,33 @@ FUNCION::= PROTOFUN tkn_llaveiz BLOQUE tkn_return EXPR tkn_puntocoma tkn_llavede
 ;
 
 PROTOFUN::= DECLR tkn_parentesisiz PARAMS tkn_parentesisde
+           | DECLR error PARAMS tkn_parentesisde {:parser.errores.add("Se esperaba un '(' en la funcion o prototipo\n");:}
+
 ;
 
-DECLR::= TIPO tkn_id
+DECLR::= TIPO tkn_id | error tkn_id {:parser.errores.add("Tipo de dato incorrecto\n");:}
 ;
 
-ASIGNACION::= TIPO tkn_id tkn_oprel | tkn_id tkn_oprel
+ASIGNACION::= TIPO tkn_id tkn_oprel | tkn_id tkn_oprel | TIPO error tkn_oprel {:parser.errores.add("Se esperaba un identificador en bloque for\n");:}
 ;
 
 DECLASIGN::= DECLR tkn_oprel EXPR tkn_coma DECLASIGN 
             | DECLR tkn_oprel EXPR
             | DECLR tkn_coma DECLASIGN 
             | tkn_id tkn_coma DECLASIGN
-            | tkn_id error DECLASIGN error {:parser.errores.add("Se esperaba el simbolo ',' en declaración \n");:}
+            | tkn_id error DECLASIGN {:parser.errores.add("Se esperaba el simbolo ',' en declaración \n");:}
             | tkn_id tkn_oprel EXPR tkn_coma DECLASIGN 
             | tkn_id tkn_oprel EXPR
+            | tkn_id error EXPR {:parser.errores.add("Se esperaba operador relacional en declaración \n");:}
             | DECLR 
             | DECLR tkn_oprel tkn_id tkn_parentesisiz ARGS tkn_parentesisde 
             | tkn_id tkn_oprel tkn_id tkn_parentesisiz ARGS tkn_parentesisde
+            | DECLR tkn_oprel tkn_id tkn_parentesisiz error tkn_parentesisde {:parser.errores.add("Argumentos en llamado de función erroneos \n");:}
+            | tkn_id tkn_oprel tkn_id tkn_parentesisiz error tkn_parentesisde {:parser.errores.add("Argumentos en llamado de función erroneos \n");:}
 ;
 
 
-ASIGN::= DECLASIGN tkn_puntocoma |  error tkn_puntocoma {:parser.errores.add("Error en declaracion \n");:}
+ASIGN::= DECLASIGN tkn_puntocoma |  error tkn_puntocoma {:parser.errores.add("Declaracion de variable incorrecta \n");:}
 ;
 
 PARAMS::= TIPO tkn_coma PARAMS
@@ -111,17 +123,22 @@ IF::= tkn_if tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_
 
 ELSE ::= tkn_else tkn_llaveiz BLOQUE tkn_llaveder
         | tkn_else IF
+        | tkn_else error BLOQUE tkn_llaveder {:parser.errores.add("Se esperaba el simbolo '{' en else\n");:} 
         |
 ;
 
-FOR ::= tkn_for tkn_parentesisiz ASIGNACION EXPR tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder
-        | tkn_for error ASIGNACION EXPR tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder {:parser.errores.add("Se esperaba un parentesis de apertura '(' for\n");:}
-        | tkn_for tkn_parentesisiz ASIGNACION EXPR tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR error tkn_llaveiz BLOQUE:j tkn_llaveder {:parser.errores.add("Se esperaba un parentesis de cierre ')' for\n");:}
+FOR ::= tkn_for tkn_parentesisiz ASIGNACION EXPR tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder
+        | tkn_for error ASIGNACION EXPR tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("Se esperaba un parentesis de apertura '(' for\n");:}
+        | tkn_for tkn_parentesisiz ASIGNACION EXPR tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR error tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("Se esperaba un parentesis de cierre ')' for\n");:}
+        | tkn_for tkn_parentesisiz error EXPR tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("Asignacion o declaracion incorrecta en bloque for\n");:}
+        | tkn_for tkn_parentesisiz ASIGNACION EXPR tkn_puntocoma CONDICION tkn_puntocoma tkn_id error tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("Iteracion asuente en ciclo for\n");:}
 ;
 
 WHILE ::= tkn_while tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder
-        | tkn_while tkn_parentesisiz CONDICION tkn_parentesisde error BLOQUE:j tkn_llaveder  {:parser.errores.add("Se esperaba un '{' en bloque while\n");:}
-        | tkn_while tkn_parentesisiz CONDICION error tkn_llaveiz BLOQUE:j tkn_llaveder  {:parser.errores.add("Se esperaba un ')' en bloque while\n");:}
+        | tkn_while tkn_parentesisiz CONDICION tkn_parentesisde error BLOQUE tkn_llaveder {:parser.errores.add("Se esperaba un '{' en bloque while\n");:}
+        | tkn_while tkn_parentesisiz CONDICION error tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("Se esperaba un ')' en bloque while\n");:}
+        | tkn_while error CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("Se esperaba un '(' en bloque while\n");:}
+      
 ;
 
 PRINTF ::= tkn_printf tkn_parentesisiz tkn_cadena tkn_coma tkn_id tkn_parentesisde tkn_puntocoma
@@ -168,6 +185,9 @@ CONDICION ::= CONDICIONP tkn_and CONDICION
             | tkn_parentesisiz CONDICIONP tkn_parentesisde tkn_or CONDICION 
             | tkn_parentesisiz CONDICIONP tkn_parentesisde
             | CONDICIONP
+            | error {:parser.errores.add("Operador relacional ausente en condicion");:}
+            | error tkn_and CONDICION {:parser.errores.add("Expresion erronea o ausente en condicion");:}
+
 ;
 
 CONDICIONP::= EXPR tkn_oprel EXPR
@@ -187,6 +207,7 @@ EXPR ::= EXPR tkn_opadicion EXPR
         | tkn_id 
         | tkn_num
         | tkn_caracter 
+        | error {:parser.errores.add("Expresión incorrecta");:}
 
 ;
 ARGS::= ARGSPARAMS
@@ -197,6 +218,7 @@ ARGSPARAMS ::= tkn_id tkn_coma ARGSPARAMS| tkn_id
 ;
 
 CONTADOR ::= tkn_id ITERADOR tkn_puntocoma
+             | tkn_id error tkn_puntocoma {:parser.errores.add("Iterador en identificador incorrecta");:}
 ;
 
 

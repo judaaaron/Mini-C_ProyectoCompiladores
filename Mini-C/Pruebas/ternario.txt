@@ -1,0 +1,4 @@
+int main(){
+	printf( (a>b) ? "Hola" : "adios" );
+return 0;
+}

@@ -46,7 +46,7 @@ terminal tkn_ampersand, tkn_cadena, tkn_caracter;
 
 non terminal Nodo WHILE, IF, FOR,CONDICION, ELSE, CONDICIONP, TIPO, CONTADOR, SCANF, FUNCION, PROTOTIPO, 
     PARAMS, ARGSPARAMS, ARGS, EXPR, ASIGN, ITERADOR, ASIGNACION, DECLASIGN;
-non terminal Nodo INICIO,BLOQUE,PRINTF, PROGRAM, DECLR, PROTOFUN;
+non terminal Nodo INICIO,BLOQUE,PRINTF, PROGRAM, DECLR, PROTOFUN, TIPOAPUNT, TERNARIO;
 
 precedence left tkn_opadicion;
 precedence left tkn_opmulti, tkn_opmod;
@@ -117,6 +117,8 @@ PARAMS::= TIPO tkn_coma PARAMS
          | 
 ;
 
+TERNARIO ::= tkn_parentesisiz CONDICION tkn_parentesisde tkn_ternario tkn_cadena tkn_dospuntos tkn_cadena
+;
 IF::= tkn_if tkn_parentesisiz CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE 
      | tkn_if tkn_parentesisiz CONDICION tkn_parentesisde error BLOQUE tkn_llaveder ELSE {:parser.errores.add("Llave de apertura '{' ausente en bloque if\n");:}
      | tkn_if error CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE {:parser.errores.add("Se esperaba el simbolo '(' en bloque if\n");:}
@@ -197,10 +199,13 @@ CONDICIONP::= EXPR tkn_oprel EXPR
 ;
 
 TIPO::= tkn_char
-        |tkn_intp
-        |tkn_charp
+        |TIPOAPUNT
         |tkn_int
         |tkn_void
+;
+
+TIPOAPUNT ::= tkn_int tkn_opmulti
+        | tkn_char tkn_opmulti
 ;
 
 EXPR ::= EXPR tkn_opadicion EXPR 

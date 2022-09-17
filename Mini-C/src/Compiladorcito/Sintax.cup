@@ -140,30 +140,113 @@ DECLR::= TIPO:t tkn_id:k
 ASIGNACION::= TIPO tkn_id tkn_oprel | tkn_id tkn_oprel | TIPO error tkn_oprel {:parser.errores.add("Se esperaba un identificador en bloque for\n");:}
 ;
 
-DECLASIGN::= DECLR tkn_oprel EXPR tkn_coma DECLASIGN 
-            | DECLR tkn_oprel EXPR
-            | DECLR tkn_coma DECLASIGN 
-            | tkn_id tkn_coma DECLASIGN
+DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
+            {:
+                Nodo nodo = new Nodo("ASIGNACION",parser.cont);
+                parser.cont++;
+                nodo.addHijo(d);
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++;
+                nodo.addHijo(e);
+                nodo.addHijo(a);
+                RESULT=nodo;
+            :}
+            | DECLR:d tkn_oprel:id EXPR:e
+            {:
+                Nodo nodo = new Nodo("ASIGNACION",parser.cont);
+                parser.cont++;
+                nodo.addHijo(d);
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++;
+                nodo.addHijo(e);
+                RESULT=nodo;
+             :}
+            | DECLR:d tkn_coma DECLASIGN:e
+            {:
+                Nodo nodo = new Nodo("DECLARACION",parser.cont);
+                parser.cont++;
+                nodo.addHijo(d);
+                nodo.addHijo(e);
+                RESULT=nodo;
+            :}
+
+            | tkn_id tkn_coma DECLASIGN:d
+            {:
+                Nodo nodo = new Nodo("DECLARACION",parser.cont);
+                parser.cont++;
+                nodo.addHijo(d);
+                RESULT=nodo;
+            :}
             | tkn_id error DECLASIGN {:parser.errores.add("Se esperaba el simbolo ',' en declaración o en argumentos en llamado de la función \n");:}
-            | tkn_id tkn_oprel EXPR tkn_coma DECLASIGN 
-            | tkn_id tkn_oprel EXPR
+            | tkn_id tkn_oprel:id EXPR:e tkn_coma DECLASIGN:s
+             {:
+                Nodo nodo = new Nodo("ASIGNACION",parser.cont);
+                parser.cont++;
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++;
+                nodo.addHijo(e);
+                nodo.addHijo(s);
+                RESULT=nodo;
+            :}
+            | tkn_id tkn_oprel:id EXPR:e
+            {:
+                Nodo nodo = new Nodo("ASIGNACION",parser.cont);
+                parser.cont++;
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++;
+                nodo.addHijo(e);
+                RESULT=nodo;
+            :}
             | tkn_id error EXPR {:parser.errores.add("Se esperaba operador relacional en declaración \n");:}
-            | DECLR 
-            | DECLR tkn_oprel tkn_id tkn_parentesisiz ARGS tkn_parentesisde 
-            | tkn_id tkn_oprel tkn_id tkn_parentesisiz ARGS tkn_parentesisde
+            | DECLR:d
+            {:
+                Nodo nodo = new Nodo("DECLARACION",parser.cont);
+                parser.cont++;
+                nodo.addHijo(d);
+                RESULT=nodo;
+            :} 
+            | DECLR:d tkn_oprel:id tkn_id tkn_parentesisiz ARGS:a tkn_parentesisde 
+            {:
+                Nodo nodo= new Nodo("LLAMADO",parser.cont);
+                parser.cont++;
+                nodo.addHijo(d);
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++; 
+                nodo.addHijo(a);
+                RESULT=nodo;              
+            :}
+            | tkn_id:id1 tkn_oprel:id tkn_id tkn_parentesisiz ARGS:a tkn_parentesisde
+            {:
+                Nodo nodo = new Nodo("LLAMADO",parser.cont);
+                parser.cont++;
+                nodo.addHijo(new Nodo(id1.toString(),parser.cont));
+                parser.cont++;
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++;
+                nodo.addHijo(a);
+                RESULT=nodo;
+            :}
             | DECLR tkn_oprel tkn_id tkn_parentesisiz error tkn_parentesisde {:parser.errores.add("Argumentos en llamado de función erroneos \n");:}
             | tkn_id tkn_oprel tkn_id tkn_parentesisiz error tkn_parentesisde {:parser.errores.add("Argumentos en llamado de función erroneos \n");:}
-            | tkn_id tkn_parentesisiz ARGS tkn_parentesisde
+            | tkn_id tkn_parentesisiz ARGS:a tkn_parentesisde
+            {:
+                Nodo nodo= new Nodo("LLAMADO",parser.cont);
+                parser.cont++;
+                nodo.addHijo(a);
+                RESULT=nodo;              
+            :}
             | tkn_id tkn_parentesisiz ARGS error {:parser.errores.add("Se esperaba un ')' en llamado de la funcion \n");:}
 ;
 
 
-ASIGN::= tkn_ampersand tkn_puntocoma
-            {:
-                Nodo nodo = new Nodo("ASIGNACIONES",parser.cont);
-                parser.cont++;
-                RESULT=nodo;
-            :}
+ASIGN::= DECLASIGN:d tkn_puntocoma 
+         {:
+            Nodo nodo = new Nodo("ASIGNACIONES",parser.cont);
+            parser.cont++;
+            nodo.addHijo(d);
+            RESULT=nodo;
+        :}
+        |  error tkn_puntocoma {:parser.errores.add("Declaracion de variable incorrecta \n");:}
 ;
 
 PARAMS::= TIPO:t tkn_coma PARAMS:p
@@ -573,15 +656,21 @@ EXPR ::= EXPR:s tkn_opadicion:id EXPR:o
                 RESULT=nodo;
                 :}
         | tkn_caracter: car
-        {:
+            {:
                 Nodo nodo = new Nodo(car.toString(),parser.cont);
                 parser.cont++;
                 RESULT=nodo;
-                :}
+            :}
         | error {:parser.errores.add("Expresión incorrecta");:}
 
 ;
-ARGS::= ARGSPARAMS
+ARGS::= ARGSPARAMS:a
+         {:
+                Nodo nodo = new Nodo("ARGSPARAM",parser.cont);
+                parser.cont++;
+                nodo.addHijo(a);
+                RESULT=nodo;
+            :}
         |{:
             Nodo node = new Nodo("VACIO",parser.cont);
             parser.cont++;
@@ -589,8 +678,23 @@ ARGS::= ARGSPARAMS
          :}
 ;
 
-ARGSPARAMS ::= tkn_id tkn_coma ARGSPARAMS 
-            | tkn_id
+ARGSPARAMS ::= tkn_id:id tkn_coma ARGSPARAMS:a
+             {:
+                Nodo nodo= new Nodo("ARGS",parser.cont);
+                parser.cont++;
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++; 
+                nodo.addHijo(a);
+                RESULT=nodo;              
+            :}
+            | tkn_id:id
+             {:
+                Nodo nodo= new Nodo("ARGS",parser.cont);
+                parser.cont++;
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++; 
+                RESULT=nodo;              
+            :}
 ;
 
 CONTADOR ::= tkn_id ITERADOR tkn_puntocoma

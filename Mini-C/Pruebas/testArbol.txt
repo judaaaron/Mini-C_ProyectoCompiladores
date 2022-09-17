@@ -1,6 +1,6 @@
 int a(int a);
 int a(int a);
-&;
+int a,b;
 int a(int a, int b){
 if(b>a){
 }else{
@@ -9,9 +9,9 @@ scanf("%d", &paulina);
 }
 }
 
-for(int i = 0;; i++){
+for(int i = 0; i > 0; i++){
 printf("%c", Paulina);
 }
 
-return brauny;
+return value;
 }

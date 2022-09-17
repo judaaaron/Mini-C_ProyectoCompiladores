@@ -198,9 +198,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
                     txt_sin.append("\n");
                     long endTime = System.currentTimeMillis() - startTime; // tiempo en que se ejecuta su método
                     txt_sin.append("Compiliación finalizada con 0 errores, tiempo total: " + endTime + "ms\n");
-//                    String formato = "edge [color=purple];" + hacerDFS(p.raiz);
-//                    p.raiz.exportarArbol(formato, "AST");
-//                    JOptionPane.showMessageDialog(this, "Árbol generado de forma satisfactoria");
+                    String formato = "edge [color=green];" + hacerDFS(p.raiz);
+                    p.raiz.exportarArbol(formato, "AST");
+                    JOptionPane.showMessageDialog(this, "Árbol generado de forma satisfactoria");
                       txt_sin.setForeground(Color.green);
                 } else if (lexer.erroresLexicos.isEmpty() && !(p.errores.isEmpty())) {
                     txt_sin.append("Analizando léxico..." + "\n");

@@ -78,11 +78,8 @@ CONSTCHAR = "\'"(.)"\'"
     {FOR} {return new Symbol(sym.tkn_for           ,yyline+1 ,yycolumn+1 ,yytext());}
     {RETURN} {return new Symbol(sym.tkn_return           ,yyline+1 ,yycolumn+1 ,yytext());}
     {NUMEROS} {return new Symbol(sym.tkn_num           ,yyline+1 ,yycolumn+1 ,yytext());}
-     {INTP} {return new Symbol(sym.tkn_intp           ,yyline+1 ,yycolumn+1 ,yytext());}
-    {CHARP} {return new Symbol(sym.tkn_charp           ,yyline+1 ,yycolumn+1 ,yytext());}
     {VOID} {return new Symbol(sym.tkn_void           ,yyline+1 ,yycolumn+1 ,yytext());}
    
-    
 
     /* Unarios */
     {INCREMENT} {return new Symbol(sym.tkn_increment           ,yyline+1, yycolumn+1, yytext());}

@@ -46,36 +46,62 @@ terminal tkn_ampersand, tkn_cadena, tkn_caracter;
 
 non terminal Nodo WHILE, IF, FOR,CONDICION, ELSE, CONDICIONP, TIPO, CONTADOR, SCANF, FUNCION, PROTOTIPO, 
     PARAMS, ARGSPARAMS, ARGS, EXPR, ASIGN, ITERADOR, ASIGNACION, DECLASIGN;
-non terminal Nodo INICIO,BLOQUE,PRINTF, PROGRAM, DECLR, PROTOFUN, TIPOAPUNT, TERNARIO;
+non terminal Nodo INICIO,BLOQUE,PRINTF, FUNCIONES, DECLR, PROTOFUN, TIPOAPUNT, TERNARIO, FUNCIONS , FUNCIONC;
 
 precedence left tkn_opadicion;
 precedence left tkn_opmulti, tkn_opmod;
 
 start with INICIO;
 
-INICIO::= PROGRAM:p
+INICIO::= FUNCIONES:b
         {:
-            parser.gramas.add("Inicio de programa reconocido");
-            Nodo nodo = new Nodo("PROGRAMA",parser.cont);
-            parser.cont++;
-            nodo.addHijo(p);
-            parser.raiz=nodo;
-          :}
+        Nodo nodo = new Nodo("PROGRAMA",parser.cont);
+        parser.cont++;
+        nodo.addHijo(b);
+        parser.raiz=nodo;
+        :}
 ;
 
-PROGRAM::= PROTOTIPO:t PROGRAM:p
-           {:
+FUNCIONES::= PROTOTIPO:i FUNCIONES:f
+        {:
                 Nodo nodo = new Nodo("CUERPO",parser.cont);
                 parser.cont++;
-                nodo.addHijo(p);
-                nodo.addHijo(t);
+                nodo.addHijo(i);
+                nodo.addHijo(f);
+                RESULT=nodo;
+        :}
+            |FUNCION:i FUNCIONES:f
+             {:
+                Nodo nodo = new Nodo("FUNCION COMPLEJA",parser.cont);
+                parser.cont++;
+                nodo.addHijo(i);
+                nodo.addHijo(f);
                 RESULT=nodo;
             :}
-          | FUNCION PROGRAM
-          | ASIGN PROGRAM
+
+            |ASIGN:i FUNCIONES:f
+             {:
+                Nodo nodo = new Nodo("VARGLOBALES",parser.cont);
+                parser.cont++;
+                nodo.addHijo(i);
+                nodo.addHijo(f);
+                RESULT=nodo;
+            :}
+
+            | {:
+                    Nodo node = new Nodo("VACIO",parser.cont);
+                    parser.cont++;
+                    RESULT = node;
+             :}
 ;
 
-PROTOTIPO::= PROTOFUN tkn_puntocoma
+PROTOTIPO::= PROTOFUN:i tkn_puntocoma
+            {:
+                Nodo nodo = new Nodo("PROTOTIPO",parser.cont);
+                parser.cont++;
+                nodo.addHijo(i);
+                RESULT=nodo;
+            :}
 ;
 
 FUNCION::= PROTOFUN:p tkn_llaveiz BLOQUE:j tkn_return EXPR:e tkn_puntocoma tkn_llaveder
@@ -87,30 +113,25 @@ FUNCION::= PROTOFUN:p tkn_llaveiz BLOQUE:j tkn_return EXPR:e tkn_puntocoma tkn_l
                 nodo.addHijo(e);
                 RESULT=nodo;
           :}
-           | tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE tkn_return EXPR tkn_puntocoma tkn_llaveder
-           | PROTOFUN tkn_llaveiz BLOQUE tkn_return EXPR tkn_puntocoma error  {:parser.errores.add("Llave de cierre '}' ausente en la funcion\n");:}
-           | PROTOFUN tkn_llaveiz BLOQUE tkn_return EXPR error tkn_llaveiz  {:parser.errores.add("Se esperaba un ';' en linea de retorno de la funcion\n");:}
-          
 ;
 
 PROTOFUN::= DECLR:d tkn_parentesisiz PARAMS:p tkn_parentesisde
-            {:parser.gramas.add("Tipo de funcion reconocido");
-                Nodo nodo = new Nodo("TIPO",parser.cont);
+            {:
+                Nodo nodo = new Nodo("PROTOFUN",parser.cont);
                 parser.cont++;
                 nodo.addHijo(d);
                 nodo.addHijo(p);
                 RESULT=nodo;
-             :}
-           | DECLR error PARAMS tkn_parentesisde {:parser.errores.add("Se esperaba un '(' en la funcion o prototipo\n");:}
-
+            :}
 ;
 
 DECLR::= TIPO:t tkn_id:k 
         {:
-                Nodo nodo = new Nodo("DECLARACION",parser.cont);
+            Nodo nodo = new Nodo("DECL",parser.cont);
                 parser.cont++;
-                nodo.addHijo(t.toString());
-                nodo.addHijo(k.toString());
+                nodo.addHijo(t);
+                nodo.addHijo(new Nodo(k.toString(),parser.cont));
+                parser.cont++;
                 RESULT=nodo;
         :}
          | error tkn_id {:parser.errores.add("Tipo de dato incorrecto\n");:}
@@ -137,62 +158,89 @@ DECLASIGN::= DECLR tkn_oprel EXPR tkn_coma DECLASIGN
 ;
 
 
-ASIGN::= DECLASIGN tkn_puntocoma |  error tkn_puntocoma {:parser.errores.add("Declaracion de variable incorrecta \n");:}
+ASIGN::= tkn_ampersand tkn_puntocoma
+            {:
+                Nodo nodo = new Nodo("ASIGNACIONES",parser.cont);
+                parser.cont++;
+                RESULT=nodo;
+            :}
 ;
 
-PARAMS::= TIPO tkn_coma PARAMS
-          {:parser.gramas.add("Params reconocido");
-                Nodo nodo = new Nodo("PARAMS",parser.cont);
-                parser.cont++;
-                RESULT=nodo;
-          :}
-         | DECLR tkn_coma PARAMS
+PARAMS::= TIPO:t tkn_coma PARAMS:p
          {:parser.gramas.add("Params reconocido");
-                Nodo nodo = new Nodo("PARAMS",parser.cont);
-                parser.cont++;
-                RESULT=nodo;
-          :}
-         | DECLR
+            Nodo nodo = new Nodo("PARAMS",parser.cont);
+            parser.cont++;
+            nodo.addHijo(t)     ;           
+            nodo.addHijo(p);
+            RESULT=nodo;
+         :}
+         | DECLR:t tkn_coma PARAMS:p
          {:parser.gramas.add("Params reconocido");
-                Nodo nodo = new Nodo("PARAMS",parser.cont);
-                parser.cont++;
-                RESULT=nodo;
-          :}
-         | TIPO
+            Nodo nodo = new Nodo("PARAMS",parser.cont);
+            parser.cont++;
+            nodo.addHijo(t);               
+            nodo.addHijo(p);
+            RESULT=nodo;
+         :}
+         | DECLR:t
          {:parser.gramas.add("Params reconocido");
-                Nodo nodo = new Nodo("PARAMS",parser.cont);
-                parser.cont++;
-                RESULT=nodo;
-          :}
-         |
-            {:
-                Nodo node = new Nodo("EMPTYPARAMS",parser.cont);
-                parser.cont++;
-                node.addHijo(new Nodo("EMPTYPARAMS",parser.cont++));
-                parser.cont++;
-                RESULT = node;
-            :}
+            Nodo nodo = new Nodo("PARAMS",parser.cont);
+            parser.cont++;
+            nodo.addHijo(t);                
+            RESULT=nodo;
+         :}
+         | TIPO:t
+         {:parser.gramas.add("Params reconocido");
+            Nodo nodo = new Nodo("PARAMS",parser.cont);
+            parser.cont++;
+            nodo.addHijo(t);                
+            RESULT=nodo;
+         :}
+         |{:
+            Nodo node = new Nodo("VACIO",parser.cont);
+            parser.cont++;
+            RESULT = node;
+         :}
+           
 ;
 
 TERNARIO ::= tkn_parentesisiz CONDICION tkn_parentesisde tkn_ternario tkn_cadena tkn_dospuntos tkn_cadena
 ;
 
-IF::= tkn_if tkn_parentesisiz CONDICION:c tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder ELSE 
-         {:parser.gramas.add("Funcion if reconocida");
-                Nodo nodo = new Nodo("IF",parser.cont);
-                parser.cont++;
-                nodo.addHijo(j);
-                RESULT=nodo;
-        :}  
+IF::= tkn_if tkn_parentesisiz CONDICION:c tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder ELSE:e
+        {:parser.gramas.add("Funcion if reconocida");
+            Nodo nodo = new Nodo("IF",parser.cont);
+            parser.cont++;
+            nodo.addHijo(c);
+            nodo.addHijo(j);
+            nodo.addHijo(e);
+            RESULT=nodo;
+        :} 
      | tkn_if tkn_parentesisiz CONDICION tkn_parentesisde error BLOQUE tkn_llaveder ELSE {:parser.errores.add("Llave de apertura '{' ausente en bloque if\n");:}
      | tkn_if error CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder ELSE {:parser.errores.add("Se esperaba el simbolo '(' en bloque if\n");:}
      | tkn_if tkn_parentesisiz CONDICION error tkn_llaveiz BLOQUE tkn_llaveder ELSE {:parser.errores.add("Se esperaba el simbolo ')' en bloque if\n");:}
 ;
 
-ELSE ::= tkn_else tkn_llaveiz BLOQUE tkn_llaveder
-        | tkn_else IF
+ELSE ::= tkn_else tkn_llaveiz BLOQUE:j tkn_llaveder
+        {:parser.gramas.add("Else reconocido");
+            Nodo nodo = new Nodo("ELSE",parser.cont);
+            parser.cont++;
+            nodo.addHijo(j);
+            RESULT=nodo;
+        :} 
+        | tkn_else IF:i
+        {:parser.gramas.add("Else if reconocido");
+            Nodo nodo = new Nodo("ELSE IF",parser.cont);
+            parser.cont++;
+            nodo.addHijo(i);
+            RESULT=nodo;
+        :}
         | tkn_else error BLOQUE tkn_llaveder {:parser.errores.add("Se esperaba el simbolo '{' en else\n");:} 
-        |
+        |{:
+            Nodo node = new Nodo("VACIO",parser.cont);
+            parser.cont++;
+            RESULT = node;
+         :}
 ;
 
 FOR ::= tkn_for tkn_parentesisiz ASIGNACION EXPR:e tkn_puntocoma CONDICION:c tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder
@@ -211,22 +259,24 @@ FOR ::= tkn_for tkn_parentesisiz ASIGNACION EXPR:e tkn_puntocoma CONDICION:c tkn
 ;
 
 WHILE ::= tkn_while tkn_parentesisiz CONDICION:c tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder
-         {:parser.gramas.add("Funcion WHILE reconocida");
-                Nodo nodo = new Nodo("WHILE",parser.cont);
-                parser.cont++;
-                nodo.addHijo(c);
-                nodo.addHijo(j);
-                RESULT=nodo;
-         :}  
+        {:parser.gramas.add("Funcion WHILE reconocida");
+            Nodo nodo = new Nodo("WHILE",parser.cont);
+            parser.cont++;
+            nodo.addHijo(c);
+            nodo.addHijo(j);
+            RESULT=nodo;
+         :} 
         | tkn_while tkn_parentesisiz CONDICION tkn_parentesisde error BLOQUE tkn_llaveder {:parser.errores.add("Se esperaba un '{' en bloque while\n");:}
         | tkn_while tkn_parentesisiz CONDICION error tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("Se esperaba un ')' en bloque while\n");:}
         | tkn_while error CONDICION tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("Se esperaba un '(' en bloque while\n");:}
       
 ;
 
-PRINTF ::= tkn_printf tkn_parentesisiz tkn_cadena tkn_coma tkn_id tkn_parentesisde tkn_puntocoma
-           {:parser.gramas.add("Funcion PRINTF reconocida");
+PRINTF ::= tkn_printf tkn_parentesisiz tkn_cadena tkn_coma tkn_id:id tkn_parentesisde tkn_puntocoma
+            {:parser.gramas.add("Funcion PRINTF reconocida");
                 Nodo nodo = new Nodo("PRINT F",parser.cont);
+                parser.cont++;
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
                 parser.cont++;
                 RESULT=nodo;
             :}
@@ -245,11 +295,13 @@ PRINTF ::= tkn_printf tkn_parentesisiz tkn_cadena tkn_coma tkn_id tkn_parentesis
 
 ;
 
-SCANF::= tkn_scanf tkn_parentesisiz tkn_cadena tkn_coma tkn_ampersand tkn_id tkn_parentesisde tkn_puntocoma
-        {:parser.gramas.add("Funcion SCANF reconocida");
-                Nodo nodo = new Nodo("SCANF",parser.cont);
-                parser.cont++;
-                RESULT=nodo;
+SCANF::= tkn_scanf tkn_parentesisiz tkn_cadena tkn_coma tkn_ampersand tkn_id:id tkn_parentesisde tkn_puntocoma
+        {:  parser.gramas.add("Funcion SCANF reconocida");
+            Nodo nodo = new Nodo("SCANF",parser.cont);
+            parser.cont++;
+            nodo.addHijo(new Nodo(id.toString(),parser.cont));
+            parser.cont++;
+            RESULT=nodo;
         :}
          | tkn_scanf tkn_parentesisiz tkn_cadena tkn_coma error tkn_id tkn_parentesisde tkn_puntocoma {:parser.errores.add("Puntero a identificador '&' ausente en la funcion scanf");:}
          | tkn_scanf tkn_parentesisiz tkn_cadena tkn_coma tkn_ampersand error tkn_parentesisde tkn_puntocoma {:parser.errores.add("identificador ausente en la funcion scanf");:}
@@ -328,101 +380,217 @@ BLOQUE ::=  IF:i BLOQUE:s
 
 
 ITERADOR::= tkn_increment
-            |tkn_decrement
-            | tkn_opadicion tkn_oprel EXPR
-            | tkn_opmulti tkn_oprel EXPR
+        {: 
+            Nodo nodo = new Nodo("ITERADOR",parser.cont);
+            parser.cont++;
+            RESULT=nodo;
+        :}
+        |tkn_decrement
+        {: 
+            Nodo nodo = new Nodo("ITERADOR",parser.cont);
+            parser.cont++;
+            RESULT=nodo;
+        :}
+        | tkn_opadicion tkn_oprel EXPR
+        {: 
+            Nodo nodo = new Nodo("ITERADOR",parser.cont);
+            parser.cont++;
+            RESULT=nodo;
+        :}
+        | tkn_opmulti tkn_oprel EXPR
+        {: 
+            Nodo nodo = new Nodo("ITERADOR",parser.cont);
+            parser.cont++;
+            RESULT=nodo;
+        :}
 
 ;
 
-CONDICION ::= CONDICIONP tkn_and CONDICION
-            | CONDICIONP tkn_or CONDICION
-            | tkn_parentesisiz CONDICIONP tkn_parentesisde tkn_and CONDICION 
-            | tkn_parentesisiz CONDICIONP tkn_parentesisde tkn_or CONDICION 
-            | tkn_parentesisiz CONDICIONP tkn_parentesisde
-            | CONDICIONP
+CONDICION ::= CONDICIONP:s tkn_and:id CONDICION:o
+                {:
+                Nodo nodo= new Nodo("CONDICION",parser.cont);
+                parser.cont++;
+                nodo.addHijo(s);
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++;                
+                nodo.addHijo(o);
+                RESULT=nodo;
+                :}
+            | CONDICIONP:s tkn_or:id CONDICION:o
+            {:
+                Nodo nodo= new Nodo("CONDICION",parser.cont);
+                parser.cont++;
+                nodo.addHijo(s);
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++; 
+                nodo.addHijo(o);
+                RESULT=nodo;              
+            :}
+
+            | tkn_parentesisiz CONDICIONP:c tkn_parentesisde tkn_and:id CONDICION:c1
+            {:
+                Nodo nodo= new Nodo("CONDICION",parser.cont);
+                parser.cont++;
+                nodo.addHijo(c);
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++; 
+                nodo.addHijo(c1);
+                RESULT=nodo;              
+            :}
+            | tkn_parentesisiz CONDICIONP:c tkn_parentesisde tkn_or:id CONDICION:c1 
+            {:
+                Nodo nodo= new Nodo("CONDICION",parser.cont);
+                parser.cont++;
+                nodo.addHijo(c);
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++; 
+                nodo.addHijo(c1);
+                RESULT=nodo;              
+            :}
+            | tkn_parentesisiz CONDICIONP:c tkn_parentesisde
+             {:
+                Nodo nodo= new Nodo("CONDICION",parser.cont);
+                parser.cont++;
+                nodo.addHijo(c);
+                RESULT=nodo;              
+            :}
+            | CONDICIONP:c
+             {:
+                Nodo nodo= new Nodo("CONDICION",parser.cont);
+                parser.cont++;
+                nodo.addHijo(c);
+                RESULT=nodo;              
+            :}
+
             | error {:parser.errores.add("Operador relacional ausente en condicion");:}
             | error tkn_and CONDICION {:parser.errores.add("Expresion erronea o ausente en condicion");:}
 
 ;
 
-CONDICIONP::= EXPR tkn_oprel EXPR
+CONDICIONP::= EXPR:e tkn_oprel:id EXPR:f
+             {:
+                Nodo nodo= new Nodo("CONDICIONP",parser.cont);
+                parser.cont++;
+                nodo.addHijo(e);
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++;                
+                nodo.addHijo(f);
+                RESULT=nodo;
+            :}
 
 ;
 
 TIPO::= tkn_char
-        |TIPOAPUNT
+        {:
+            Nodo nodo = new Nodo("char",parser.cont);
+                parser.cont++;
+                RESULT=nodo;
+        :}
+
+        |TIPOAPUNT:ap
+        {:
+            Nodo nodo = new Nodo("apun",parser.cont);
+                parser.cont++;
+                nodo.addHijo(ap);
+                RESULT=nodo;
+        :}
         |tkn_int
+        {:
+            Nodo nodo = new Nodo("int",parser.cont);
+                parser.cont++;
+                RESULT=nodo;
+        :}
         |tkn_void
+        {:
+            Nodo nodo = new Nodo("void",parser.cont);
+                parser.cont++;
+                RESULT=nodo;
+        :}
 ;
 
 
 TIPOAPUNT ::= tkn_int tkn_opmulti
+        {:
+            Nodo nodo = new Nodo("int*",parser.cont);
+                parser.cont++;
+                RESULT=nodo;
+        :}
         | tkn_char tkn_opmulti
+        {:
+            Nodo nodo = new Nodo("char*",parser.cont);
+                parser.cont++;
+                RESULT=nodo;
+        :}
 ;
 
-EXPR ::= EXPR tkn_opadicion EXPR
-         {:parser.gramas.add("Expresiom reconocido");
-                Nodo nodo = new Nodo("EXPR",parser.cont);
+EXPR ::= EXPR:s tkn_opadicion:id EXPR:o
+         {:
+                Nodo nodo= new Nodo("expr",parser.cont);
                 parser.cont++;
+                nodo.addHijo(s);
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++;                
+                nodo.addHijo(o);
                 RESULT=nodo;
-        :}
+            :}
 
-        | EXPR tkn_opmulti EXPR 
-          {:parser.gramas.add("Expresiom reconocido");
-                Nodo nodo = new Nodo("EXPR",parser.cont);
+        
+        | EXPR:s tkn_opmulti:id EXPR:o
+         {:
+                Nodo nodo= new Nodo("expr",parser.cont);
                 parser.cont++;
+                nodo.addHijo(s);
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++;                
+                nodo.addHijo(o);
                 RESULT=nodo;
-        :}
-        | EXPR tkn_opmod EXPR 
-          {:parser.gramas.add("Expresiom reconocido");
-                Nodo nodo = new Nodo("EXPR",parser.cont);
+                :}
+        | EXPR:s tkn_opmod:id EXPR:o 
+            {:
+                Nodo nodo= new Nodo("expr",parser.cont);
                 parser.cont++;
+                nodo.addHijo(s);
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++;                
+                nodo.addHijo(o);
                 RESULT=nodo;
-        :}
+                :}
         | tkn_parentesisiz EXPR tkn_parentesisde
-          {:parser.gramas.add("Expresiom reconocido");
+                {:
                 Nodo nodo = new Nodo("EXPR",parser.cont);
                 parser.cont++;
                 RESULT=nodo;
-        :}
-        | tkn_id 
-          {:parser.gramas.add("Expresiom reconocido");
-                Nodo nodo = new Nodo("EXPR",parser.cont);
+                :}
+        | tkn_id:id {:
+                Nodo nodo = new Nodo(id.toString(),parser.cont);
                 parser.cont++;
                 RESULT=nodo;
-        :}
-        | tkn_num
-          {:parser.gramas.add("Expresiom reconocido");
-                Nodo nodo = new Nodo("EXPR",parser.cont);
+                :}
+        | tkn_num:num
+                {:
+                Nodo nodo = new Nodo(num.toString(),parser.cont);
                 parser.cont++;
                 RESULT=nodo;
-        :}
-        | tkn_caracter 
-          {:parser.gramas.add("Expresiom reconocido");
-                Nodo nodo = new Nodo("EXPR",parser.cont);
+                :}
+        | tkn_caracter: car
+        {:
+                Nodo nodo = new Nodo(car.toString(),parser.cont);
                 parser.cont++;
                 RESULT=nodo;
-        :}
+                :}
         | error {:parser.errores.add("Expresión incorrecta");:}
 
 ;
 ARGS::= ARGSPARAMS
-        {:parser.gramas.add("Argumento reconocido");
-                Nodo nodo = new Nodo("ARGS",parser.cont);
-                parser.cont++;
-                RESULT=nodo;
-        :}
-        |
-        {:
-        Nodo node = new Nodo("EMPTYARGS",parser.cont);
-        parser.cont++;
-        node.addHijo(new Nodo("EMPTYARGS",parser.cont++));
-        parser.cont++;
-        RESULT = node;
-        :}
+        |{:
+            Nodo node = new Nodo("VACIO",parser.cont);
+            parser.cont++;
+            RESULT = node;
+         :}
 ;
 
-ARGSPARAMS ::= tkn_id tkn_coma ARGSPARAMS | tkn_id
+ARGSPARAMS ::= tkn_id tkn_coma ARGSPARAMS 
+            | tkn_id
 ;
 
 CONTADOR ::= tkn_id ITERADOR tkn_puntocoma

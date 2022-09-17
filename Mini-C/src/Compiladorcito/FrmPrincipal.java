@@ -1,6 +1,7 @@
 package Compiladorcito;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -174,7 +175,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         }
     }
 
-     private void btn_compilarActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_compilarActionPerformed
+    private void btn_compilarActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btn_compilarActionPerformed
 
         txt_sin.setText("");
         int contErrors = 0;
@@ -198,10 +199,30 @@ public class FrmPrincipal extends javax.swing.JFrame {
                     txt_sin.append("\n");
                     long endTime = System.currentTimeMillis() - startTime; // tiempo en que se ejecuta su método
                     txt_sin.append("Compiliación finalizada con 0 errores, tiempo total: " + endTime + "ms\n");
+                    txt_sin.setForeground(Color.green);
                     String formato = "edge [color=blue];" + hacerDFS(p.raiz);
                     p.raiz.exportarArbol(formato, "AST");
-                    JOptionPane.showMessageDialog(this, "Árbol generado de forma satisfactoria");
-                      txt_sin.setForeground(Color.green);
+                    int input = JOptionPane.showConfirmDialog(null, "Arbol AST generado con éxito, desea visualizar la imagen?");
+                    switch (input) {
+                        case 0:
+                            try {
+
+                            File objetofile = new File("./AST.png");
+                            Desktop.getDesktop().open(objetofile);
+
+                        } catch (IOException ex) {
+
+                            System.out.println(ex);
+
+                        }
+                        break;
+                        case 1:
+                            JOptionPane.showMessageDialog(null, "Puedes visualizar el arbol generado en la carpeta del proyecto");
+                            break;
+                        default:
+                            break;
+                    }
+
                 } else if (lexer.erroresLexicos.isEmpty() && !(p.errores.isEmpty())) {
                     txt_sin.append("Analizando léxico..." + "\n");
                     txt_sin.append("No se encontraron errores léxicos" + "\n");
@@ -283,7 +304,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
         }
 
     }// GEN-LAST:event_btn_compilarActionPerformed
-
 
     /**
      * @param args the command line arguments

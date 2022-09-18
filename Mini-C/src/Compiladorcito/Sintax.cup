@@ -9,10 +9,7 @@ parser code {:
     ArrayList gramas = new ArrayList();
     public Nodo raiz;
     public int cont = 0;
-    public int maximo(){
-    int a=5;
-    return a;
-}
+
     ArrayList errores=new ArrayList();
     public Symbol s;
     @Override
@@ -37,7 +34,7 @@ parser code {:
 
 
 terminal tkn_opadicion,tkn_opmulti, tkn_break, tkn_opmod ;
-terminal tkn_oprel ,tkn_main, tkn_intp, tkn_charp, tkn_void;
+terminal tkn_oprel ,tkn_main, tkn_void;
 terminal tkn_if ,tkn_while, tkn_else,tkn_parentesisiz ,tkn_parentesisde ,tkn_llaveiz ,tkn_llaveder ; 
 terminal tkn_and,tkn_or,tkn_for,tkn_return, tkn_printf, tkn_scanf, tkn_increment, tkn_decrement;
 terminal tkn_dospuntos,tkn_int ,tkn_char, tkn_id, tkn_puntocoma, tkn_ternario, tkn_num, tkn_coma;
@@ -46,7 +43,7 @@ terminal tkn_ampersand, tkn_cadena, tkn_caracter;
 
 non terminal Nodo WHILE, IF, FOR,CONDICION, ELSE, CONDICIONP, TIPO, CONTADOR, SCANF, FUNCION, PROTOTIPO, 
     PARAMS, ARGSPARAMS, ARGS, EXPR, ASIGN, ITERADOR, ASIGNACION, DECLASIGN;
-non terminal Nodo INICIO,BLOQUE,PRINTF, FUNCIONES, DECLR, PROTOFUN, TIPOAPUNT, TERNARIO, FUNCIONS , FUNCIONC;
+non terminal Nodo INICIO,BLOQUE,PRINTF, FUNCIONES, DECLR, PROTOFUN, TIPOAPUNT, TERNARIO;
 
 precedence left tkn_opadicion;
 precedence left tkn_opmulti, tkn_opmod;
@@ -72,7 +69,7 @@ FUNCIONES::= PROTOTIPO:i FUNCIONES:f
         :}
             |FUNCION:i FUNCIONES:f
              {:
-                Nodo nodo = new Nodo("FUNCION COMPLEJA",parser.cont);
+                Nodo nodo = new Nodo("CUERPO",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
                 nodo.addHijo(f);
@@ -81,7 +78,7 @@ FUNCIONES::= PROTOTIPO:i FUNCIONES:f
 
             |ASIGN:i FUNCIONES:f
              {:
-                Nodo nodo = new Nodo("VARGLOBALES",parser.cont);
+                Nodo nodo = new Nodo("CUERPO",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
                 nodo.addHijo(f);
@@ -102,6 +99,8 @@ PROTOTIPO::= PROTOFUN:i tkn_puntocoma
                 nodo.addHijo(i);
                 RESULT=nodo;
             :}
+
+            
 ;
 
 FUNCION::= PROTOFUN:p tkn_llaveiz BLOQUE:j tkn_return EXPR:e tkn_puntocoma tkn_llaveder
@@ -113,7 +112,19 @@ FUNCION::= PROTOFUN:p tkn_llaveiz BLOQUE:j tkn_return EXPR:e tkn_puntocoma tkn_l
                 nodo.addHijo(e);
                 RESULT=nodo;
           :}
+          | tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_return EXPR:e tkn_puntocoma tkn_llaveder
+            {:parser.gramas.add("Funcion MAIN Reconocida satisfactoriamente");
+                Nodo nodo = new Nodo("MAIN",parser.cont);
+                parser.cont++;
+                nodo.addHijo(j);
+                nodo.addHijo(e);
+                RESULT=nodo;
+          :}
+          | PROTOFUN tkn_llaveiz BLOQUE tkn_return EXPR tkn_puntocoma error  {:parser.errores.add("Llave de cierre '}' ausente en la funcion\n");:}
+          | PROTOFUN tkn_llaveiz BLOQUE tkn_return EXPR error tkn_llaveiz  {:parser.errores.add("Se esperaba un ';' en linea de retorno de la funcion\n");:}
+          | PROTOFUN error BLOQUE tkn_return EXPR tkn_puntocoma tkn_llaveiz  {:parser.errores.add("Se esperaba un '{' en la funcion\n");:}
 ;
+
 
 PROTOFUN::= DECLR:d tkn_parentesisiz PARAMS:p tkn_parentesisde
             {:
@@ -123,6 +134,8 @@ PROTOFUN::= DECLR:d tkn_parentesisiz PARAMS:p tkn_parentesisde
                 nodo.addHijo(p);
                 RESULT=nodo;
             :}
+            | DECLR error PARAMS tkn_parentesisde {:parser.errores.add("Se esperaba un '(' en la funcion o prototipo\n");:}
+
 ;
 
 DECLR::= TIPO:t tkn_id:k 
@@ -170,17 +183,30 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
                 RESULT=nodo;
             :}
 
-            | tkn_id tkn_coma DECLASIGN:d
+            | tkn_id:id tkn_coma DECLASIGN:d
             {:
                 Nodo nodo = new Nodo("DECLARACION",parser.cont);
+                parser.cont++;
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
                 parser.cont++;
                 nodo.addHijo(d);
                 RESULT=nodo;
             :}
+
+            |tkn_id:id
+            {:
+                Nodo nodo = new Nodo("DECLARACION",parser.cont);
+                parser.cont++;
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++;
+                RESULT=nodo;
+            :}
             | tkn_id error DECLASIGN {:parser.errores.add("Se esperaba el simbolo ',' en declaración o en argumentos en llamado de la función \n");:}
-            | tkn_id tkn_oprel:id EXPR:e tkn_coma DECLASIGN:s
+            | tkn_id:id1 tkn_oprel:id EXPR:e tkn_coma DECLASIGN:s
              {:
                 Nodo nodo = new Nodo("ASIGNACION",parser.cont);
+                parser.cont++;
+                nodo.addHijo(new Nodo(id1.toString(),parser.cont));
                 parser.cont++;
                 nodo.addHijo(new Nodo(id.toString(),parser.cont));
                 parser.cont++;
@@ -197,7 +223,6 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
                 nodo.addHijo(e);
                 RESULT=nodo;
             :}
-            | tkn_id error EXPR {:parser.errores.add("Se esperaba operador relacional en declaración \n");:}
             | DECLR:d
             {:
                 Nodo nodo = new Nodo("DECLARACION",parser.cont);
@@ -246,7 +271,6 @@ ASIGN::= DECLASIGN:d tkn_puntocoma
             nodo.addHijo(d);
             RESULT=nodo;
         :}
-        |  error tkn_puntocoma {:parser.errores.add("Declaracion de variable incorrecta \n");:}
 ;
 
 PARAMS::= TIPO:t tkn_coma PARAMS:p
@@ -326,11 +350,10 @@ ELSE ::= tkn_else tkn_llaveiz BLOQUE:j tkn_llaveder
          :}
 ;
 
-FOR ::= tkn_for tkn_parentesisiz ASIGNACION EXPR:e tkn_puntocoma CONDICION:c tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder
+FOR ::= tkn_for tkn_parentesisiz ASIGNACION EXPR tkn_puntocoma CONDICION:c tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder
         {:parser.gramas.add("Funcion FOR reconocida");
                 Nodo nodo = new Nodo("FOR",parser.cont);
                 parser.cont++;
-                nodo.addHijo(e);
                 nodo.addHijo(c);
                 nodo.addHijo(j);
                 RESULT=nodo;

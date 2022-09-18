@@ -120,6 +120,14 @@ FUNCION::= PROTOFUN:p tkn_llaveiz BLOQUE:j tkn_return EXPR:e tkn_puntocoma tkn_l
                 nodo.addHijo(e);
                 RESULT=nodo;
           :}
+          |PROTOFUN:p tkn_llaveiz BLOQUE:j tkn_llaveder
+          {:parser.gramas.add("Una Funcion Reconocida satisfactoriamente");
+                Nodo nodo = new Nodo("FUNCION",parser.cont);
+                parser.cont++;
+                nodo.addHijo(p);
+                nodo.addHijo(j);
+                RESULT=nodo;
+          :}
           | PROTOFUN tkn_llaveiz BLOQUE tkn_return EXPR tkn_puntocoma error  {:parser.errores.add("Llave de cierre '}' ausente en la funcion\n");:}
           | PROTOFUN tkn_llaveiz BLOQUE tkn_return EXPR error tkn_llaveiz  {:parser.errores.add("Se esperaba un ';' en linea de retorno de la funcion\n");:}
           | PROTOFUN error BLOQUE tkn_return EXPR tkn_puntocoma tkn_llaveiz  {:parser.errores.add("Se esperaba un '{' en la funcion\n");:}
@@ -308,6 +316,8 @@ PARAMS::= TIPO:t tkn_coma PARAMS:p
             parser.cont++;
             RESULT = node;
          :}
+         |TIPO error PARAMS {:parser.errores.add("Se esperaba un ',' en los parametros de la función o prototipo \n");:}
+         |DECLR error PARAMS {:parser.errores.add("Se esperaba un ',' en los parametros de la función o prototipo \n");:}
            
 ;
 

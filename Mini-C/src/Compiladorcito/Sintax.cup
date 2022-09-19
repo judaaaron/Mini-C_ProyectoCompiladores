@@ -9,7 +9,6 @@ parser code {:
     ArrayList gramas = new ArrayList();
     public Nodo raiz;
     public int cont = 0;
-
     ArrayList errores=new ArrayList();
     public Symbol s;
     @Override
@@ -112,7 +111,7 @@ FUNCION::= PROTOFUN:p tkn_llaveiz BLOQUE:j tkn_return EXPR:e tkn_puntocoma tkn_l
                 nodo.addHijo(e);
                 RESULT=nodo;
           :}
-          | tkn_int tkn_main tkn_parentesisiz tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_return EXPR:e tkn_puntocoma tkn_llaveder
+          | tkn_int tkn_main tkn_parentesisiz PARAMS tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_return EXPR:e tkn_puntocoma tkn_llaveder
             {:parser.gramas.add("Funcion MAIN Reconocida satisfactoriamente");
                 Nodo nodo = new Nodo("MAIN",parser.cont);
                 parser.cont++;
@@ -190,6 +189,8 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
                 nodo.addHijo(e);
                 RESULT=nodo;
             :}
+
+            |DECLR error EXPR {:parser.errores.add("Se esperaba el simbolo '=' en asignación\n");:}
 
             | tkn_id:id tkn_coma DECLASIGN:d
             {:
@@ -605,7 +606,7 @@ TIPO::= tkn_char
 
         |TIPOAPUNT:ap
         {:
-            Nodo nodo = new Nodo("apun",parser.cont);
+            Nodo nodo = new Nodo("puntero",parser.cont);
                 parser.cont++;
                 nodo.addHijo(ap);
                 RESULT=nodo;

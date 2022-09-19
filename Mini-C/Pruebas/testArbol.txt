@@ -1,7 +1,7 @@
 int a(int a);
 int a(int a);
 int a,b;
-int a(int a, int b){
+int a(int a, int b, int c, char* d){
 if(b>a){
 }else{
 while((a>b) && (a>b)){
@@ -11,6 +11,40 @@ scanf("%d", &paulina);
 
 for(int i = 0; i > 0; i++){
 printf("%c", Paulina);
+int b = 1+n-9;
+}
+
+return value;
+}
+
+int main(int a, int b){
+if(b>a){
+int v = f(a,b,c,d);
+}else{
+while((a>b) && (a>b)){
+scanf("%d", &paulina);
+}
+}
+
+for(int i = 0; i > 0; i++){
+printf("%c", Paulina);
+}
+
+return value;
+}
+
+int a(int a, int b){
+if(b>a){
+a = 5*4+a;
+}else{
+while((a>b) && (a>b)){
+scanf("%d", &paulina);
+}
+}
+
+for(int i = 0; i > 0; i++){
+printf("%c", Paulina);
+b = a();
 }
 
 return value;

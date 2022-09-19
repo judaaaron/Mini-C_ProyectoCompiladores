@@ -204,23 +204,21 @@ public class FrmPrincipal extends javax.swing.JFrame {
                     p.raiz.exportarArbol(formato, "AST");
                     int input = JOptionPane.showConfirmDialog(null, "Arbol AST generado con éxito, desea visualizar la imagen?");
                     switch (input) {
-                        case 0:
+                        case 0 -> {
                             try {
-
-                            File objetofile = new File("./AST.png");
-                            Desktop.getDesktop().open(objetofile);
-
-                        } catch (IOException ex) {
-
-                            System.out.println(ex);
-
+                                
+                                File objetofile = new File("./AST.png");
+                                Desktop.getDesktop().open(objetofile);
+                                
+                            } catch (IOException ex) {
+                                
+                                System.out.println(ex);
+                                
+                            }
                         }
-                        break;
-                        case 1:
-                            JOptionPane.showMessageDialog(null, "Puedes visualizar el arbol generado en la carpeta del proyecto");
-                            break;
-                        default:
-                            break;
+                        case 1 -> JOptionPane.showMessageDialog(null, "Puedes visualizar el arbol generado en la carpeta del proyecto");
+                        default -> {
+                        }
                     }
 
                 } else if (lexer.erroresLexicos.isEmpty() && !(p.errores.isEmpty())) {
@@ -245,6 +243,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
                     txt_sin.setForeground(Color.red);
 
                 } else if (!(lexer.erroresLexicos.isEmpty()) && p.errores.isEmpty()) {
+                   
                     txt_sin.append("Analizando léxico..." + "\n");
                     txt_sin.append("Se encontraron errores léxicos" + "\n");
                     for (int i = 0; i < lexer.erroresLexicos.size(); i++) {

@@ -732,5 +732,5 @@ ARGSPARAMS ::= tkn_id:id tkn_coma ARGSPARAMS:a
 ;
 
 CONTADOR ::= tkn_id ITERADOR tkn_puntocoma
-             | tkn_id error tkn_puntocoma {:parser.errores.add("Iterador en identificador incorrecta");:}
+             | tkn_id error tkn_puntocoma {:parser.errores.add("Declaracion o expresión incorrecta");:}
 ;

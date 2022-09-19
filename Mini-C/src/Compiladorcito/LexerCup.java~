@@ -295,7 +295,6 @@ class LexerCup implements java_cup.runtime.Scanner {
     public String lexeme;
     String cadena="";
     ArrayList erroresLexicos = new ArrayList();
-    PintarPalabras pintar = new PintarPalabras();
 
 
   /**
@@ -835,7 +834,7 @@ class LexerCup implements java_cup.runtime.Scanner {
             // fall through
           case 61: break;
           case 27:
-            { pintar.pintaAzul((int) yychar,yylength()); return new Symbol(sym.tkn_int           ,yyline+1 ,yycolumn+1 ,yytext());
+            { return new Symbol(sym.tkn_int           ,yyline+1 ,yycolumn+1 ,yytext());
             }
             // fall through
           case 62: break;

@@ -1,4 +1,4 @@
-int (){
+int (){ 
     for(int i=0; i<a; i++){
         int var = 6;
 	if(a<b){

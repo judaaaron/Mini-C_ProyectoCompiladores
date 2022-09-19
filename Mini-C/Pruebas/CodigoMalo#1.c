@@ -1,4 +1,4 @@
-int main(){
+int main(){ 
     for(int i=0; i<a; i++){
         int var 6;
 	  printf("%d" valor);

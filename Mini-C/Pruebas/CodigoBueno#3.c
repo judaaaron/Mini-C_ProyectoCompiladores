@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 int var (int a, int b);
 char* var2 (int a, int b, int*);
 int* var (int a, int b, int*);
@@ -61,7 +60,7 @@ if(a > b || h <= 100){
     scanf("%d", &b);
 }
 return 100;
-=======
+}
 int var(int a, int b);
 char *var2(int a, int b, int *);
 int *var(int a, int b, int *);
@@ -188,5 +187,4 @@ int var(int a, int b)
         scanf("%d", &b);
     }
     return 100;
->>>>>>> 9f28275365ea7d25b1b4635e814d602f4fc212f8
 }

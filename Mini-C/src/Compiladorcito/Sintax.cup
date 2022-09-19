@@ -496,16 +496,20 @@ BLOQUE ::=  IF:i BLOQUE:s
 ;
 
 
-ITERADOR::= tkn_increment
-        {: 
-            Nodo nodo = new Nodo("ITERADOR",parser.cont);
+ITERADOR::= tkn_increment:id
+         {:
+            Nodo nodo= new Nodo("ITERADOR",parser.cont);
             parser.cont++;
+            nodo.addHijo(new Nodo(id.toString(),parser.cont));
+            parser.cont++;                
             RESULT=nodo;
         :}
-        |tkn_decrement
-        {: 
-            Nodo nodo = new Nodo("ITERADOR",parser.cont);
+        |tkn_decrement:id
+        {:
+            Nodo nodo= new Nodo("ITERADOR",parser.cont);
             parser.cont++;
+            nodo.addHijo(new Nodo(id.toString(),parser.cont));
+            parser.cont++;                
             RESULT=nodo;
         :}
         | tkn_opadicion tkn_oprel EXPR
@@ -731,6 +735,14 @@ ARGSPARAMS ::= tkn_id:id tkn_coma ARGSPARAMS:a
             :}
 ;
 
-CONTADOR ::= tkn_id ITERADOR tkn_puntocoma
+CONTADOR ::= tkn_id:id ITERADOR:s tkn_puntocoma
+             {:
+                Nodo nodo= new Nodo("Incredecrement",parser.cont);
+                parser.cont++;
+                nodo.addHijo(new Nodo(id.toString(),parser.cont));
+                parser.cont++; 
+                nodo.addHijo(s);
+                RESULT=nodo;              
+            :}
              | tkn_id error tkn_puntocoma {:parser.errores.add("Declaracion o expresión incorrecta");:}
 ;

@@ -121,8 +121,8 @@ public class GraphViz
             //this.tempDir = "C:/Users/Tapia/AppData/Local/Temp";
             //this.executable = "C:/Program Files (x86)/Graphviz2.38/bin/dot.exe";
         } else if (GraphViz.osName.equals("MacOSX")) {
-            this.tempDir = "/tmp";
-            this.executable = "/usr/local/bin/dot";
+            this.tempDir = "/private/tmp";
+            this.executable = "/opt/homebrew/bin/dot";
         } else if (GraphViz.osName.equals("Linux")) {
             this.tempDir = "/tmp";
             this.executable = "/usr/bin/dot";

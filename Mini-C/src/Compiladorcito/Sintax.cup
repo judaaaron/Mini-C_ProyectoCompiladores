@@ -270,6 +270,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
                 RESULT=nodo;              
             :}
             | tkn_id tkn_parentesisiz ARGS error {:parser.errores.add("Se esperaba un ')' en llamado de la funcion \n");:}
+            
 ;
 
 
@@ -322,7 +323,7 @@ PARAMS::= TIPO:t tkn_coma PARAMS:p
            
 ;
 
-TERNARIO ::= tkn_parentesisiz CONDICION tkn_parentesisde tkn_ternario tkn_cadena tkn_dospuntos tkn_cadena
+TERNARIO ::= CONDICION tkn_ternario tkn_cadena tkn_dospuntos tkn_cadena
 ;
 
 IF::= tkn_if tkn_parentesisiz CONDICION:c tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder ELSE:e
@@ -373,6 +374,14 @@ FOR ::= tkn_for tkn_parentesisiz ASIGNACION EXPR tkn_puntocoma CONDICION:c tkn_p
         | tkn_for tkn_parentesisiz ASIGNACION EXPR tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR error tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("Se esperaba un parentesis de cierre ')' for\n");:}
         | tkn_for tkn_parentesisiz error EXPR tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("Asignacion o declaracion incorrecta en bloque for\n");:}
         | tkn_for tkn_parentesisiz ASIGNACION EXPR tkn_puntocoma CONDICION tkn_puntocoma tkn_id error tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("Iteracion asuente en ciclo for\n");:}
+        | tkn_for tkn_parentesisiz tkn_id tkn_puntocoma CONDICION:c tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder 
+        {:parser.gramas.add("Funcion FOR reconocida");
+                Nodo nodo = new Nodo("FOR",parser.cont);
+                parser.cont++;
+                nodo.addHijo(c);
+                nodo.addHijo(j);
+                RESULT=nodo;
+        :} 
 ;
 
 WHILE ::= tkn_while tkn_parentesisiz CONDICION:c tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder

@@ -1,28 +1,61 @@
-int (){ 
-    for(int i=0; i<a; i++){
-        int var = 6;
-	if(a<b){
-                              scanf("%d", cal);
-		int var;
-		if(a>b){
-			int var;
-		 		while(i<a || (5<4)){
-               	      	intx var = 6;
-   		 		}
-		}else{
-			int var;
-			for(int i=0; i<a; i++){
-        			intx var = 6;
-			}
-		}
-	}else{
-		int var 6;
-	}
-    }
+char* f(char a int*, int b, char i);
+int f(char a int*, intx);
+int* f(char a int*, int b);
 
-    while(i<a || (5<4)){
-                int var = 6;
-    }
+int  funcion (int &a, char c, @){ 
+
+while((i<a) || (5<4))
+       int var = 6;
+}
+
+ for(int i=0; i<a; i+){
+        printf("%c", id;
+ }
+
+scanf("c", id);
+
+  return 0;
+
+int  funcion (int &a, char c, @){ 
+
+while((i<a) || (5<4))
+       int var = 6;
+}
+
+ for(int i=0; i<a; i+){
+        printf("%c", id;
+ }
+
+scanf("c", id);
+
+  return 0;
+}
+
+int  funcion (int &a, char c, @){ 
+
+while((i<a) || (5<4))
+       int var = 6;
+}
+
+ for(int i=0; i<a; i+){
+        printf("%c", id;
+ }
+
+scanf("c", id);
+
+  return 0;
+}
+int  funcion (int &a, char c, @){ 
+
+while((i<a) || (5<4))
+       int var = 6;
+}
+
+ for(int i=0; i<a; i+){
+        printf("%c", id;
+ }
+
+scanf("c", id);
 
   return 0;
 }

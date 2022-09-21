@@ -169,6 +169,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
                 parser.cont++;
                 nodo.addHijo(e);
                 nodo.addHijo(a);
+                
                 RESULT=nodo;
             :}
             | DECLR:d tkn_oprel:id EXPR:e

@@ -13,6 +13,7 @@ int main (){
         a = fac(a,b,c);
 	    
     }
+    int a = a-b*8/7+5;
 return value;
 }
 
@@ -34,6 +35,20 @@ int* var (int a, int b, int*){
 		    }
 	    }
     }
+char value, formato ='c', acum;
+if(a > b){
+        int a = fac(a,b);
+        a = fac(a,b,c);
+	    for(int i = 0 ; 15 > a ; i+=2){
+		    while( h > 8){
+                a--;
+                printf("%d", hola);
+	            printf("%c", hola);
+	            scanf("%c", &b);
+		    }
+	    }
+    }
+int a = a-b*8/7+5;
 return 'a';
 }
 
@@ -88,6 +103,7 @@ int var(int a, int b)
             }
         }
     }
+    int a = a-b*8/7+5;
     return a;
 }
 
@@ -141,7 +157,7 @@ int *var(int a, int b, int *)
 {
     int a, b, c, d = 100;
     char value, formato = 'c', acum;
-
+    int a = a-b*8/7+5;
     if (a > b)
     {
         int a = fac(a, b);
@@ -159,6 +175,36 @@ int *var(int a, int b, int *)
     }
     return 'a';
 }
+
+int var(int a, int b)
+{
+    int z, b, c, h = 100;
+    char *k;
+    int *punter;
+    printf("%d", hola);
+    printf("%c", hola);
+    scanf("%c", &b);
+
+    if (a > b || h <= 100)
+    {
+        int a = fac(a, b);
+        a = fac(a, b, c);
+        for (int i = 0; 15 > a; i += 2)
+        {
+            while (h > 8)
+            {
+                a++;
+                printf("%d", a);
+                printf("%c", a);
+            }
+        }
+
+        printf("Ingrese un numero: ");
+        scanf("%d", &b);
+    }
+    return 100;
+}
+
 
 int var(int a, int b)
 {

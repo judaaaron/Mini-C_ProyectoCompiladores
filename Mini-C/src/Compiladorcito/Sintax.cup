@@ -93,6 +93,7 @@ FUNCIONES::= PROTOTIPO:i FUNCIONES:f
 
 PROTOTIPO::= PROTOFUN:i tkn_puntocoma
             {:
+                parser.gramas.add("Se reconoció un prototipo de función");
                 Nodo nodo = new Nodo("PROTOTIPO",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
@@ -162,6 +163,7 @@ ASIGNACION::= TIPO tkn_id tkn_oprel | tkn_id tkn_oprel | TIPO error tkn_oprel {:
 
 DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
             {:
+                parser.gramas.add("Se reconoció una asignación");
                 Nodo nodo = new Nodo("ASIGNACION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(d);
@@ -174,6 +176,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
             :}
             | DECLR:d tkn_oprel:id EXPR:e
             {:
+                parser.gramas.add("Se reconoció una asignación");
                 Nodo nodo = new Nodo("ASIGNACION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(d);
@@ -183,7 +186,8 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
                 RESULT=nodo;
              :}
             | DECLR:d tkn_coma DECLASIGN:e
-            {:
+            {:  
+                parser.gramas.add("Se reconoció una declaración");
                 Nodo nodo = new Nodo("DECLARACION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(d);
@@ -195,6 +199,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
 
             | tkn_id:id tkn_coma DECLASIGN:d
             {:
+                parser.gramas.add("Se reconoció una declaración");
                 Nodo nodo = new Nodo("DECLARACION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(new Nodo(id.toString(),parser.cont));
@@ -204,7 +209,8 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
             :}
 
             |tkn_id:id
-            {:
+            {:  
+                parser.gramas.add("Se reconoció una declaración");
                 Nodo nodo = new Nodo("DECLARACION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(new Nodo(id.toString(),parser.cont));
@@ -214,6 +220,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
             | tkn_id error DECLASIGN {:parser.errores.add("Se esperaba el simbolo ',' en declaración o en argumentos en llamado de la función \n");:}
             | tkn_id:id1 tkn_oprel:id EXPR:e tkn_coma DECLASIGN:s
              {:
+                parser.gramas.add("Se reconoció una asignació");
                 Nodo nodo = new Nodo("ASIGNACION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(new Nodo(id1.toString(),parser.cont));
@@ -225,7 +232,8 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
                 RESULT=nodo;
             :}
             | tkn_id tkn_oprel:id EXPR:e
-            {:
+            {:  
+                parser.gramas.add("Se reconoció una asignación");
                 Nodo nodo = new Nodo("ASIGNACION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(new Nodo(id.toString(),parser.cont));
@@ -234,7 +242,8 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
                 RESULT=nodo;
             :}
             | DECLR:d
-            {:
+            {:  
+                parser.gramas.add("Se reconoció una declaración");
                 Nodo nodo = new Nodo("DECLARACION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(d);
@@ -242,6 +251,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
             :} 
             | DECLR:d tkn_oprel:id tkn_id tkn_parentesisiz ARGS:a tkn_parentesisde 
             {:
+                parser.gramas.add("Se reconoció un llamado de función");
                 Nodo nodo= new Nodo("LLAMADO",parser.cont);
                 parser.cont++;
                 nodo.addHijo(d);
@@ -252,6 +262,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
             :}
             | tkn_id:id1 tkn_oprel:id tkn_id tkn_parentesisiz ARGS:a tkn_parentesisde
             {:
+                parser.gramas.add("Se reconoció un llamado de función");
                 Nodo nodo = new Nodo("LLAMADO",parser.cont);
                 parser.cont++;
                 nodo.addHijo(new Nodo(id1.toString(),parser.cont));
@@ -265,6 +276,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
             | tkn_id tkn_oprel tkn_id tkn_parentesisiz error tkn_parentesisde {:parser.errores.add("Argumentos en llamado de función erroneos \n");:}
             | tkn_id tkn_parentesisiz ARGS:a tkn_parentesisde
             {:
+                parser.gramas.add("Se reconoció un llamado de función");
                 Nodo nodo= new Nodo("LLAMADO",parser.cont);
                 parser.cont++;
                 nodo.addHijo(a);
@@ -275,8 +287,9 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
 ;
 
 
-ASIGN::= DECLASIGN:d tkn_puntocoma 
+ASIGN::= DECLASIGN:d tkn_puntocoma
          {:
+            parser.gramas.add("Funcion ASIGN Reconocida satisfactoriamente");
             Nodo nodo = new Nodo("ASIGNACIONES",parser.cont);
             parser.cont++;
             nodo.addHijo(d);
@@ -285,7 +298,7 @@ ASIGN::= DECLASIGN:d tkn_puntocoma
 ;
 
 PARAMS::= TIPO:t tkn_coma PARAMS:p
-         {:parser.gramas.add("Params reconocido");
+         {:parser.gramas.add("Params reconocido satisfactoriamente");
             Nodo nodo = new Nodo("PARAMS",parser.cont);
             parser.cont++;
             nodo.addHijo(t)     ;           
@@ -293,7 +306,7 @@ PARAMS::= TIPO:t tkn_coma PARAMS:p
             RESULT=nodo;
          :}
          | DECLR:t tkn_coma PARAMS:p
-         {:parser.gramas.add("Params reconocido");
+         {:parser.gramas.add("Params reconocido satisfactoriamente");
             Nodo nodo = new Nodo("PARAMS",parser.cont);
             parser.cont++;
             nodo.addHijo(t);               
@@ -301,14 +314,14 @@ PARAMS::= TIPO:t tkn_coma PARAMS:p
             RESULT=nodo;
          :}
          | DECLR:t
-         {:parser.gramas.add("Params reconocido");
+         {:parser.gramas.add("Params reconocido satisfactoriamente");
             Nodo nodo = new Nodo("PARAMS",parser.cont);
             parser.cont++;
             nodo.addHijo(t);                
             RESULT=nodo;
          :}
          | TIPO:t
-         {:parser.gramas.add("Params reconocido");
+         {:parser.gramas.add("Params reconocido satisfactoriamente");
             Nodo nodo = new Nodo("PARAMS",parser.cont);
             parser.cont++;
             nodo.addHijo(t);                
@@ -440,6 +453,7 @@ SCANF::= tkn_scanf tkn_parentesisiz tkn_cadena tkn_coma tkn_ampersand tkn_id:id 
 
 BLOQUE ::=  IF:i BLOQUE:s
             {:
+                parser.gramas.add("BLOQUE reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("BLOQUE",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
@@ -448,6 +462,7 @@ BLOQUE ::=  IF:i BLOQUE:s
             :}
             | FOR:i BLOQUE:s
             {:
+                parser.gramas.add("BLOQUE reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("BLOQUE",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
@@ -456,6 +471,7 @@ BLOQUE ::=  IF:i BLOQUE:s
             :}  
             | WHILE:i BLOQUE:s
             {:
+                parser.gramas.add("BLOQUE reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("BLOQUE",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
@@ -464,6 +480,7 @@ BLOQUE ::=  IF:i BLOQUE:s
             :}  
             | ASIGN:i BLOQUE:s
             {:
+                parser.gramas.add("BLOQUE reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("BLOQUE",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
@@ -472,6 +489,7 @@ BLOQUE ::=  IF:i BLOQUE:s
             :}  
             | SCANF:i BLOQUE:s
             {:
+                parser.gramas.add("BLOQUE reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("BLOQUE",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
@@ -480,6 +498,7 @@ BLOQUE ::=  IF:i BLOQUE:s
             :}  
             | PRINTF:i BLOQUE:s
             {:
+                parser.gramas.add("BLOQUE reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("BLOQUE",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
@@ -488,6 +507,7 @@ BLOQUE ::=  IF:i BLOQUE:s
             :}  
             | CONTADOR:i BLOQUE:s
             {:
+                parser.gramas.add("BLOQUE reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("BLOQUE",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
@@ -508,6 +528,7 @@ BLOQUE ::=  IF:i BLOQUE:s
 
 ITERADOR::= tkn_increment:id
          {:
+            parser.gramas.add("ITERADOR reconocido satisfactoriamente");
             Nodo nodo= new Nodo("ITERADOR",parser.cont);
             parser.cont++;
             nodo.addHijo(new Nodo(id.toString(),parser.cont));
@@ -516,6 +537,7 @@ ITERADOR::= tkn_increment:id
         :}
         |tkn_decrement:id
         {:
+            parser.gramas.add("ITERADOR reconocido satisfactoriamente");
             Nodo nodo= new Nodo("ITERADOR",parser.cont);
             parser.cont++;
             nodo.addHijo(new Nodo(id.toString(),parser.cont));
@@ -524,12 +546,14 @@ ITERADOR::= tkn_increment:id
         :}
         | tkn_opadicion tkn_oprel EXPR
         {: 
+            parser.gramas.add("ITERADOR reconocido satisfactoriamente");
             Nodo nodo = new Nodo("ITERADOR",parser.cont);
             parser.cont++;
             RESULT=nodo;
         :}
         | tkn_opmulti tkn_oprel EXPR
         {: 
+            parser.gramas.add("ITERADOR reconocido satisfactoriamente");
             Nodo nodo = new Nodo("ITERADOR",parser.cont);
             parser.cont++;
             RESULT=nodo;
@@ -539,6 +563,7 @@ ITERADOR::= tkn_increment:id
 
 CONDICION ::= CONDICIONP:s tkn_and:id CONDICION:o
                 {:
+                parser.gramas.add("CONDICION reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("CONDICION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(s);
@@ -549,6 +574,7 @@ CONDICION ::= CONDICIONP:s tkn_and:id CONDICION:o
                 :}
             | CONDICIONP:s tkn_or:id CONDICION:o
             {:
+                parser.gramas.add("CONDICION reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("CONDICION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(s);
@@ -560,6 +586,7 @@ CONDICION ::= CONDICIONP:s tkn_and:id CONDICION:o
 
             | tkn_parentesisiz CONDICIONP:c tkn_parentesisde tkn_and:id CONDICION:c1
             {:
+                parser.gramas.add("CONDICION reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("CONDICION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(c);
@@ -570,6 +597,7 @@ CONDICION ::= CONDICIONP:s tkn_and:id CONDICION:o
             :}
             | tkn_parentesisiz CONDICIONP:c tkn_parentesisde tkn_or:id CONDICION:c1 
             {:
+                parser.gramas.add("CONDICION reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("CONDICION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(c);
@@ -580,6 +608,7 @@ CONDICION ::= CONDICIONP:s tkn_and:id CONDICION:o
             :}
             | tkn_parentesisiz CONDICIONP:c tkn_parentesisde
              {:
+                parser.gramas.add("CONDICION reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("CONDICION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(c);
@@ -587,6 +616,7 @@ CONDICION ::= CONDICIONP:s tkn_and:id CONDICION:o
             :}
             | CONDICIONP:c
              {:
+                parser.gramas.add("CONDICION reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("CONDICION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(c);
@@ -600,6 +630,7 @@ CONDICION ::= CONDICIONP:s tkn_and:id CONDICION:o
 
 CONDICIONP::= EXPR:e tkn_oprel:id EXPR:f
              {:
+                parser.gramas.add("CONDICIONP reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("CONDICIONP",parser.cont);
                 parser.cont++;
                 nodo.addHijo(e);
@@ -613,6 +644,7 @@ CONDICIONP::= EXPR:e tkn_oprel:id EXPR:f
 
 TIPO::= tkn_char
         {:
+            parser.gramas.add("TIPO de dato reconocido satisfactoriamente");
             Nodo nodo = new Nodo("char",parser.cont);
                 parser.cont++;
                 RESULT=nodo;
@@ -620,6 +652,7 @@ TIPO::= tkn_char
 
         |TIPOAPUNT:ap
         {:
+            parser.gramas.add("TIPO de dato reconocido satisfactoriamente");
             Nodo nodo = new Nodo("puntero",parser.cont);
                 parser.cont++;
                 nodo.addHijo(ap);
@@ -627,12 +660,14 @@ TIPO::= tkn_char
         :}
         |tkn_int
         {:
+            parser.gramas.add("TIPO de dato reconocido satisfactoriamente");
             Nodo nodo = new Nodo("int",parser.cont);
                 parser.cont++;
                 RESULT=nodo;
         :}
         |tkn_void
         {:
+            parser.gramas.add("TIPO de dato reconocido satisfactoriamente");
             Nodo nodo = new Nodo("void",parser.cont);
                 parser.cont++;
                 RESULT=nodo;
@@ -642,12 +677,14 @@ TIPO::= tkn_char
 
 TIPOAPUNT ::= tkn_int tkn_opmulti
         {:
+            parser.gramas.add("PUNTERO TIPOAPUNT reconocido satisfactoriamente");
             Nodo nodo = new Nodo("int*",parser.cont);
                 parser.cont++;
                 RESULT=nodo;
         :}
         | tkn_char tkn_opmulti
         {:
+            parser.gramas.add("PUNTERO TIPOAPUNT reconocido satisfactoriamente");
             Nodo nodo = new Nodo("char*",parser.cont);
                 parser.cont++;
                 RESULT=nodo;
@@ -656,6 +693,7 @@ TIPOAPUNT ::= tkn_int tkn_opmulti
 
 EXPR ::= EXPR:s tkn_opadicion:id EXPR:o
          {:
+                parser.gramas.add("EXPR reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("expr",parser.cont);
                 parser.cont++;
                 nodo.addHijo(s);
@@ -668,6 +706,7 @@ EXPR ::= EXPR:s tkn_opadicion:id EXPR:o
         
         | EXPR:s tkn_opmulti:id EXPR:o
          {:
+                parser.gramas.add("EXPR reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("expr",parser.cont);
                 parser.cont++;
                 nodo.addHijo(s);
@@ -678,6 +717,7 @@ EXPR ::= EXPR:s tkn_opadicion:id EXPR:o
                 :}
         | EXPR:s tkn_opmod:id EXPR:o 
             {:
+                parser.gramas.add("EXPR reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("expr",parser.cont);
                 parser.cont++;
                 nodo.addHijo(s);
@@ -688,6 +728,7 @@ EXPR ::= EXPR:s tkn_opadicion:id EXPR:o
                 :}
         | tkn_parentesisiz EXPR tkn_parentesisde
                 {:
+                parser.gramas.add("EXPR reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("EXPR",parser.cont);
                 parser.cont++;
                 RESULT=nodo;
@@ -714,6 +755,7 @@ EXPR ::= EXPR:s tkn_opadicion:id EXPR:o
 ;
 ARGS::= ARGSPARAMS:a
          {:
+                parser.gramas.add("ARGSPARAM reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("ARGSPARAM",parser.cont);
                 parser.cont++;
                 nodo.addHijo(a);
@@ -728,6 +770,7 @@ ARGS::= ARGSPARAMS:a
 
 ARGSPARAMS ::= tkn_id:id tkn_coma ARGSPARAMS:a
              {:
+                parser.gramas.add("Se reconcieron argumentos de la función");
                 Nodo nodo= new Nodo("ARGS",parser.cont);
                 parser.cont++;
                 nodo.addHijo(new Nodo(id.toString(),parser.cont));
@@ -737,6 +780,7 @@ ARGSPARAMS ::= tkn_id:id tkn_coma ARGSPARAMS:a
             :}
             | tkn_id:id
              {:
+                parser.gramas.add("ARGS reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("ARGS",parser.cont);
                 parser.cont++;
                 nodo.addHijo(new Nodo(id.toString(),parser.cont));
@@ -747,6 +791,7 @@ ARGSPARAMS ::= tkn_id:id tkn_coma ARGSPARAMS:a
 
 CONTADOR ::= tkn_id:id ITERADOR:s tkn_puntocoma
              {:
+                parser.gramas.add("INCREDECREMENT reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("Incredecrement",parser.cont);
                 parser.cont++;
                 nodo.addHijo(new Nodo(id.toString(),parser.cont));

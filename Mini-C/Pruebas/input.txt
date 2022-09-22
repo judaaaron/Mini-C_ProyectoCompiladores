@@ -1,4 +1,0 @@
-int main(){
-    int var = 6;
-    return 0;
-}

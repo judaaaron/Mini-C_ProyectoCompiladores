@@ -1,9 +1,0 @@
-int main(){
-    while(i<a || (5<4)){
-        int var = 6;
-            while(i<a || (5<4)){
-                int var = 6;
-            }
-        }
-return 0;
-}

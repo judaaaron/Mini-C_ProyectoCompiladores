@@ -219,6 +219,22 @@ public class FrmPrincipal extends javax.swing.JFrame {
                         case 1 -> JOptionPane.showMessageDialog(null, "Puedes visualizar el arbol generado en la carpeta del proyecto");
                         default -> {
                         }
+                        
+                    }
+                     int input2 = JOptionPane.showConfirmDialog(null, "Desea visualizarla gramáticas reconocidas?");
+                    switch (input2) {
+                        case 0 -> {
+                            txt_sin.setText("");
+                            for(int i = 0; i < p.gramas.size(); i++){
+                                txt_sin.append(p.gramas.get(i).toString() + "\n");
+                                txt_sin.setForeground(Color.white);
+                            }
+                            txt_sin.append("\n");
+                        }
+                        case 1 -> JOptionPane.showMessageDialog(null, "Puedes ver las gramaticas reconocidas cuando quieras");
+                        default -> {
+                        }
+                        
                     }
 
                 } else if (lexer.erroresLexicos.isEmpty() && !(p.errores.isEmpty())) {

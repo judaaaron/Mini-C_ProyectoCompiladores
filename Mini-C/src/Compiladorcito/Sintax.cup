@@ -6,7 +6,7 @@ import java.util.*;
 import java.io.*;
 
 parser code {:
-    ArrayList gramas = new ArrayList();
+    ArrayList gramaticas = new ArrayList();
     public Nodo raiz;
     public int cont = 0;
     ArrayList errores=new ArrayList();
@@ -93,7 +93,7 @@ FUNCIONES::= PROTOTIPO:i FUNCIONES:f
 
 PROTOTIPO::= PROTOFUN:i tkn_puntocoma
             {:
-                parser.gramas.add("Se reconoció un prototipo de función");
+                parser.gramaticas.add("Se reconoció un prototipo de función");
                 Nodo nodo = new Nodo("PROTOTIPO",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
@@ -104,7 +104,7 @@ PROTOTIPO::= PROTOFUN:i tkn_puntocoma
 ;
 
 FUNCION::= PROTOFUN:p tkn_llaveiz BLOQUE:j tkn_return EXPR:e tkn_puntocoma tkn_llaveder
-           {:parser.gramas.add("Una Funcion Reconocida satisfactoriamente");
+           {:parser.gramaticas.add("Una Funcion Reconocida satisfactoriamente");
                 Nodo nodo = new Nodo("FUNCION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(p);
@@ -113,7 +113,7 @@ FUNCION::= PROTOFUN:p tkn_llaveiz BLOQUE:j tkn_return EXPR:e tkn_puntocoma tkn_l
                 RESULT=nodo;
           :}
           | tkn_int tkn_main tkn_parentesisiz PARAMS tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_return EXPR:e tkn_puntocoma tkn_llaveder
-            {:parser.gramas.add("Funcion MAIN Reconocida satisfactoriamente");
+            {:parser.gramaticas.add("Funcion MAIN Reconocida satisfactoriamente");
                 Nodo nodo = new Nodo("MAIN",parser.cont);
                 parser.cont++;
                 nodo.addHijo(j);
@@ -121,7 +121,7 @@ FUNCION::= PROTOFUN:p tkn_llaveiz BLOQUE:j tkn_return EXPR:e tkn_puntocoma tkn_l
                 RESULT=nodo;
           :}
           |PROTOFUN:p tkn_llaveiz BLOQUE:j tkn_llaveder
-          {:parser.gramas.add("Una Funcion Reconocida satisfactoriamente");
+          {:parser.gramaticas.add("Una Funcion Reconocida satisfactoriamente");
                 Nodo nodo = new Nodo("FUNCION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(p);
@@ -163,7 +163,7 @@ ASIGNACION::= TIPO tkn_id tkn_oprel | tkn_id tkn_oprel | TIPO error tkn_oprel {:
 
 DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
             {:
-                parser.gramas.add("Se reconoció una asignación");
+                parser.gramaticas.add("Se reconoció una asignación");
                 Nodo nodo = new Nodo("ASIGNACION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(d);
@@ -176,7 +176,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
             :}
             | DECLR:d tkn_oprel:id EXPR:e
             {:
-                parser.gramas.add("Se reconoció una asignación");
+                parser.gramaticas.add("Se reconoció una asignación");
                 Nodo nodo = new Nodo("ASIGNACION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(d);
@@ -187,7 +187,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
              :}
             | DECLR:d tkn_coma DECLASIGN:e
             {:  
-                parser.gramas.add("Se reconoció una declaración");
+                parser.gramaticas.add("Se reconoció una declaración");
                 Nodo nodo = new Nodo("DECLARACION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(d);
@@ -199,7 +199,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
 
             | tkn_id:id tkn_coma DECLASIGN:d
             {:
-                parser.gramas.add("Se reconoció una declaración");
+                parser.gramaticas.add("Se reconoció una declaración");
                 Nodo nodo = new Nodo("DECLARACION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(new Nodo(id.toString(),parser.cont));
@@ -210,7 +210,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
 
             |tkn_id:id
             {:  
-                parser.gramas.add("Se reconoció una declaración");
+                parser.gramaticas.add("Se reconoció una declaración");
                 Nodo nodo = new Nodo("DECLARACION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(new Nodo(id.toString(),parser.cont));
@@ -220,7 +220,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
             | tkn_id error DECLASIGN {:parser.errores.add("Se esperaba el simbolo ',' en declaración o en argumentos en llamado de la función \n");:}
             | tkn_id:id1 tkn_oprel:id EXPR:e tkn_coma DECLASIGN:s
              {:
-                parser.gramas.add("Se reconoció una asignació");
+                parser.gramaticas.add("Se reconoció una asignació");
                 Nodo nodo = new Nodo("ASIGNACION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(new Nodo(id1.toString(),parser.cont));
@@ -233,7 +233,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
             :}
             | tkn_id tkn_oprel:id EXPR:e
             {:  
-                parser.gramas.add("Se reconoció una asignación");
+                parser.gramaticas.add("Se reconoció una asignación");
                 Nodo nodo = new Nodo("ASIGNACION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(new Nodo(id.toString(),parser.cont));
@@ -243,7 +243,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
             :}
             | DECLR:d
             {:  
-                parser.gramas.add("Se reconoció una declaración");
+                parser.gramaticas.add("Se reconoció una declaración");
                 Nodo nodo = new Nodo("DECLARACION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(d);
@@ -251,7 +251,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
             :} 
             | DECLR:d tkn_oprel:id tkn_id tkn_parentesisiz ARGS:a tkn_parentesisde 
             {:
-                parser.gramas.add("Se reconoció un llamado de función");
+                parser.gramaticas.add("Se reconoció un llamado de función");
                 Nodo nodo= new Nodo("LLAMADO",parser.cont);
                 parser.cont++;
                 nodo.addHijo(d);
@@ -262,7 +262,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
             :}
             | tkn_id:id1 tkn_oprel:id tkn_id tkn_parentesisiz ARGS:a tkn_parentesisde
             {:
-                parser.gramas.add("Se reconoció un llamado de función");
+                parser.gramaticas.add("Se reconoció un llamado de función");
                 Nodo nodo = new Nodo("LLAMADO",parser.cont);
                 parser.cont++;
                 nodo.addHijo(new Nodo(id1.toString(),parser.cont));
@@ -276,7 +276,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
             | tkn_id tkn_oprel tkn_id tkn_parentesisiz error tkn_parentesisde {:parser.errores.add("Argumentos en llamado de función erroneos \n");:}
             | tkn_id tkn_parentesisiz ARGS:a tkn_parentesisde
             {:
-                parser.gramas.add("Se reconoció un llamado de función");
+                parser.gramaticas.add("Se reconoció un llamado de función");
                 Nodo nodo= new Nodo("LLAMADO",parser.cont);
                 parser.cont++;
                 nodo.addHijo(a);
@@ -289,7 +289,7 @@ DECLASIGN::= DECLR:d tkn_oprel:id EXPR:e tkn_coma DECLASIGN:a
 
 ASIGN::= DECLASIGN:d tkn_puntocoma
          {:
-            parser.gramas.add("Funcion ASIGN Reconocida satisfactoriamente");
+            parser.gramaticas.add("Funcion ASIGN Reconocida satisfactoriamente");
             Nodo nodo = new Nodo("ASIGNACIONES",parser.cont);
             parser.cont++;
             nodo.addHijo(d);
@@ -298,7 +298,7 @@ ASIGN::= DECLASIGN:d tkn_puntocoma
 ;
 
 PARAMS::= TIPO:t tkn_coma PARAMS:p
-         {:parser.gramas.add("Params reconocido satisfactoriamente");
+         {:parser.gramaticas.add("Params reconocido satisfactoriamente");
             Nodo nodo = new Nodo("PARAMS",parser.cont);
             parser.cont++;
             nodo.addHijo(t)     ;           
@@ -306,7 +306,7 @@ PARAMS::= TIPO:t tkn_coma PARAMS:p
             RESULT=nodo;
          :}
          | DECLR:t tkn_coma PARAMS:p
-         {:parser.gramas.add("Params reconocido satisfactoriamente");
+         {:parser.gramaticas.add("Params reconocido satisfactoriamente");
             Nodo nodo = new Nodo("PARAMS",parser.cont);
             parser.cont++;
             nodo.addHijo(t);               
@@ -314,14 +314,14 @@ PARAMS::= TIPO:t tkn_coma PARAMS:p
             RESULT=nodo;
          :}
          | DECLR:t
-         {:parser.gramas.add("Params reconocido satisfactoriamente");
+         {:parser.gramaticas.add("Params reconocido satisfactoriamente");
             Nodo nodo = new Nodo("PARAMS",parser.cont);
             parser.cont++;
             nodo.addHijo(t);                
             RESULT=nodo;
          :}
          | TIPO:t
-         {:parser.gramas.add("Params reconocido satisfactoriamente");
+         {:parser.gramaticas.add("Params reconocido satisfactoriamente");
             Nodo nodo = new Nodo("PARAMS",parser.cont);
             parser.cont++;
             nodo.addHijo(t);                
@@ -341,7 +341,7 @@ TERNARIO ::= CONDICION tkn_ternario tkn_cadena tkn_dospuntos tkn_cadena
 ;
 
 IF::= tkn_if tkn_parentesisiz CONDICION:c tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder ELSE:e
-        {:parser.gramas.add("Funcion if reconocida");
+        {:parser.gramaticas.add("Funcion if reconocida");
             Nodo nodo = new Nodo("IF",parser.cont);
             parser.cont++;
             nodo.addHijo(c);
@@ -355,14 +355,14 @@ IF::= tkn_if tkn_parentesisiz CONDICION:c tkn_parentesisde tkn_llaveiz BLOQUE:j 
 ;
 
 ELSE ::= tkn_else tkn_llaveiz BLOQUE:j tkn_llaveder
-        {:parser.gramas.add("Else reconocido");
+        {:parser.gramaticas.add("Else reconocido");
             Nodo nodo = new Nodo("ELSE",parser.cont);
             parser.cont++;
             nodo.addHijo(j);
             RESULT=nodo;
         :} 
         | tkn_else IF:i
-        {:parser.gramas.add("Else if reconocido");
+        {:parser.gramaticas.add("Else if reconocido");
             Nodo nodo = new Nodo("ELSE IF",parser.cont);
             parser.cont++;
             nodo.addHijo(i);
@@ -377,7 +377,7 @@ ELSE ::= tkn_else tkn_llaveiz BLOQUE:j tkn_llaveder
 ;
 
 FOR ::= tkn_for tkn_parentesisiz ASIGNACION EXPR tkn_puntocoma CONDICION:c tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder
-        {:parser.gramas.add("Funcion FOR reconocida");
+        {:parser.gramaticas.add("Funcion FOR reconocida");
                 Nodo nodo = new Nodo("FOR",parser.cont);
                 parser.cont++;
                 nodo.addHijo(c);
@@ -389,7 +389,7 @@ FOR ::= tkn_for tkn_parentesisiz ASIGNACION EXPR tkn_puntocoma CONDICION:c tkn_p
         | tkn_for tkn_parentesisiz error EXPR tkn_puntocoma CONDICION tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("Asignacion o declaracion incorrecta en bloque for\n");:}
         | tkn_for tkn_parentesisiz ASIGNACION EXPR tkn_puntocoma CONDICION tkn_puntocoma tkn_id error tkn_parentesisde tkn_llaveiz BLOQUE tkn_llaveder {:parser.errores.add("Iteracion asuente en ciclo for\n");:}
         | tkn_for tkn_parentesisiz tkn_id tkn_puntocoma CONDICION:c tkn_puntocoma tkn_id ITERADOR tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder 
-        {:parser.gramas.add("Funcion FOR reconocida");
+        {:parser.gramaticas.add("Funcion FOR reconocida");
                 Nodo nodo = new Nodo("FOR",parser.cont);
                 parser.cont++;
                 nodo.addHijo(c);
@@ -399,7 +399,7 @@ FOR ::= tkn_for tkn_parentesisiz ASIGNACION EXPR tkn_puntocoma CONDICION:c tkn_p
 ;
 
 WHILE ::= tkn_while tkn_parentesisiz CONDICION:c tkn_parentesisde tkn_llaveiz BLOQUE:j tkn_llaveder
-        {:parser.gramas.add("Funcion WHILE reconocida");
+        {:parser.gramaticas.add("Funcion WHILE reconocida");
             Nodo nodo = new Nodo("WHILE",parser.cont);
             parser.cont++;
             nodo.addHijo(c);
@@ -413,7 +413,7 @@ WHILE ::= tkn_while tkn_parentesisiz CONDICION:c tkn_parentesisde tkn_llaveiz BL
 ;
 
 PRINTF ::= tkn_printf tkn_parentesisiz tkn_cadena tkn_coma tkn_id:id tkn_parentesisde tkn_puntocoma
-            {:parser.gramas.add("Funcion PRINTF reconocida");
+            {:parser.gramaticas.add("Funcion PRINTF reconocida");
                 Nodo nodo = new Nodo("PRINT F",parser.cont);
                 parser.cont++;
                 nodo.addHijo(new Nodo(id.toString(),parser.cont));
@@ -421,7 +421,7 @@ PRINTF ::= tkn_printf tkn_parentesisiz tkn_cadena tkn_coma tkn_id:id tkn_parente
                 RESULT=nodo;
             :}
         |  tkn_printf tkn_parentesisiz tkn_cadena tkn_parentesisde tkn_puntocoma
-            {:parser.gramas.add("Funcion PRINTF reconocida");
+            {:parser.gramaticas.add("Funcion PRINTF reconocida");
                 Nodo nodo = new Nodo("PRINT F",parser.cont);
                 parser.cont++;
                 RESULT=nodo;
@@ -436,7 +436,7 @@ PRINTF ::= tkn_printf tkn_parentesisiz tkn_cadena tkn_coma tkn_id:id tkn_parente
 ;
 
 SCANF::= tkn_scanf tkn_parentesisiz tkn_cadena tkn_coma tkn_ampersand tkn_id:id tkn_parentesisde tkn_puntocoma
-        {:  parser.gramas.add("Funcion SCANF reconocida");
+        {:  parser.gramaticas.add("Funcion SCANF reconocida");
             Nodo nodo = new Nodo("SCANF",parser.cont);
             parser.cont++;
             nodo.addHijo(new Nodo(id.toString(),parser.cont));
@@ -453,7 +453,7 @@ SCANF::= tkn_scanf tkn_parentesisiz tkn_cadena tkn_coma tkn_ampersand tkn_id:id 
 
 BLOQUE ::=  IF:i BLOQUE:s
             {:
-                parser.gramas.add("BLOQUE reconocido satisfactoriamente");
+                parser.gramaticas.add("BLOQUE reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("BLOQUE",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
@@ -462,7 +462,7 @@ BLOQUE ::=  IF:i BLOQUE:s
             :}
             | FOR:i BLOQUE:s
             {:
-                parser.gramas.add("BLOQUE reconocido satisfactoriamente");
+                parser.gramaticas.add("BLOQUE reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("BLOQUE",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
@@ -471,7 +471,7 @@ BLOQUE ::=  IF:i BLOQUE:s
             :}  
             | WHILE:i BLOQUE:s
             {:
-                parser.gramas.add("BLOQUE reconocido satisfactoriamente");
+                parser.gramaticas.add("BLOQUE reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("BLOQUE",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
@@ -480,7 +480,7 @@ BLOQUE ::=  IF:i BLOQUE:s
             :}  
             | ASIGN:i BLOQUE:s
             {:
-                parser.gramas.add("BLOQUE reconocido satisfactoriamente");
+                parser.gramaticas.add("BLOQUE reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("BLOQUE",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
@@ -489,7 +489,7 @@ BLOQUE ::=  IF:i BLOQUE:s
             :}  
             | SCANF:i BLOQUE:s
             {:
-                parser.gramas.add("BLOQUE reconocido satisfactoriamente");
+                parser.gramaticas.add("BLOQUE reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("BLOQUE",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
@@ -498,7 +498,7 @@ BLOQUE ::=  IF:i BLOQUE:s
             :}  
             | PRINTF:i BLOQUE:s
             {:
-                parser.gramas.add("BLOQUE reconocido satisfactoriamente");
+                parser.gramaticas.add("BLOQUE reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("BLOQUE",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
@@ -507,7 +507,7 @@ BLOQUE ::=  IF:i BLOQUE:s
             :}  
             | CONTADOR:i BLOQUE:s
             {:
-                parser.gramas.add("BLOQUE reconocido satisfactoriamente");
+                parser.gramaticas.add("BLOQUE reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("BLOQUE",parser.cont);
                 parser.cont++;
                 nodo.addHijo(i);
@@ -528,7 +528,7 @@ BLOQUE ::=  IF:i BLOQUE:s
 
 ITERADOR::= tkn_increment:id
          {:
-            parser.gramas.add("ITERADOR reconocido satisfactoriamente");
+            parser.gramaticas.add("ITERADOR reconocido satisfactoriamente");
             Nodo nodo= new Nodo("ITERADOR",parser.cont);
             parser.cont++;
             nodo.addHijo(new Nodo(id.toString(),parser.cont));
@@ -537,7 +537,7 @@ ITERADOR::= tkn_increment:id
         :}
         |tkn_decrement:id
         {:
-            parser.gramas.add("ITERADOR reconocido satisfactoriamente");
+            parser.gramaticas.add("ITERADOR reconocido satisfactoriamente");
             Nodo nodo= new Nodo("ITERADOR",parser.cont);
             parser.cont++;
             nodo.addHijo(new Nodo(id.toString(),parser.cont));
@@ -546,14 +546,14 @@ ITERADOR::= tkn_increment:id
         :}
         | tkn_opadicion tkn_oprel EXPR
         {: 
-            parser.gramas.add("ITERADOR reconocido satisfactoriamente");
+            parser.gramaticas.add("ITERADOR reconocido satisfactoriamente");
             Nodo nodo = new Nodo("ITERADOR",parser.cont);
             parser.cont++;
             RESULT=nodo;
         :}
         | tkn_opmulti tkn_oprel EXPR
         {: 
-            parser.gramas.add("ITERADOR reconocido satisfactoriamente");
+            parser.gramaticas.add("ITERADOR reconocido satisfactoriamente");
             Nodo nodo = new Nodo("ITERADOR",parser.cont);
             parser.cont++;
             RESULT=nodo;
@@ -563,7 +563,7 @@ ITERADOR::= tkn_increment:id
 
 CONDICION ::= CONDICIONP:s tkn_and:id CONDICION:o
                 {:
-                parser.gramas.add("CONDICION reconocido satisfactoriamente");
+                parser.gramaticas.add("CONDICION reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("CONDICION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(s);
@@ -574,7 +574,7 @@ CONDICION ::= CONDICIONP:s tkn_and:id CONDICION:o
                 :}
             | CONDICIONP:s tkn_or:id CONDICION:o
             {:
-                parser.gramas.add("CONDICION reconocido satisfactoriamente");
+                parser.gramaticas.add("CONDICION reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("CONDICION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(s);
@@ -586,7 +586,7 @@ CONDICION ::= CONDICIONP:s tkn_and:id CONDICION:o
 
             | tkn_parentesisiz CONDICIONP:c tkn_parentesisde tkn_and:id CONDICION:c1
             {:
-                parser.gramas.add("CONDICION reconocido satisfactoriamente");
+                parser.gramaticas.add("CONDICION reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("CONDICION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(c);
@@ -597,7 +597,7 @@ CONDICION ::= CONDICIONP:s tkn_and:id CONDICION:o
             :}
             | tkn_parentesisiz CONDICIONP:c tkn_parentesisde tkn_or:id CONDICION:c1 
             {:
-                parser.gramas.add("CONDICION reconocido satisfactoriamente");
+                parser.gramaticas.add("CONDICION reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("CONDICION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(c);
@@ -608,7 +608,7 @@ CONDICION ::= CONDICIONP:s tkn_and:id CONDICION:o
             :}
             | tkn_parentesisiz CONDICIONP:c tkn_parentesisde
              {:
-                parser.gramas.add("CONDICION reconocido satisfactoriamente");
+                parser.gramaticas.add("CONDICION reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("CONDICION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(c);
@@ -616,7 +616,7 @@ CONDICION ::= CONDICIONP:s tkn_and:id CONDICION:o
             :}
             | CONDICIONP:c
              {:
-                parser.gramas.add("CONDICION reconocido satisfactoriamente");
+                parser.gramaticas.add("CONDICION reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("CONDICION",parser.cont);
                 parser.cont++;
                 nodo.addHijo(c);
@@ -630,7 +630,7 @@ CONDICION ::= CONDICIONP:s tkn_and:id CONDICION:o
 
 CONDICIONP::= EXPR:e tkn_oprel:id EXPR:f
              {:
-                parser.gramas.add("CONDICIONP reconocido satisfactoriamente");
+                parser.gramaticas.add("CONDICIONP reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("CONDICIONP",parser.cont);
                 parser.cont++;
                 nodo.addHijo(e);
@@ -644,7 +644,7 @@ CONDICIONP::= EXPR:e tkn_oprel:id EXPR:f
 
 TIPO::= tkn_char
         {:
-            parser.gramas.add("TIPO de dato reconocido satisfactoriamente");
+            parser.gramaticas.add("TIPO de dato reconocido satisfactoriamente");
             Nodo nodo = new Nodo("char",parser.cont);
                 parser.cont++;
                 RESULT=nodo;
@@ -652,7 +652,7 @@ TIPO::= tkn_char
 
         |TIPOAPUNT:ap
         {:
-            parser.gramas.add("TIPO de dato reconocido satisfactoriamente");
+            parser.gramaticas.add("TIPO de dato reconocido satisfactoriamente");
             Nodo nodo = new Nodo("puntero",parser.cont);
                 parser.cont++;
                 nodo.addHijo(ap);
@@ -660,14 +660,14 @@ TIPO::= tkn_char
         :}
         |tkn_int
         {:
-            parser.gramas.add("TIPO de dato reconocido satisfactoriamente");
+            parser.gramaticas.add("TIPO de dato reconocido satisfactoriamente");
             Nodo nodo = new Nodo("int",parser.cont);
                 parser.cont++;
                 RESULT=nodo;
         :}
         |tkn_void
         {:
-            parser.gramas.add("TIPO de dato reconocido satisfactoriamente");
+            parser.gramaticas.add("TIPO de dato reconocido satisfactoriamente");
             Nodo nodo = new Nodo("void",parser.cont);
                 parser.cont++;
                 RESULT=nodo;
@@ -677,14 +677,14 @@ TIPO::= tkn_char
 
 TIPOAPUNT ::= tkn_int tkn_opmulti
         {:
-            parser.gramas.add("PUNTERO TIPOAPUNT reconocido satisfactoriamente");
+            parser.gramaticas.add("PUNTERO TIPOAPUNT reconocido satisfactoriamente");
             Nodo nodo = new Nodo("int*",parser.cont);
                 parser.cont++;
                 RESULT=nodo;
         :}
         | tkn_char tkn_opmulti
         {:
-            parser.gramas.add("PUNTERO TIPOAPUNT reconocido satisfactoriamente");
+            parser.gramaticas.add("PUNTERO TIPOAPUNT reconocido satisfactoriamente");
             Nodo nodo = new Nodo("char*",parser.cont);
                 parser.cont++;
                 RESULT=nodo;
@@ -693,7 +693,7 @@ TIPOAPUNT ::= tkn_int tkn_opmulti
 
 EXPR ::= EXPR:s tkn_opadicion:id EXPR:o
          {:
-                parser.gramas.add("EXPR reconocido satisfactoriamente");
+                parser.gramaticas.add("EXPR reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("expr",parser.cont);
                 parser.cont++;
                 nodo.addHijo(s);
@@ -706,7 +706,7 @@ EXPR ::= EXPR:s tkn_opadicion:id EXPR:o
         
         | EXPR:s tkn_opmulti:id EXPR:o
          {:
-                parser.gramas.add("EXPR reconocido satisfactoriamente");
+                parser.gramaticas.add("EXPR reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("expr",parser.cont);
                 parser.cont++;
                 nodo.addHijo(s);
@@ -717,7 +717,7 @@ EXPR ::= EXPR:s tkn_opadicion:id EXPR:o
                 :}
         | EXPR:s tkn_opmod:id EXPR:o 
             {:
-                parser.gramas.add("EXPR reconocido satisfactoriamente");
+                parser.gramaticas.add("EXPR reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("expr",parser.cont);
                 parser.cont++;
                 nodo.addHijo(s);
@@ -728,7 +728,7 @@ EXPR ::= EXPR:s tkn_opadicion:id EXPR:o
                 :}
         | tkn_parentesisiz EXPR tkn_parentesisde
                 {:
-                parser.gramas.add("EXPR reconocido satisfactoriamente");
+                parser.gramaticas.add("EXPR reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("EXPR",parser.cont);
                 parser.cont++;
                 RESULT=nodo;
@@ -755,7 +755,7 @@ EXPR ::= EXPR:s tkn_opadicion:id EXPR:o
 ;
 ARGS::= ARGSPARAMS:a
          {:
-                parser.gramas.add("ARGSPARAM reconocido satisfactoriamente");
+                parser.gramaticas.add("ARGSPARAM reconocido satisfactoriamente");
                 Nodo nodo = new Nodo("ARGSPARAM",parser.cont);
                 parser.cont++;
                 nodo.addHijo(a);
@@ -770,7 +770,7 @@ ARGS::= ARGSPARAMS:a
 
 ARGSPARAMS ::= tkn_id:id tkn_coma ARGSPARAMS:a
              {:
-                parser.gramas.add("Se reconcieron argumentos de la función");
+                parser.gramaticas.add("Se reconcieron argumentos de la función");
                 Nodo nodo= new Nodo("ARGS",parser.cont);
                 parser.cont++;
                 nodo.addHijo(new Nodo(id.toString(),parser.cont));
@@ -780,7 +780,7 @@ ARGSPARAMS ::= tkn_id:id tkn_coma ARGSPARAMS:a
             :}
             | tkn_id:id
              {:
-                parser.gramas.add("ARGS reconocido satisfactoriamente");
+                parser.gramaticas.add("ARGS reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("ARGS",parser.cont);
                 parser.cont++;
                 nodo.addHijo(new Nodo(id.toString(),parser.cont));
@@ -791,7 +791,7 @@ ARGSPARAMS ::= tkn_id:id tkn_coma ARGSPARAMS:a
 
 CONTADOR ::= tkn_id:id ITERADOR:s tkn_puntocoma
              {:
-                parser.gramas.add("INCREDECREMENT reconocido satisfactoriamente");
+                parser.gramaticas.add("INCREDECREMENT reconocido satisfactoriamente");
                 Nodo nodo= new Nodo("Incredecrement",parser.cont);
                 parser.cont++;
                 nodo.addHijo(new Nodo(id.toString(),parser.cont));

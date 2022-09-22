@@ -225,8 +225,8 @@ public class FrmPrincipal extends javax.swing.JFrame {
                     switch (input2) {
                         case 0 -> {
                             txt_sin.setText("");
-                            for(int i = 0; i < p.gramas.size(); i++){
-                                txt_sin.append(p.gramas.get(i).toString() + "\n");
+                            for(int i = 0; i < p.gramaticas.size(); i++){
+                                txt_sin.append(p.gramaticas.get(i).toString() + "\n");
                                 txt_sin.setForeground(Color.white);
                             }
                             txt_sin.append("\n");

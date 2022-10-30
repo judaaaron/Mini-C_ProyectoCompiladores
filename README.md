@@ -1,2 +1,2 @@
 # Mini-C_ProyectoCompiladores
-Compilador Mini-C clase compiladores
+Analizar léxico y sintáctico para mini-c + árbol AST
